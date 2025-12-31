@@ -47,20 +47,46 @@ const comingSoon = [
     canonical="/"
     lang="tr"
     ogImage="/og/og-home.png"
-    jsonLd={{
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: "Convert Tools",
-        url: "https://convert-toolss.pages.dev",
-        description:
-            "Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır.",
-        inLanguage: "tr",
-        potentialAction: {
-            "@type": "SearchAction",
-            target: "https://convert-toolss.pages.dev/?q={search_term_string}",
-            "query-input": "required name=search_term_string",
+    jsonLd={[
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Saku Studios",
+            url: "https://convert-toolss.pages.dev",
+            logo: "https://convert-toolss.pages.dev/logo.svg",
+            description:
+                "Saku Studios, tarayıcı içinde çalışan ücretsiz ve hızlı dijital medya araçları geliştirir.",
         },
-    }}
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Convert Tools",
+            url: "https://convert-toolss.pages.dev",
+            inLanguage: "tr",
+            potentialAction: {
+                "@type": "SearchAction",
+                target: "https://convert-toolss.pages.dev/?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+            },
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Ücretsiz Görsel Araçları",
+            url: "https://convert-toolss.pages.dev/",
+            inLanguage: "tr",
+            isPartOf: {
+                "@type": "WebSite",
+                name: "Convert Tools",
+                url: "https://convert-toolss.pages.dev",
+            },
+            about: {
+                "@type": "Organization",
+                name: "Saku Studios",
+                url: "https://convert-toolss.pages.dev",
+            },
+        },
+    ]}
 >
     <header class="topbar">
         <div class="container topbar-inner">
