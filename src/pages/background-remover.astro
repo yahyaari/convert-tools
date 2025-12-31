@@ -8,17 +8,40 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   canonical="/background-remover"
   lang="tr"
   ogImage="/og/og-bg-remover.png"
-  jsonLd={{
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Background Remover",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "Web",
-    "url": "https://convert-toolss.pages.dev/background-remover/",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" },
-    "description": "Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez, tarayıcı içinde çalışır."
-  }}
+  jsonLd={[
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Saku Studios",
+      "url": "https://convert-toolss.pages.dev",
+      "logo": "https://convert-toolss.pages.dev/logo.svg"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Background Remover",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "url": "https://convert-toolss.pages.dev/background-remover/",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" },
+      "description": "Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez, tarayıcı içinde çalışır."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Background Remover – Arka Plan Kaldır",
+      "url": "https://convert-toolss.pages.dev/background-remover/",
+      "inLanguage": "tr",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Convert Tools",
+        "url": "https://convert-toolss.pages.dev"
+      },
+      "about": { "@type": "Organization", "name": "Saku Studios" }
+    }
+  ]}
 >
+
 
     <script type="application/ld+json">
     {JSON.stringify({

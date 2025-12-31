@@ -8,17 +8,40 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   canonical="/image-converter"
   lang="tr"
   ogImage="/og/og-image-converter.png"
-  jsonLd={{
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Image Converter",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "Web",
-    "url": "https://convert-toolss.pages.dev/image-converter/",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" },
-    "description": "PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez."
-  }}
+  jsonLd={[
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Saku Studios",
+      "url": "https://convert-toolss.pages.dev",
+      "logo": "https://convert-toolss.pages.dev/logo.svg"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Image Converter",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "url": "https://convert-toolss.pages.dev/image-converter/",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" },
+      "description": "PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Image Converter – PNG, JPG, WebP Dönüştür",
+      "url": "https://convert-toolss.pages.dev/image-converter/",
+      "inLanguage": "tr",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Convert Tools",
+        "url": "https://convert-toolss.pages.dev"
+      },
+      "about": { "@type": "Organization", "name": "Saku Studios" }
+    }
+  ]}
 >
+
 
     <script type="application/ld+json">
     {JSON.stringify({
