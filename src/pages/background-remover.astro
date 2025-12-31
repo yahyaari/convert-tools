@@ -199,8 +199,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             </div>
 
             <script type="module">
-                import { i18n } from "/src/i18n.js";
-                import { detectLang } from "/src/utils/lang.js";
+                import { i18n } from "/i18n.js";
+                import { detectLang } from "/utils/lang.js";
+
 
                 const lang = detectLang();
                 const t = i18n[lang] || i18n.en;
