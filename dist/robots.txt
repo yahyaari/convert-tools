@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://convert-toolss.pages.dev/sitemap.xml
+Sitemap: https://convert-toolss.pages.dev/sitemap-index.xml
 
 User-agent: GPTBot
 Disallow: /
