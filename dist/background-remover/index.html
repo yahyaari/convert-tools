@@ -20,7 +20,7 @@
                 "url": "{SITE.url}",
                 "logo": "{new URL('/android-chrome-512x512.png', SITE.url).toString()}"
             }
-        </script><link rel="stylesheet" href="/_astro/background-remover.DLGr6h2a.css"></head> <body> <main>  <script type="application/ld+json">
+        </script><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"Saku Studios","url":"https://convert-toolss.pages.dev","logo":"https://convert-toolss.pages.dev/logo.svg"},{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Background Remover","applicationCategory":"MultimediaApplication","operatingSystem":"Web","url":"https://convert-toolss.pages.dev/background-remover/","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"},"description":"Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez, tarayıcı içinde çalışır."},{"@context":"https://schema.org","@type":"WebPage","name":"Background Remover – Arka Plan Kaldır","url":"https://convert-toolss.pages.dev/background-remover/","inLanguage":"tr","isPartOf":{"@type":"WebSite","name":"Convert Tools","url":"https://convert-toolss.pages.dev"},"about":{"@type":"Organization","name":"Saku Studios"}}]</script><link rel="stylesheet" href="/_astro/background-remover.DLGr6h2a.css"></head> <body> <main>  <script type="application/ld+json">
     {JSON.stringify({
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
@@ -45,8 +45,9 @@ BG:
 İpucu: Arka plana 1 kere tıkla → pipet rengi seçer.
                         “Reset BG” ile auto’ya dön.
 </p> </div> <div style="margin-top: 12px;"> <p class="muted" style="margin-bottom: 8px;"> <span id="t-tolLabel">Tolerance (renge yakınlık):</span> <span id="tolVal">20</span> </p> <input id="tol" type="range" min="5" max="100" value="20"> <p class="muted" style="margin-top: 12px; margin-bottom: 8px;"> <span id="t-featherLabel">Edge softness (feather):</span> <span id="featherVal">30</span> </p> <input id="feather" type="range" min="0" max="120" value="30"> <div style="margin-top: 12px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;"> <label class="muted" style="display:flex; gap:8px; align-items:center;"> <input id="autoCrop" type="checkbox" checked> <span id="t-autocrop">Auto-crop (şeffaf boşlukları kırp)</span> </label> <button id="resetBg" type="button"><span id="t-resetBg">Reset BG</span></button> </div> <div style="margin-top: 12px;"> <button id="download" hidden><span id="t-download">Download PNG</span></button> </div> <p id="result" class="muted" style="margin-top:10px;"></p> </div> </div> <script type="module">
-                import { i18n } from "/src/i18n.js";
-                import { detectLang } from "/src/utils/lang.js";
+                import { i18n } from "/i18n.js";
+                import { detectLang } from "/utils/lang.js";
+
 
                 const lang = detectLang();
                 const t = i18n[lang] || i18n.en;

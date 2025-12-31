@@ -20,7 +20,7 @@
                 "url": "{SITE.url}",
                 "logo": "{new URL('/android-chrome-512x512.png', SITE.url).toString()}"
             }
-        </script><link rel="stylesheet" href="/_astro/background-remover.DLGr6h2a.css"></head> <body> <main>  <script type="application/ld+json">
+        </script><script type="application/ld+json">[{"@context":"https://schema.org","@type":"Organization","name":"Saku Studios","url":"https://convert-toolss.pages.dev","logo":"https://convert-toolss.pages.dev/logo.svg"},{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Image Converter","applicationCategory":"MultimediaApplication","operatingSystem":"Web","url":"https://convert-toolss.pages.dev/image-converter/","offers":{"@type":"Offer","price":"0","priceCurrency":"TRY"},"description":"PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez."},{"@context":"https://schema.org","@type":"WebPage","name":"Image Converter – PNG, JPG, WebP Dönüştür","url":"https://convert-toolss.pages.dev/image-converter/","inLanguage":"tr","isPartOf":{"@type":"WebSite","name":"Convert Tools","url":"https://convert-toolss.pages.dev"},"about":{"@type":"Organization","name":"Saku Studios"}}]</script><link rel="stylesheet" href="/_astro/background-remover.DLGr6h2a.css"></head> <body> <main>  <script type="application/ld+json">
     {JSON.stringify({
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
@@ -38,8 +38,9 @@ Dosyan tarayıcında dönüştürülür, sunucuya yüklenmez.
 </p> <div class="mini-features"> <span id="t-f1">⚡ Hızlı</span> <span id="t-f2">🔒 Upload yok</span> <span id="t-f3">✨ Yüksek kalite</span> </div> </div> <div style="height:14px;"></div> <div class="panel"> <div class="panel-head"> <div> <div class="breadcrumb"> <a href="/" id="t-bcHome">Home</a> <span class="sep">›</span> <span id="t-bcHere">Image Converter</span> </div> </div> </div> <input id="file" type="file" accept="image/*" hidden> <div class="upload-box" id="dropZone"> <!-- IDLE --> <div class="upload-state is-idle"> <div class="upload-icon">⬇</div> <div class="upload-text"> <label for="file" class="choose-link"><b id="t-choose">Choose a file</b></label> <span id="idleHint">or drag it here.</span> </div> </div> <!-- PROCESSING --> <div class="upload-state is-processing" hidden> <div class="upload-spinner"></div> <div class="upload-text"> <b id="t-processing">Processing…</b> </div> </div> <!-- DONE --> <div class="upload-state is-done" hidden> <div class="upload-text"> <span id="t-done">Done!</span> <a href="#" id="uploadMore" class="choose-link"><b id="t-uploadMore">Upload more?</b></a> </div> </div> </div> <p class="muted" style="margin-top: 12px; margin-bottom: 8px;" id="t-outFmt">
 Output format:
 </p> <select id="format"> <option value="image/png">PNG</option> <option value="image/jpeg">JPG</option> <option value="image/webp">WebP</option> </select> <div style="margin-top: 12px;"> <button id="btn"><span id="t-convertBtn">Convert</span></button> </div> <p id="result" class="muted" style="margin-top: 10px;"></p> </div> <script type="module">
-                import { i18n } from "/src/i18n.js";
-                import { detectLang } from "/src/utils/lang.js";
+                import { i18n } from "/i18n.js";
+                import { detectLang } from "/utils/lang.js";
+
 
                 const lang = detectLang();
                 const t = i18n[lang] || i18n.en;
