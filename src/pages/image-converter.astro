@@ -9,6 +9,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     lang="tr"
     ogImage="/og/og-image-converter.png"
 >
+
+    <script type="application/ld+json">
+    {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Image Converter",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "url": "https://convert-toolss.pages.dev/image-converter/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "isAccessibleForFree": true,
+        "description": "PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez. Ücretsiz.",
+        "publisher": { "@type": "Organization", "name": "Saku Studios" }
+    })}
+    </script>
+
     <header class="topbar">
         <div class="container topbar-inner">
             <nav class="nav nav-left" aria-label="Primary left">

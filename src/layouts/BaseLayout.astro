@@ -90,6 +90,32 @@ const fullTitle = `${title} · ${SITE.name}`;
         <meta name="twitter:description" content={finalDescription} />
         <meta name="twitter:image" content={ogImageAbs} />
         {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "{SITE.name}",
+                "url": "{SITE.url}",
+                "inLanguage": "{lang}",
+                "description": "{finalDescription}",
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "{SITE.url}/?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            }
+        </script>
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Saku Studios",
+                "url": "{SITE.url}",
+                "logo": "{new URL('/android-chrome-512x512.png', SITE.url).toString()}"
+            }
+        </script>
     </head>
 
     <body>
