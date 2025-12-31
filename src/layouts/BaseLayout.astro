@@ -116,6 +116,15 @@ const fullTitle = `${title} · ${SITE.name}`;
                 "logo": "{new URL('/android-chrome-512x512.png', SITE.url).toString()}"
             }
         </script>
+
+        {
+            Astro.props.jsonLd && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(Astro.props.jsonLd)}
+                />
+            )
+        }
     </head>
 
     <body>

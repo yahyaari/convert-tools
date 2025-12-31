@@ -42,11 +42,25 @@ const comingSoon = [
 ---
 
 <BaseLayout
-    title="Ücretsiz Image Converter & Background Remover"
-    description="PNG/JPG/WebP dönüştür, arka planı şeffaf yap. %100 tarayıcı içinde çalışır, upload yok, ücretsiz ve sınırsız."
+    title="Ücretsiz Görsel Araçları"
+    description="Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır."
     canonical="/"
     lang="tr"
     ogImage="/og/og-home.png"
+    jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "Convert Tools",
+        url: "https://convert-toolss.pages.dev",
+        description:
+            "Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır.",
+        inLanguage: "tr",
+        potentialAction: {
+            "@type": "SearchAction",
+            target: "https://convert-toolss.pages.dev/?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+        },
+    }}
 >
     <header class="topbar">
         <div class="container topbar-inner">

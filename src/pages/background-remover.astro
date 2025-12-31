@@ -8,6 +8,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     canonical="/background-remover"
     lang="tr"
     ogImage="/og/og-bg-remover.png"
+    jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "Background Remover",
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Web",
+        url: "https://convert-toolss.pages.dev/background-remover/",
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        description:
+          "Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez, tarayıcı içinde çalışır.",
+    }}
 >
     <script type="application/ld+json">
     {JSON.stringify({
