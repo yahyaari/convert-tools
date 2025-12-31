@@ -1,0 +1,669 @@
+<!DOCTYPE html><html lang="tr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Background Remover | Convert Tools</title><meta name="description" content="Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez."><link rel="canonical" href="https://convert-toolss.pages.dev/background-remover/"><meta name="robots" content="index,follow"><!-- Favicons --><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><!-- Theme color --><meta name="theme-color" content="#4f46e5"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:site_name" content="Convert Tools"><meta property="og:title" content="Background Remover | Convert Tools"><meta property="og:description" content="Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez."><meta property="og:url" content="https://convert-toolss.pages.dev/background-remover/"><meta property="og:image" content="https://convert-toolss.pages.dev/og/og-bg-remover.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Background Remover | Convert Tools"><meta name="twitter:description" content="Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez."><meta name="twitter:image" content="https://convert-toolss.pages.dev/og/og-bg-remover.png"><link rel="stylesheet" href="/_astro/background-remover.DLGr6h2a.css"></head> <body> <main>  <header class="topbar"> <div class="container topbar-inner"> <nav class="nav nav-left" aria-label="Primary left"> <a href="/" class="back-link" id="t-back">← Geri</a> </nav> <a class="brand" href="/" aria-label="Convert Tools"> <span class="brand-mark">CT</span> </a> <div class="topbar-right"> <nav class="nav nav-right" aria-label="Primary right"> <a href="/#tools" id="t-navTools">Araçlar</a> </nav> <div class="lang-switch" aria-label="Language switch"> <button class="lang-btn" type="button" data-lang="tr">TR</button> <button class="lang-btn" type="button" data-lang="en">EN</button> </div> </div> </div> </header> <section class="page" id="top"> <div class="container"> <div class="mini-hero" id="miniHero"> <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span> <div class="page-title" id="t-title">Background Remover</div> <p class="page-subtitle muted" id="t-sub">
+Ürün/logo gibi görsellerde arka planı şeffaf yapar.
+                    Preview’de arka plana tıklayıp arka plan rengini
+                    seçebilirsin.
+</p> <div class="mini-features"> <span id="t-f1">🧽 Tek tık pipet</span> <span id="t-f2">✂️ Auto-crop</span> <span id="t-f3">🔒 Tarayıcı içinde</span> </div> </div> <div style="height:14px;"></div> <div class="panel"> <div class="breadcrumb"> <a href="/" id="t-bcHome">Home</a> <span class="sep">›</span> <span id="t-bcHere">Background Remover</span> </div> <input id="file" type="file" accept="image/*" hidden> <div class="upload-box" id="dropZone"> <div class="upload-state is-idle"> <div class="upload-icon">⬇</div> <div class="upload-text"> <label for="file" class="choose-link"><b id="t-choose">Choose a file</b></label> <span id="idleHint">or drag it here.</span> </div> </div> <div class="upload-state is-processing" hidden> <div class="upload-spinner"></div> <div class="upload-text"> <b id="t-processing">Processing…</b> </div> </div> <div class="upload-state is-done" hidden> <div class="upload-text"> <span id="t-ready">Ready!</span> <a href="#" id="uploadMore" class="choose-link"><b id="t-uploadMore">Upload more?</b></a> </div> </div> </div> <div id="previewWrap" style="margin-top:14px;" hidden> <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;"> <p class="muted" style="margin:0;" id="t-previewTitle">
+Preview (tıkla: arka plan rengi seç)
+</p> <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;"> <button id="toggleView" type="button"><span id="t-toggle">Show Original</span></button> <span class="muted" style="display:flex; align-items:center; gap:8px;">
+BG:
+<span id="bgSwatch" style="width:14px;height:14px;border-radius:4px;border:1px solid #cbd5e1;display:inline-block;"></span> <span id="bgText">auto</span> </span> </div> </div> <div class="preview-frame" id="previewFrame"> <canvas id="canvas"></canvas> </div> <p class="muted" style="margin-top:8px;" id="t-previewHint">
+İpucu: Arka plana 1 kere tıkla → pipet rengi seçer.
+                        “Reset BG” ile auto’ya dön.
+</p> </div> <div style="margin-top: 12px;"> <p class="muted" style="margin-bottom: 8px;"> <span id="t-tolLabel">Tolerance (renge yakınlık):</span> <span id="tolVal">20</span> </p> <input id="tol" type="range" min="5" max="100" value="20"> <p class="muted" style="margin-top: 12px; margin-bottom: 8px;"> <span id="t-featherLabel">Edge softness (feather):</span> <span id="featherVal">30</span> </p> <input id="feather" type="range" min="0" max="120" value="30"> <div style="margin-top: 12px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;"> <label class="muted" style="display:flex; gap:8px; align-items:center;"> <input id="autoCrop" type="checkbox" checked> <span id="t-autocrop">Auto-crop (şeffaf boşlukları kırp)</span> </label> <button id="resetBg" type="button"><span id="t-resetBg">Reset BG</span></button> </div> <div style="margin-top: 12px;"> <button id="download" hidden><span id="t-download">Download PNG</span></button> </div> <p id="result" class="muted" style="margin-top:10px;"></p> </div> </div> <script type="module">
+                import { i18n } from "/src/i18n.js";
+                import { detectLang } from "/src/utils/lang.js";
+
+                const lang = detectLang();
+                const t = i18n[lang] || i18n.en;
+
+                const set = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el && value != null) el.textContent = value;
+                };
+
+                // Mini-hero entrance
+                const miniHero = document.getElementById("miniHero");
+                requestAnimationFrame(() =>
+                    miniHero?.classList.add("is-entered"),
+                );
+
+                const pageName =
+                    lang === "tr" ? "Arka Plan Silici" : "Background Remover";
+
+                // i18n (yoksa fallback)
+                set("t-back", t.back ?? "← Geri");
+                set(
+                    "t-navTools",
+                    t.toolsHead ?? (lang === "tr" ? "Araçlar" : "Tools"),
+                );
+
+                set(
+                    "t-badge",
+                    t.badge ??
+                        (lang === "tr"
+                            ? "Ücretsiz & Sınırsız"
+                            : "Free & Unlimited"),
+                );
+                set("t-title", t.bgRemTitle ?? pageName);
+                set(
+                    "t-sub",
+                    t.bgRemDesc ??
+                        (lang === "tr"
+                            ? "Ürün/logo gibi görsellerde arka planı şeffaf yapar. Preview’de arka plana tıklayıp arka plan rengini seçebilirsin."
+                            : "Remove backgrounds in-browser. Click on the background in preview to pick a color."),
+                );
+
+                set(
+                    "t-f1",
+                    lang === "tr" ? "🧽 Tek tık pipet" : "🧽 One-click picker",
+                );
+                set("t-f2", lang === "tr" ? "✂️ Auto-crop" : "✂️ Auto-crop");
+                set(
+                    "t-f3",
+                    lang === "tr" ? "🔒 Tarayıcı içinde" : "🔒 In-browser",
+                );
+
+                set("t-bcHome", lang === "tr" ? "Anasayfa" : "Home");
+                set("t-bcHere", pageName);
+
+                set("t-choose", lang === "tr" ? "Dosya seç" : "Choose a file");
+                set(
+                    "idleHint",
+                    lang === "tr" ? "veya buraya sürükle." : "or drag it here.",
+                );
+                set(
+                    "t-processing",
+                    lang === "tr" ? "İşleniyor…" : "Processing…",
+                );
+                set("t-ready", lang === "tr" ? "Hazır!" : "Ready!");
+                set(
+                    "t-uploadMore",
+                    lang === "tr" ? "Başka yükle?" : "Upload more?",
+                );
+
+                set(
+                    "t-previewTitle",
+                    lang === "tr"
+                        ? "Önizleme (tıkla: arka plan rengi seç)"
+                        : "Preview (click to pick bg color)",
+                );
+                set(
+                    "t-previewHint",
+                    lang === "tr"
+                        ? "İpucu: Arka plana 1 kere tıkla → pipet rengi seçer. “Reset BG” ile auto’ya dön."
+                        : "Tip: Click once on the background to pick a color. Use “Reset BG” to return to auto.",
+                );
+
+                set(
+                    "t-toggle",
+                    lang === "tr" ? "Orijinali Göster" : "Show Original",
+                );
+                set(
+                    "t-tolLabel",
+                    lang === "tr" ? "Tolerance (yakınlık):" : "Tolerance:",
+                );
+                set(
+                    "t-featherLabel",
+                    lang === "tr"
+                        ? "Kenar yumuşatma (feather):"
+                        : "Edge softness (feather):",
+                );
+                set(
+                    "t-autocrop",
+                    lang === "tr"
+                        ? "Auto-crop (şeffaf boşlukları kırp)"
+                        : "Auto-crop (trim transparent edges)",
+                );
+                set("t-resetBg", lang === "tr" ? "BG Sıfırla" : "Reset BG");
+                set("t-download", lang === "tr" ? "PNG İndir" : "Download PNG");
+
+                document.documentElement.lang = lang;
+
+                // ===== Language switch =====
+                const langBtns = document.querySelectorAll(".lang-btn");
+                function applyLangActive() {
+                    const current = localStorage.getItem("lang") || lang;
+                    langBtns.forEach((b) =>
+                        b.classList.toggle(
+                            "is-active",
+                            b.dataset.lang === current,
+                        ),
+                    );
+                }
+                langBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        localStorage.setItem("lang", btn.dataset.lang);
+                        location.reload();
+                    });
+                });
+                applyLangActive();
+
+                // ===== Original page logic (senin kodun) =====
+                const fileInput = document.querySelector("#file");
+                const dropZone = document.querySelector("#dropZone");
+
+                const result = document.querySelector("#result");
+                const downloadBtn = document.querySelector("#download");
+
+                const tol = document.querySelector("#tol");
+                const tolVal = document.querySelector("#tolVal");
+
+                const feather = document.querySelector("#feather");
+                const featherVal = document.querySelector("#featherVal");
+
+                const autoCrop = document.querySelector("#autoCrop");
+                const resetBgBtn = document.querySelector("#resetBg");
+
+                const previewWrap = document.querySelector("#previewWrap");
+                const previewFrame = document.querySelector("#previewFrame");
+                const canvas = document.querySelector("#canvas");
+                const ctx = canvas.getContext("2d", {
+                    willReadFrequently: true,
+                });
+
+                const toggleViewBtn = document.querySelector("#toggleView");
+                const bgSwatch = document.querySelector("#bgSwatch");
+                const bgText = document.querySelector("#bgText");
+
+                const stateIdle = document.querySelector(
+                    ".upload-state.is-idle",
+                );
+                const stateProcessing = document.querySelector(
+                    ".upload-state.is-processing",
+                );
+                const stateDone = document.querySelector(
+                    ".upload-state.is-done",
+                );
+                const uploadMore = document.querySelector("#uploadMore");
+
+                let originalImageData = null;
+                let originalW = 0;
+                let originalH = 0;
+                let lastFileNameBase = "no-bg";
+
+                let pickedBg = null; // {r,g,b}
+                let showOriginal = false;
+
+                let draw = { x: 0, y: 0, w: 0, h: 0 };
+                let currentRenderedData = null;
+
+                function showIdle() {
+                    stateIdle.hidden = false;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = true;
+                }
+                function showProcessing() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = false;
+                    stateDone.hidden = true;
+                }
+                function showDone() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = false;
+                }
+
+                function cleanBaseName(name) {
+                    return name.replace(/\.[^.]+$/, "");
+                }
+
+                function clamp(v, a, b) {
+                    return Math.max(a, Math.min(b, v));
+                }
+
+                function setBgUI() {
+                    if (!pickedBg) {
+                        bgSwatch.style.background = "#ffffff";
+                        bgText.textContent = "auto";
+                        return;
+                    }
+                    const { r, g, b } = pickedBg;
+                    bgSwatch.style.background = `rgb(${r},${g},${b})`;
+                    bgText.textContent = `rgb(${r},${g},${b})`;
+                }
+
+                function processToTransparent(
+                    imageData,
+                    tolerance,
+                    featherAmt,
+                    bg,
+                ) {
+                    const { data } = imageData;
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        const a = data[i + 3];
+                        if (a === 0) continue;
+
+                        let d;
+                        if (bg) {
+                            d =
+                                Math.abs(r - bg.r) +
+                                Math.abs(g - bg.g) +
+                                Math.abs(b - bg.b);
+                            const tolScaled = tolerance * 6;
+                            const featherScaled = featherAmt * 6;
+
+                            if (d <= tolScaled) {
+                                data[i + 3] = 0;
+                                continue;
+                            }
+                            if (
+                                featherScaled > 0 &&
+                                d <= tolScaled + featherScaled
+                            ) {
+                                const t2 = (d - tolScaled) / featherScaled;
+                                const alpha = Math.round(255 * t2);
+                                data[i + 3] = Math.min(data[i + 3], alpha);
+                            }
+                        } else {
+                            d = Math.max(255 - r, 255 - g, 255 - b);
+                            if (d <= tolerance) {
+                                data[i + 3] = 0;
+                                continue;
+                            }
+                            if (featherAmt > 0 && d <= tolerance + featherAmt) {
+                                const t2 = (d - tolerance) / featherAmt;
+                                const alpha = Math.round(255 * t2);
+                                data[i + 3] = Math.min(data[i + 3], alpha);
+                            }
+                        }
+                    }
+                    return imageData;
+                }
+
+                function cropTransparent(imageData) {
+                    const { data, width, height } = imageData;
+                    let minX = width,
+                        minY = height,
+                        maxX = -1,
+                        maxY = -1;
+
+                    for (let y = 0; y < height; y++) {
+                        for (let x = 0; x < width; x++) {
+                            const idx = (y * width + x) * 4;
+                            const alpha = data[idx + 3];
+                            if (alpha > 0) {
+                                if (x < minX) minX = x;
+                                if (y < minY) minY = y;
+                                if (x > maxX) maxX = x;
+                                if (y > maxY) maxY = y;
+                            }
+                        }
+                    }
+                    if (maxX < minX || maxY < minY) return imageData;
+
+                    const pad = 2;
+                    minX = clamp(minX - pad, 0, width - 1);
+                    minY = clamp(minY - pad, 0, height - 1);
+                    maxX = clamp(maxX + pad, 0, width - 1);
+                    maxY = clamp(maxY + pad, 0, height - 1);
+
+                    const newW = maxX - minX + 1;
+                    const newH = maxY - minY + 1;
+
+                    const out = new ImageData(newW, newH);
+                    for (let y = 0; y < newH; y++) {
+                        for (let x = 0; x < newW; x++) {
+                            const srcIdx =
+                                ((minY + y) * width + (minX + x)) * 4;
+                            const dstIdx = (y * newW + x) * 4;
+                            out.data[dstIdx] = data[srcIdx];
+                            out.data[dstIdx + 1] = data[srcIdx + 1];
+                            out.data[dstIdx + 2] = data[srcIdx + 2];
+                            out.data[dstIdx + 3] = data[srcIdx + 3];
+                        }
+                    }
+                    return out;
+                }
+
+                function resizeCanvasToFrame() {
+                    const rect = previewFrame.getBoundingClientRect();
+                    const dpr = window.devicePixelRatio || 1;
+
+                    const w = Math.max(1, Math.round(rect.width * dpr));
+                    const h = Math.max(1, Math.round(rect.height * dpr));
+
+                    if (canvas.width !== w || canvas.height !== h) {
+                        canvas.width = w;
+                        canvas.height = h;
+                    }
+                }
+
+                function drawImageDataContained(imageData) {
+                    resizeCanvasToFrame();
+
+                    const srcW = imageData.width;
+                    const srcH = imageData.height;
+                    const dstW = canvas.width;
+                    const dstH = canvas.height;
+
+                    const scale = Math.min(dstW / srcW, dstH / srcH);
+                    const w = Math.round(srcW * scale);
+                    const h = Math.round(srcH * scale);
+                    const x = Math.round((dstW - w) / 2);
+                    const y = Math.round((dstH - h) / 2);
+
+                    draw = { x, y, w, h };
+
+                    ctx.clearRect(0, 0, dstW, dstH);
+
+                    const tmp = document.createElement("canvas");
+                    tmp.width = srcW;
+                    tmp.height = srcH;
+                    const tctx = tmp.getContext("2d");
+                    tctx.putImageData(imageData, 0, 0);
+
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = "high";
+                    ctx.drawImage(tmp, x, y, w, h);
+                }
+
+                function renderPreview() {
+                    if (!originalImageData) return;
+
+                    const tTol = Number(tol.value);
+                    const f = Number(feather.value);
+
+                    if (showOriginal) {
+                        drawImageDataContained(originalImageData);
+                        return;
+                    }
+
+                    const copy = new ImageData(
+                        new Uint8ClampedArray(originalImageData.data),
+                        originalW,
+                        originalH,
+                    );
+
+                    let processed = processToTransparent(
+                        copy,
+                        tTol,
+                        f,
+                        pickedBg,
+                    );
+                    if (autoCrop.checked)
+                        processed = cropTransparent(processed);
+
+                    currentRenderedData = processed;
+                    drawImageDataContained(processed);
+                }
+
+                function resetAll() {
+                    fileInput.value = "";
+                    document.querySelector("#idleHint").textContent =
+                        lang === "tr"
+                            ? "veya buraya sürükle."
+                            : "or drag it here.";
+                    result.textContent = "";
+                    originalImageData = null;
+                    originalW = 0;
+                    originalH = 0;
+                    lastFileNameBase = "no-bg";
+                    previewWrap.hidden = true;
+                    downloadBtn.hidden = true;
+                    pickedBg = null;
+                    showOriginal = false;
+                    set(
+                        "t-toggle",
+                        lang === "tr" ? "Orijinali Göster" : "Show Original",
+                    );
+                    setBgUI();
+                    showIdle();
+                }
+
+                function setSelectedFile(file) {
+                    if (!file) return;
+
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    fileInput.files = dt.files;
+
+                    if (!file.type || !file.type.startsWith("image/")) {
+                        result.textContent =
+                            lang === "tr"
+                                ? "Lütfen bir görsel dosyası seçin."
+                                : "Please choose an image file.";
+                        resetAll();
+                        return;
+                    }
+
+                    lastFileNameBase = cleanBaseName(file.name);
+                    document.querySelector("#idleHint").textContent =
+                        lang === "tr"
+                            ? `(${file.name}) — Hazır (preview’de arka plana tıkla)`
+                            : `(${file.name}) — Ready (click background in preview)`;
+
+                    result.textContent = "";
+
+                    pickedBg = null;
+                    setBgUI();
+                    showOriginal = false;
+                    set(
+                        "t-toggle",
+                        lang === "tr" ? "Orijinali Göster" : "Show Original",
+                    );
+
+                    showProcessing();
+
+                    const url = URL.createObjectURL(file);
+                    const img = new Image();
+
+                    img.onload = () => {
+                        originalW = img.naturalWidth;
+                        originalH = img.naturalHeight;
+
+                        const tmpCanvas = document.createElement("canvas");
+                        tmpCanvas.width = originalW;
+                        tmpCanvas.height = originalH;
+                        const tctx = tmpCanvas.getContext("2d", {
+                            willReadFrequently: true,
+                        });
+                        tctx.drawImage(img, 0, 0);
+                        originalImageData = tctx.getImageData(
+                            0,
+                            0,
+                            originalW,
+                            originalH,
+                        );
+
+                        URL.revokeObjectURL(url);
+
+                        previewWrap.hidden = false;
+                        downloadBtn.hidden = false;
+
+                        requestAnimationFrame(() => {
+                            renderPreview();
+                            result.textContent =
+                                lang === "tr"
+                                    ? "Önizleme hazır ✅ Slider ile ayarla, arka plan için tıkla."
+                                    : "Preview ready ✅ Adjust sliders, click background to pick color.";
+                            showDone();
+                        });
+                    };
+
+                    img.onerror = () => {
+                        URL.revokeObjectURL(url);
+                        result.textContent =
+                            lang === "tr"
+                                ? "Resim okunamadı (format desteklenmiyor olabilir)."
+                                : "Could not read image (format may be unsupported).";
+                        resetAll();
+                    };
+
+                    img.src = url;
+                }
+
+                tolVal.textContent = tol.value;
+                featherVal.textContent = feather.value;
+
+                tol.addEventListener("input", () => {
+                    tolVal.textContent = tol.value;
+                    renderPreview();
+                });
+
+                feather.addEventListener("input", () => {
+                    featherVal.textContent = feather.value;
+                    renderPreview();
+                });
+
+                autoCrop.addEventListener("change", () => renderPreview());
+
+                canvas.addEventListener("click", (e) => {
+                    if (!originalImageData || !currentRenderedData) return;
+
+                    const rect = canvas.getBoundingClientRect();
+                    const dpr = window.devicePixelRatio || 1;
+
+                    const cx = (e.clientX - rect.left) * dpr;
+                    const cy = (e.clientY - rect.top) * dpr;
+
+                    if (
+                        cx < draw.x ||
+                        cy < draw.y ||
+                        cx > draw.x + draw.w ||
+                        cy > draw.y + draw.h
+                    )
+                        return;
+
+                    const nx = (cx - draw.x) / draw.w;
+                    const ny = (cy - draw.y) / draw.h;
+
+                    const ix = Math.floor(nx * currentRenderedData.width);
+                    const iy = Math.floor(ny * currentRenderedData.height);
+
+                    const idx = (iy * currentRenderedData.width + ix) * 4;
+                    const data = currentRenderedData.data;
+
+                    pickedBg = {
+                        r: data[idx],
+                        g: data[idx + 1],
+                        b: data[idx + 2],
+                    };
+                    setBgUI();
+
+                    showOriginal = false;
+                    set(
+                        "t-toggle",
+                        lang === "tr" ? "Orijinali Göster" : "Show Original",
+                    );
+
+                    renderPreview();
+                    result.textContent =
+                        lang === "tr"
+                            ? "Arka plan rengi seçildi ✅"
+                            : "Background color selected ✅";
+                });
+
+                resetBgBtn.addEventListener("click", () => {
+                    pickedBg = null;
+                    setBgUI();
+                    renderPreview();
+                    result.textContent =
+                        lang === "tr"
+                            ? "BG reset (auto) ✅"
+                            : "BG reset (auto) ✅";
+                });
+
+                toggleViewBtn.addEventListener("click", () => {
+                    if (!originalImageData) return;
+                    showOriginal = !showOriginal;
+                    set(
+                        "t-toggle",
+                        showOriginal
+                            ? lang === "tr"
+                                ? "Sonucu Göster"
+                                : "Show Result"
+                            : lang === "tr"
+                              ? "Orijinali Göster"
+                              : "Show Original",
+                    );
+                    renderPreview();
+                });
+
+                fileInput.addEventListener("change", () => {
+                    const file = fileInput.files[0];
+                    if (file) setSelectedFile(file);
+                });
+
+                ["dragenter", "dragover"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add("is-dragover");
+                    });
+                });
+                ["dragleave", "dragend"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove("is-dragover");
+                    });
+                });
+                dropZone.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove("is-dragover");
+                    const file = e.dataTransfer?.files?.[0];
+                    if (file) setSelectedFile(file);
+                });
+
+                uploadMore.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    resetAll();
+                });
+
+                downloadBtn.addEventListener("click", () => {
+                    if (!originalImageData) return;
+
+                    const prev = showOriginal;
+                    showOriginal = false;
+                    renderPreview();
+
+                    canvas.toBlob((blob) => {
+                        if (!blob) return;
+
+                        const a = document.createElement("a");
+                        a.href = URL.createObjectURL(blob);
+                        a.download = `${lastFileNameBase}-no-bg.png`;
+                        a.click();
+                        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+
+                        result.textContent =
+                            lang === "tr"
+                                ? "PNG indirildi ✅"
+                                : "PNG downloaded ✅";
+                        result.classList.add("success-glow");
+                        setTimeout(
+                            () => result.classList.remove("success-glow"),
+                            950,
+                        );
+
+                        showOriginal = prev;
+                        renderPreview();
+                    }, "image/png");
+                });
+
+                window.addEventListener("resize", () => {
+                    if (previewWrap.hidden) return;
+                    renderPreview();
+                });
+
+                setBgUI();
+                showIdle();
+            </script> </div> </section>  </main> <script>
+            const topbar = document.querySelector(".topbar");
+            let lastState = false;
+
+            window.addEventListener("scroll", () => {
+                if (!topbar) return;
+                const compact = window.scrollY > 24;
+
+                if (compact !== lastState) {
+                    topbar.classList.toggle("is-compact", compact);
+                    lastState = compact;
+                }
+            });
+        </script> </body> </html>

@@ -15,5 +15,8 @@
   "type": "commonjs",
   "dependencies": {
     "astro": "^5.16.6"
+  },
+  "devDependencies": {
+    "@astrojs/sitemap": "^3.6.0"
   }
 }
