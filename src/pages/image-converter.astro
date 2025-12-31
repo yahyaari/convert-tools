@@ -1,0 +1,443 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+    title="Image Converter | Convert Tools"
+    description="PNG, JPG, WebP arasında hızlı dönüşüm. Tamamen tarayıcı içinde."
+    lang="tr"
+    ogImage="/og/og-image-converter.png"
+>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <nav class="nav nav-left" aria-label="Primary left">
+                <a href="/" class="back-link" id="t-back">← Geri</a>
+            </nav>
+
+            <a class="brand" href="/" aria-label="Convert Tools">
+                <span class="brand-mark">CT</span>
+            </a>
+
+            <div class="topbar-right">
+                <nav class="nav nav-right" aria-label="Primary right">
+                    <a href="/#tools" id="t-navTools">Araçlar</a>
+                </nav>
+
+                <div class="lang-switch" aria-label="Language switch">
+                    <button class="lang-btn" type="button" data-lang="tr"
+                        >TR</button
+                    >
+                    <button class="lang-btn" type="button" data-lang="en"
+                        >EN</button
+                    >
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page" id="top">
+        <div class="container">
+            <div class="mini-hero" id="miniHero">
+                <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
+                <div class="page-title" id="t-title">Image Converter</div>
+                <p class="page-subtitle muted" id="t-sub">
+                    Dosyan tarayıcında dönüştürülür, sunucuya yüklenmez.
+                </p>
+
+                <div class="mini-features">
+                    <span id="t-f1">⚡ Hızlı</span>
+                    <span id="t-f2">🔒 Upload yok</span>
+                    <span id="t-f3">✨ Yüksek kalite</span>
+                </div>
+            </div>
+
+            <div style="height:14px;"></div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="breadcrumb">
+                            <a href="/" id="t-bcHome">Home</a>
+                            <span class="sep">›</span>
+                            <span id="t-bcHere">Image Converter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <input id="file" type="file" accept="image/*" hidden />
+
+                <div class="upload-box" id="dropZone">
+                    <!-- IDLE -->
+                    <div class="upload-state is-idle">
+                        <div class="upload-icon">⬇</div>
+                        <div class="upload-text">
+                            <label for="file" class="choose-link"
+                                ><b id="t-choose">Choose a file</b></label
+                            >
+                            <span id="idleHint">or drag it here.</span>
+                        </div>
+                    </div>
+
+                    <!-- PROCESSING -->
+                    <div class="upload-state is-processing" hidden>
+                        <div class="upload-spinner"></div>
+                        <div class="upload-text">
+                            <b id="t-processing">Processing…</b>
+                        </div>
+                    </div>
+
+                    <!-- DONE -->
+                    <div class="upload-state is-done" hidden>
+                        <div class="upload-text">
+                            <span id="t-done">Done!</span>
+                            <a href="#" id="uploadMore" class="choose-link"
+                                ><b id="t-uploadMore">Upload more?</b></a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <p
+                    class="muted"
+                    style="margin-top: 12px; margin-bottom: 8px;"
+                    id="t-outFmt"
+                >
+                    Output format:
+                </p>
+
+                <select id="format">
+                    <option value="image/png">PNG</option>
+                    <option value="image/jpeg">JPG</option>
+                    <option value="image/webp">WebP</option>
+                </select>
+
+                <div style="margin-top: 12px;">
+                    <button id="btn"
+                        ><span id="t-convertBtn">Convert</span></button
+                    >
+                </div>
+
+                <p id="result" class="muted" style="margin-top: 10px;"></p>
+            </div>
+
+            <script type="module">
+                import { i18n } from "/src/i18n.js";
+                import { detectLang } from "/src/utils/lang.js";
+
+                const lang = detectLang();
+                const t = i18n[lang] || i18n.en;
+
+                const set = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el && value != null) el.textContent = value;
+                };
+
+                // Mini-hero entrance
+                const miniHero = document.getElementById("miniHero");
+                requestAnimationFrame(() =>
+                    miniHero?.classList.add("is-entered"),
+                );
+
+                const pageName =
+                    lang === "tr" ? "Görsel Dönüştürücü" : "Image Converter";
+
+                // Texts (i18n.js'inde yoksa fallback)
+                set("t-back", t.back ?? "← Geri");
+                set(
+                    "t-navTools",
+                    t.toolsHead ?? (lang === "tr" ? "Araçlar" : "Tools"),
+                );
+
+                set(
+                    "t-badge",
+                    t.badge ??
+                        (lang === "tr"
+                            ? "Ücretsiz & Sınırsız"
+                            : "Free & Unlimited"),
+                );
+                set("t-title", t.imageConvTitle ?? pageName);
+                set(
+                    "t-sub",
+                    t.imageConvDesc ??
+                        (lang === "tr"
+                            ? "Dosyan tarayıcında dönüştürülür, sunucuya yüklenmez."
+                            : "Your file is processed in your browser. Nothing is uploaded."),
+                );
+
+                set("t-f1", lang === "tr" ? "⚡ Hızlı" : "⚡ Fast");
+                set("t-f2", lang === "tr" ? "🔒 Upload yok" : "🔒 No uploads");
+                set(
+                    "t-f3",
+                    lang === "tr" ? "✨ Yüksek kalite" : "✨ High quality",
+                );
+
+                set("t-bcHome", lang === "tr" ? "Anasayfa" : "Home");
+                set("t-bcHere", pageName);
+
+                set("t-choose", lang === "tr" ? "Dosya seç" : "Choose a file");
+                set(
+                    "idleHint",
+                    lang === "tr" ? "veya buraya sürükle." : "or drag it here.",
+                );
+                set(
+                    "t-processing",
+                    lang === "tr" ? "İşleniyor…" : "Processing…",
+                );
+                set("t-done", lang === "tr" ? "Hazır!" : "Done!");
+                set(
+                    "t-uploadMore",
+                    lang === "tr" ? "Başka yükle?" : "Upload more?",
+                );
+                set(
+                    "t-outFmt",
+                    lang === "tr" ? "Çıktı formatı:" : "Output format:",
+                );
+                set("t-convertBtn", lang === "tr" ? "Dönüştür" : "Convert");
+
+                document.documentElement.lang = lang;
+
+                // ===== Language switch =====
+                const langBtns = document.querySelectorAll(".lang-btn");
+                function applyLangActive() {
+                    const current = localStorage.getItem("lang") || lang;
+                    langBtns.forEach((b) =>
+                        b.classList.toggle(
+                            "is-active",
+                            b.dataset.lang === current,
+                        ),
+                    );
+                }
+                langBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        localStorage.setItem("lang", btn.dataset.lang);
+                        location.reload();
+                    });
+                });
+                applyLangActive();
+
+                // ===== Page logic =====
+                const button = document.querySelector("#btn");
+                const result = document.querySelector("#result");
+                const fileInput = document.querySelector("#file");
+                const formatSelect = document.querySelector("#format");
+                const dropZone = document.querySelector("#dropZone");
+
+                const stateIdle = document.querySelector(
+                    ".upload-state.is-idle",
+                );
+                const stateProcessing = document.querySelector(
+                    ".upload-state.is-processing",
+                );
+                const stateDone = document.querySelector(
+                    ".upload-state.is-done",
+                );
+
+                const idleHintEl = document.querySelector("#idleHint");
+                const uploadMore = document.querySelector("#uploadMore");
+
+                function showIdle() {
+                    stateIdle.hidden = false;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = true;
+                }
+                function showProcessing() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = false;
+                    stateDone.hidden = true;
+                }
+                function showDone() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = false;
+                }
+
+                function extFromMime(mime) {
+                    if (mime === "image/png") return "png";
+                    if (mime === "image/jpeg") return "jpg";
+                    if (mime === "image/webp") return "webp";
+                    return "png";
+                }
+                function cleanBaseName(name) {
+                    return name.replace(/\.[^.]+$/, "");
+                }
+
+                function setSelectedFile(file) {
+                    if (!file) return;
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    fileInput.files = dt.files;
+
+                    if (!file.type || !file.type.startsWith("image/")) {
+                        result.textContent =
+                            lang === "tr"
+                                ? "Lütfen bir görsel dosyası seçin."
+                                : "Please choose an image file.";
+                        fileInput.value = "";
+                        idleHintEl.textContent =
+                            lang === "tr"
+                                ? "veya buraya sürükle."
+                                : "or drag it here.";
+                        showIdle();
+                        return;
+                    }
+
+                    result.textContent = "";
+                    idleHintEl.textContent =
+                        lang === "tr"
+                            ? `(${file.name}) — Dönüştürmeye hazır`
+                            : `(${file.name}) — Ready to convert`;
+                    showIdle();
+                }
+
+                fileInput.addEventListener("change", () => {
+                    const file = fileInput.files[0];
+                    if (!file) {
+                        idleHintEl.textContent =
+                            lang === "tr"
+                                ? "veya buraya sürükle."
+                                : "or drag it here.";
+                        result.textContent = "";
+                        showIdle();
+                        return;
+                    }
+                    setSelectedFile(file);
+                });
+
+                ["dragenter", "dragover"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add("is-dragover");
+                    });
+                });
+                ["dragleave", "dragend"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove("is-dragover");
+                    });
+                });
+                dropZone.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove("is-dragover");
+                    const file = e.dataTransfer?.files?.[0];
+                    if (file) setSelectedFile(file);
+                });
+
+                uploadMore.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    fileInput.value = "";
+                    idleHintEl.textContent =
+                        lang === "tr"
+                            ? "veya buraya sürükle."
+                            : "or drag it here.";
+                    result.textContent = "";
+                    showIdle();
+                });
+
+                button.onclick = () => {
+                    const file = fileInput.files[0];
+
+                    if (!file) {
+                        result.textContent =
+                            lang === "tr"
+                                ? "Lütfen bir dosya seçin."
+                                : "Please choose a file.";
+                        showIdle();
+                        return;
+                    }
+
+                    if (!file.type || !file.type.startsWith("image/")) {
+                        result.textContent =
+                            lang === "tr"
+                                ? "Lütfen bir görsel dosyası seçin."
+                                : "Please choose an image file.";
+                        showIdle();
+                        return;
+                    }
+
+                    showProcessing();
+                    result.textContent =
+                        lang === "tr" ? "Dönüştürülüyor..." : "Converting...";
+
+                    const targetMime = formatSelect.value;
+                    const url = URL.createObjectURL(file);
+                    const img = new Image();
+
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        canvas.width = img.naturalWidth;
+                        canvas.height = img.naturalHeight;
+                        const ctx = canvas.getContext("2d");
+
+                        if (targetMime === "image/jpeg") {
+                            ctx.fillStyle = "#ffffff";
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        }
+
+                        ctx.drawImage(img, 0, 0);
+
+                        canvas.toBlob(
+                            (blob) => {
+                                if (!blob) {
+                                    result.textContent =
+                                        lang === "tr"
+                                            ? "Çıktı oluşturulamadı (tarayıcı kısıtlaması olabilir)."
+                                            : "Could not create output (browser limitation).";
+                                    URL.revokeObjectURL(url);
+                                    showIdle();
+                                    return;
+                                }
+
+                                const ext = extFromMime(targetMime);
+                                const outName =
+                                    cleanBaseName(file.name) + "." + ext;
+
+                                const a = document.createElement("a");
+                                a.href = URL.createObjectURL(blob);
+                                a.download = outName;
+                                a.click();
+
+                                setTimeout(
+                                    () => URL.revokeObjectURL(a.href),
+                                    2000,
+                                );
+                                URL.revokeObjectURL(url);
+
+                                result.textContent =
+                                    lang === "tr"
+                                        ? `Hazır! ${ext.toUpperCase()} indirildi ✅`
+                                        : `Ready! Downloaded ${ext.toUpperCase()} ✅`;
+
+                                result.classList.add("success-glow");
+                                setTimeout(
+                                    () =>
+                                        result.classList.remove("success-glow"),
+                                    950,
+                                );
+
+                                showDone();
+                            },
+                            targetMime,
+                            targetMime === "image/jpeg" ? 0.92 : undefined,
+                        );
+                    };
+
+                    img.onerror = () => {
+                        result.textContent =
+                            lang === "tr"
+                                ? "Resim okunamadı (format desteklenmiyor olabilir)."
+                                : "Could not read image (format may be unsupported).";
+                        URL.revokeObjectURL(url);
+                        showIdle();
+                    };
+
+                    img.src = url;
+                };
+
+                showIdle();
+            </script>
+        </div>
+    </section>
+</BaseLayout>

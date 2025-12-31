@@ -1,0 +1,102 @@
+---
+import "/src/styles/global.css";
+import SITE from "../consts";
+
+const {
+    title = SITE.name,
+    description,
+    canonical,
+    lang = "tr",
+    ogImage = "/og/og-default.png",
+    noindex = false,
+} = Astro.props;
+
+const finalDescription =
+    description || (lang === "tr" ? SITE.descriptionTR : SITE.descriptionEN);
+
+const canonicalUrl = canonical
+    ? new URL(canonical, SITE.url).toString()
+    : new URL(Astro.url.pathname, SITE.url).toString();
+
+const ogImageAbs = new URL(ogImage, SITE.url).toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+        <title>{title}</title>
+        <meta name="description" content={finalDescription} />
+        <link rel="canonical" href={canonicalUrl} />
+
+        {/* Robots */}
+        {
+            noindex ? (
+                <meta name="robots" content="noindex,nofollow" />
+            ) : (
+                <meta name="robots" content="index,follow" />
+            )
+        }
+
+        <!-- Favicons -->
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+
+        <!-- Theme color -->
+        <meta name="theme-color" content="#4f46e5" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE.name} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={finalDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImageAbs} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={finalDescription} />
+        <meta name="twitter:image" content={ogImageAbs} />
+        {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
+    </head>
+
+    <body>
+        <main>
+            <slot />
+        </main>
+
+        <script is:inline>
+            const topbar = document.querySelector(".topbar");
+            let lastState = false;
+
+            window.addEventListener("scroll", () => {
+                if (!topbar) return;
+                const compact = window.scrollY > 24;
+
+                if (compact !== lastState) {
+                    topbar.classList.toggle("is-compact", compact);
+                    lastState = compact;
+                }
+            });
+        </script>
+    </body>
+</html>
