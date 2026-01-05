@@ -38,7 +38,54 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         "url": "https://convert-toolss.pages.dev"
       },
       "about": { "@type": "Organization", "name": "Saku Studios" }
+    },
+    {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Dosyalarım sunucuya yükleniyor mu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hayır. Arka plan kaldırma işlemi tamamen tarayıcınızda yapılır; dosyalarınız sunucuya gönderilmez."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Arka plan rengini nasıl seçiyorum?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Önizleme alanında arka plana tıklayın. Araç tıkladığınız noktadaki rengi pipet gibi alır ve o renge yakın alanları şeffaflaştırır."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Tolerance ve Feather ne işe yarar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tolerance, seçilen renge ne kadar yakın piksellerin silineceğini belirler. Feather ise kenarları yumuşatarak daha doğal geçiş sağlar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Auto-crop ne yapar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Auto-crop, şeffaf kalan boş kenarları otomatik kırpar ve görüntüyü daha kompakt hale getirir."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hangi formatta indiriyor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sonuç şeffaflığı korumak için PNG olarak indirilir."
+      }
     }
+  ]
+}
+
   ]}
 >
 

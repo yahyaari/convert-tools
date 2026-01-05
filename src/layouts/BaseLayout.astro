@@ -9,6 +9,7 @@ const {
     lang = "tr",
     ogImage = "/og/og-default.png",
     noindex = false,
+    jsonLd = null, // object veya array
 } = Astro.props;
 
 const finalDescription =
@@ -20,8 +21,30 @@ const canonicalUrl = canonical
 
 const ogImageAbs = new URL(ogImage, SITE.url).toString();
 
-// OG/Twitter için marka ekli başlık
 const fullTitle = `${title} · ${SITE.name}`;
+
+// Base JSON-LD
+const baseWebSiteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    url: SITE.url,
+    inLanguage: lang,
+    description: finalDescription,
+    potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE.url}/?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+    },
+};
+
+const baseOrgLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Saku Studios",
+    url: SITE.url,
+    logo: new URL("/android-chrome-512x512.png", SITE.url).toString(),
+};
 ---
 
 <!doctype html>
@@ -34,7 +57,6 @@ const fullTitle = `${title} · ${SITE.name}`;
         <meta name="description" content={finalDescription} />
         <link rel="canonical" href={canonicalUrl} />
 
-        {/* Robots */}
         {
             noindex ? (
                 <meta name="robots" content="noindex,nofollow" />
@@ -43,7 +65,6 @@ const fullTitle = `${title} · ${SITE.name}`;
             )
         }
 
-        <!-- (Optional but nice) -->
         <meta name="application-name" content={SITE.name} />
         <meta name="author" content="Saku Studios" />
 
@@ -65,7 +86,6 @@ const fullTitle = `${title} · ${SITE.name}`;
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
 
-        <!-- Theme color -->
         <meta name="theme-color" content="#4f46e5" />
 
         <!-- Google Search Console -->
@@ -91,37 +111,22 @@ const fullTitle = `${title} · ${SITE.name}`;
         <meta name="twitter:image" content={ogImageAbs} />
         {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
 
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "name": "{SITE.name}",
-                "url": "{SITE.url}",
-                "inLanguage": "{lang}",
-                "description": "{finalDescription}",
-                "potentialAction": {
-                    "@type": "SearchAction",
-                    "target": "{SITE.url}/?q={search_term_string}",
-                    "query-input": "required name=search_term_string"
-                }
-            }
-        </script>
+        <!-- Base JSON-LD -->
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(baseWebSiteLd)}
+        />
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(baseOrgLd)}
+        />
 
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "Saku Studios",
-                "url": "{SITE.url}",
-                "logo": "{new URL('/android-chrome-512x512.png', SITE.url).toString()}"
-            }
-        </script>
-
+        <!-- Page JSON-LD (object veya array) -->
         {
-            Astro.props.jsonLd && (
+            jsonLd && (
                 <script
                     type="application/ld+json"
-                    set:html={JSON.stringify(Astro.props.jsonLd)}
+                    set:html={JSON.stringify(jsonLd)}
                 />
             )
         }

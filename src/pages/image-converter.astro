@@ -38,8 +38,56 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         "url": "https://convert-toolss.pages.dev"
       },
       "about": { "@type": "Organization", "name": "Saku Studios" }
+    },
+    {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Dosyalarım sunucuya yükleniyor mu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hayır. Dönüştürme işlemi tamamen tarayıcınızda gerçekleşir ve dosyalarınız hiçbir sunucuya yüklenmez."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hangi formatları destekliyor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PNG, JPG ve WebP formatlarına dönüştürebilirsiniz. Girdi olarak da çoğu görsel formatı tarayıcı desteği ölçüsünde çalışır."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PNG şeffaflığı JPG’ye çevirince ne olur?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG şeffaflığı desteklemez. PNG → JPG dönüşümünde şeffaf alanlar beyaz arka planla doldurulur."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Kalite ayarı var mı?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "JPG çıktısında tarayıcı varsayılanına yakın bir kalite kullanılır. PNG/WebP dönüşümlerinde de mümkün olan en iyi çıktıyı üretir."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mobilde çalışır mı?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Evet. Modern mobil tarayıcılarda çalışır. Büyük dosyalarda performans cihazınıza bağlı olarak değişebilir."
+      }
     }
+  ]
+}
+
   ]}
+  
 >
 
 
