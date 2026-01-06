@@ -1,85 +1,58 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SITE from "../consts";
-
-const pagePath = "/background-remover";
-const pageUrl = new URL(pagePath, SITE.url).toString();
 ---
 
 <BaseLayout
     title="Background Remover – Arka Plan Kaldır"
-    description="Görselin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde çalışır, upload yok. Ücretsiz."
-    canonical={pagePath}
+    description="Görsellerin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde, upload yok. Ücretsiz."
+    canonical="/background-remover"
     lang="tr"
     ogImage="/og/og-bg-remover.png"
     jsonLd={[
         {
-            "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             name: "Background Remover",
             applicationCategory: "MultimediaApplication",
             operatingSystem: "Web",
-            url: pageUrl,
+            url: "https://www.sakustudios.com.tr/background-remover",
             isAccessibleForFree: true,
-            offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
-            description:
-                "Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez, tarayıcı içinde çalışır.",
+            offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "TRY",
+            },
             publisher: {
                 "@type": "Organization",
                 name: "Saku Studios",
-                url: SITE.url,
             },
+            description:
+                "Arka planı tek tıkla kaldıran, tamamen tarayıcı içinde çalışan ücretsiz araç.",
         },
         {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "Background Remover – Arka Plan Kaldır",
-            url: pageUrl,
-            inLanguage: "tr",
-            isPartOf: { "@type": "WebSite", name: SITE.name, url: SITE.url },
-        },
-        {
-            "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: [
                 {
                     "@type": "Question",
-                    name: "Dosyalarım sunucuya yükleniyor mu?",
+                    name: "Dosyalar sunucuya yükleniyor mu?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "Hayır. Arka plan kaldırma işlemi tamamen tarayıcınızda yapılır; dosyalarınız sunucuya gönderilmez.",
+                        text: "Hayır. Tüm işlemler tarayıcınızda yapılır.",
                     },
                 },
                 {
                     "@type": "Question",
-                    name: "Arka plan rengini nasıl seçiyorum?",
+                    name: "Hangi formatta indiriliyor?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "Önizleme alanında arka plana tıklayın. Araç tıkladığınız noktadaki rengi pipet gibi alır ve o renge yakın alanları şeffaflaştırır.",
+                        text: "Şeffaflığı korumak için PNG olarak indirilir.",
                     },
                 },
                 {
                     "@type": "Question",
-                    name: "Tolerance ve Feather ne işe yarar?",
+                    name: "Auto-crop ne işe yarar?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "Tolerance, seçilen renge ne kadar yakın piksellerin silineceğini belirler. Feather ise kenarları yumuşatarak daha doğal geçiş sağlar.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Auto-crop ne yapar?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Auto-crop, şeffaf kalan boş kenarları otomatik kırpar ve görüntüyü daha kompakt hale getirir.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Hangi formatta indiriyor?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Sonuç şeffaflığı korumak için PNG olarak indirilir.",
+                        text: "Şeffaf kalan boş alanları otomatik olarak kırpar.",
                     },
                 },
             ],
@@ -102,12 +75,12 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr"
-                        >TR</button
-                    >
-                    <button class="lang-btn" type="button" data-lang="en"
-                        >EN</button
-                    >
+                    <button class="lang-btn" type="button" data-lang="tr">
+                        TR
+                    </button>
+                    <button class="lang-btn" type="button" data-lang="en">
+                        EN
+                    </button>
                 </div>
             </div>
         </div>
@@ -181,10 +154,9 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                         <div
                             style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;"
                         >
-                            <button id="toggleView" type="button"
-                                ><span id="t-toggle">Show Original</span
-                                ></button
-                            >
+                            <button id="toggleView" type="button">
+                                <span id="t-toggle">Show Original</span>
+                            </button>
                             <span
                                 class="muted"
                                 style="display:flex; align-items:center; gap:8px;"
@@ -245,22 +217,21 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                             >
                         </label>
 
-                        <button id="resetBg" type="button"
-                            ><span id="t-resetBg">Reset BG</span></button
-                        >
+                        <button id="resetBg" type="button">
+                            <span id="t-resetBg">Reset BG</span>
+                        </button>
                     </div>
 
                     <div style="margin-top: 12px;">
-                        <button id="download" hidden
-                            ><span id="t-download">Download PNG</span></button
-                        >
+                        <button id="download" hidden>
+                            <span id="t-download">Download PNG</span>
+                        </button>
                     </div>
 
                     <p id="result" class="muted" style="margin-top:10px;"></p>
                 </div>
             </div>
 
-            <!-- Senin mevcut JS kodun aynen duruyor -->
             <script type="module">
                 import { i18n } from "/i18n.js";
                 import { detectLang } from "/utils/lang.js";
@@ -273,6 +244,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                     if (el && value != null) el.textContent = value;
                 };
 
+                // Mini-hero entrance
                 const miniHero = document.getElementById("miniHero");
                 requestAnimationFrame(() =>
                     miniHero?.classList.add("is-entered"),
@@ -281,6 +253,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                 const pageName =
                     lang === "tr" ? "Arka Plan Silici" : "Background Remover";
 
+                // i18n (yoksa fallback)
                 set("t-back", t.back ?? "← Geri");
                 set(
                     "t-navTools",
@@ -369,6 +342,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
 
                 document.documentElement.lang = lang;
 
+                // ===== Language switch =====
                 const langBtns = document.querySelectorAll(".lang-btn");
                 function applyLangActive() {
                     const current = localStorage.getItem("lang") || lang;
@@ -387,7 +361,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                 });
                 applyLangActive();
 
-                // ===== Original page logic (senin kodun) =====
+                // ===== Page logic =====
                 const fileInput = document.querySelector("#file");
                 const dropZone = document.querySelector("#dropZone");
 

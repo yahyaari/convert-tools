@@ -1,45 +1,34 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SITE from "../consts";
-
-const pagePath = "/image-converter";
-const pageUrl = new URL(pagePath, SITE.url).toString();
 ---
 
 <BaseLayout
     title="Image Converter – PNG, JPG, WebP Dönüştür"
     description="PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez. Ücretsiz."
-    canonical={pagePath}
+    canonical="/image-converter"
     lang="tr"
     ogImage="/og/og-image-converter.png"
     jsonLd={[
         {
-            "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             name: "Image Converter",
             applicationCategory: "MultimediaApplication",
             operatingSystem: "Web",
-            url: pageUrl,
+            url: "https://www.sakustudios.com.tr/image-converter",
             isAccessibleForFree: true,
-            offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
-            description:
-                "PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez. Ücretsiz.",
+            offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "TRY",
+            },
             publisher: {
                 "@type": "Organization",
                 name: "Saku Studios",
-                url: SITE.url,
             },
+            description:
+                "PNG, JPG ve WebP formatları arasında tarayıcı içinde çalışan ücretsiz görsel dönüştürücü.",
         },
         {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "Image Converter – PNG, JPG, WebP Dönüştür",
-            url: pageUrl,
-            inLanguage: "tr",
-            isPartOf: { "@type": "WebSite", name: SITE.name, url: SITE.url },
-        },
-        {
-            "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: [
                 {
@@ -47,7 +36,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                     name: "Dosyalarım sunucuya yükleniyor mu?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "Hayır. Dönüştürme işlemi tamamen tarayıcınızda gerçekleşir ve dosyalarınız hiçbir sunucuya yüklenmez.",
+                        text: "Hayır. Dönüştürme işlemi tamamen tarayıcınızda gerçekleşir.",
                     },
                 },
                 {
@@ -55,23 +44,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                     name: "Hangi formatları destekliyor?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "PNG, JPG ve WebP formatlarına dönüştürebilirsiniz. Girdi olarak da çoğu görsel formatı tarayıcı desteği ölçüsünde çalışır.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "PNG şeffaflığı JPG’ye çevirince ne olur?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "JPG şeffaflığı desteklemez. PNG → JPG dönüşümünde şeffaf alanlar beyaz arka planla doldurulur.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Kalite ayarı var mı?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "JPG çıktısında tarayıcı varsayılanına yakın bir kalite kullanılır. PNG/WebP dönüşümlerinde de mümkün olan en iyi çıktıyı üretir.",
+                        text: "PNG, JPG ve WebP formatları desteklenir.",
                     },
                 },
                 {
@@ -79,7 +52,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                     name: "Mobilde çalışır mı?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "Evet. Modern mobil tarayıcılarda çalışır. Büyük dosyalarda performans cihazınıza bağlı olarak değişebilir.",
+                        text: "Evet, modern mobil tarayıcılarda sorunsuz çalışır.",
                     },
                 },
             ],
@@ -102,12 +75,12 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr"
-                        >TR</button
-                    >
-                    <button class="lang-btn" type="button" data-lang="en"
-                        >EN</button
-                    >
+                    <button class="lang-btn" type="button" data-lang="tr">
+                        TR
+                    </button>
+                    <button class="lang-btn" type="button" data-lang="en">
+                        EN
+                    </button>
                 </div>
             </div>
         </div>
@@ -210,6 +183,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                     if (el && value != null) el.textContent = value;
                 };
 
+                // Mini-hero entrance
                 const miniHero = document.getElementById("miniHero");
                 requestAnimationFrame(() =>
                     miniHero?.classList.add("is-entered"),
@@ -218,6 +192,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                 const pageName =
                     lang === "tr" ? "Görsel Dönüştürücü" : "Image Converter";
 
+                // Texts (i18n.js'inde yoksa fallback)
                 set("t-back", t.back ?? "← Geri");
                 set(
                     "t-navTools",
@@ -272,6 +247,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
 
                 document.documentElement.lang = lang;
 
+                // ===== Language switch =====
                 const langBtns = document.querySelectorAll(".lang-btn");
                 function applyLangActive() {
                     const current = localStorage.getItem("lang") || lang;
@@ -290,6 +266,7 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                 });
                 applyLangActive();
 
+                // ===== Page logic =====
                 const button = document.querySelector("#btn");
                 const result = document.querySelector("#result");
                 const fileInput = document.querySelector("#file");
