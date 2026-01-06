@@ -3,156 +3,131 @@ import "/src/styles/global.css";
 import SITE from "../consts";
 
 const {
-    title = SITE.name,
-    description,
-    canonical,
-    lang = "tr",
-    ogImage = SITE.defaultOgImage ?? "/og/og-default.png",
-    noindex = false,
-    jsonLd = null, // object veya array
+  title = SITE.name,
+  description,
+  canonical,
+  lang = "tr",
+  ogImage = "/og/og-default.png",
+  noindex = false,
+  jsonLd = null, // object veya array
 } = Astro.props;
 
 const finalDescription =
-    description || (lang === "tr" ? SITE.descriptionTR : SITE.descriptionEN);
+  description || (lang === "tr" ? SITE.descriptionTR : SITE.descriptionEN);
 
-// Canonical
 const canonicalUrl = canonical
-    ? new URL(canonical, SITE.url).toString()
-    : new URL(Astro.url.pathname, SITE.url).toString();
+  ? new URL(canonical, SITE.url).toString()
+  : new URL(Astro.url.pathname, SITE.url).toString();
 
-// OG image absolute
 const ogImageAbs = new URL(ogImage, SITE.url).toString();
 
-// Title
-const fullTitle = `${title} · ${SITE.name}`;
+const fullTitle = title?.includes(SITE.name) ? title : `${title} · ${SITE.name}`;
 
 // Base JSON-LD
 const baseWebSiteLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: SITE.name,
-    url: SITE.url,
-    inLanguage: lang,
-    description: finalDescription,
-    // Not: Sitede gerçek bir arama yoksa SearchAction eklememek daha doğru.
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE.name,
+  url: SITE.url,
+  inLanguage: lang,
+  description: finalDescription,
 };
 
 const baseOrgLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Saku Studios",
-    url: SITE.url,
-    logo: new URL("/android-chrome-512x512.png", SITE.url).toString(),
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Saku Studios",
+  url: SITE.url,
+  logo: new URL("/android-chrome-512x512.png", SITE.url).toString(),
 };
+
+// jsonLd normalize: object | array
+const pageJsonLd = jsonLd
+  ? Array.isArray(jsonLd)
+    ? jsonLd
+    : [jsonLd]
+  : [];
+
+const allJsonLd = [baseWebSiteLd, baseOrgLd, ...pageJsonLd];
+
+// Güvenli stringify (undefined vs olmasın)
+const jsonLdString = JSON.stringify(allJsonLd);
 ---
 
 <!doctype html>
 <html lang={lang}>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-        <title>{fullTitle}</title>
-        <meta name="description" content={finalDescription} />
-        <link rel="canonical" href={canonicalUrl} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={finalDescription} />
+    <link rel="canonical" href={canonicalUrl} />
 
-        {
-            noindex ? (
-                <meta name="robots" content="noindex,nofollow" />
-            ) : (
-                <meta name="robots" content="index,follow" />
-            )
+    {noindex ? (
+      <meta name="robots" content="noindex,nofollow" />
+    ) : (
+      <meta name="robots" content="index,follow" />
+    )}
+
+    <meta name="application-name" content={SITE.name} />
+    <meta name="author" content="Saku Studios" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta name="theme-color" content="#4f46e5" />
+
+    <!-- Google Search Console -->
+    <meta
+      name="google-site-verification"
+      content="Z-y56dqDLvpkE2AWPxyYTlb8y8N2dch1mp7wnUYlt1I"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={finalDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={finalDescription} />
+    <meta name="twitter:image" content={ogImageAbs} />
+    {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
+
+    <!-- ✅ JSON-LD (tek script, garantili parse) -->
+    <script type="application/ld+json">{jsonLdString}</script>
+  </head>
+
+  <body>
+    <main>
+      <slot />
+    </main>
+
+    <script is:inline>
+      const topbar = document.querySelector(".topbar");
+      let lastState = false;
+
+      window.addEventListener("scroll", () => {
+        if (!topbar) return;
+        const compact = window.scrollY > 24;
+
+        if (compact !== lastState) {
+          topbar.classList.toggle("is-compact", compact);
+          lastState = compact;
         }
-
-        <meta name="application-name" content={SITE.name} />
-        <meta name="author" content="Saku Studios" />
-
-        <!-- Favicons -->
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-        />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-
-        <meta name="theme-color" content="#4f46e5" />
-
-        <!-- Google Search Console -->
-        <meta
-            name="google-site-verification"
-            content="Z-y56dqDLvpkE2AWPxyYTlb8y8N2dch1mp7wnUYlt1I"
-        />
-
-        <!-- Open Graph -->
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content={SITE.name} />
-        <meta property="og:title" content={fullTitle} />
-        <meta property="og:description" content={finalDescription} />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content={ogImageAbs} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-
-        <!-- Twitter -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={fullTitle} />
-        <meta name="twitter:description" content={finalDescription} />
-        <meta name="twitter:image" content={ogImageAbs} />
-        {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
-
-        <!-- JSON-LD: noindex ise basmamak daha temiz -->
-        {
-            !noindex && (
-                <>
-                    <script
-                        type="application/ld+json"
-                        set:html={JSON.stringify(baseWebSiteLd)}
-                    />
-                    <script
-                        type="application/ld+json"
-                        set:html={JSON.stringify(baseOrgLd)}
-                    />
-
-                    {/* Page JSON-LD (object veya array) */}
-                    {jsonLd && (
-                        <script
-                            type="application/ld+json"
-                            set:html={JSON.stringify(jsonLd)}
-                        />
-                    )}
-                </>
-            )
-        }
-    </head>
-
-    <body>
-        <main>
-            <slot />
-        </main>
-
-        <script is:inline>
-            const topbar = document.querySelector(".topbar");
-            let lastState = false;
-
-            window.addEventListener("scroll", () => {
-                if (!topbar) return;
-                const compact = window.scrollY > 24;
-
-                if (compact !== lastState) {
-                    topbar.classList.toggle("is-compact", compact);
-                    lastState = compact;
-                }
-            });
-        </script>
-    </body>
+      });
+    </script>
+  </body>
 </html>
