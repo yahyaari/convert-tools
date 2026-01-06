@@ -1,18 +1,20 @@
 const SITE = {
-    name: "Convert Tools",
+    // Marka adı (site title, OG, JSON-LD vb. her yerde buradan gelir)
+    name: "Saku Studios",
 
     descriptionTR:
-        "Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır.",
+        "Tarayıcı içinde çalışan ücretsiz ve hızlı görsel dönüştürme araçları. Arka plan silme, format dönüştürme ve daha fazlası.",
     descriptionEN:
-        "Convert images in seconds and remove backgrounds. Everything runs in your browser.",
+        "Free and fast in-browser image tools. Convert formats, remove backgrounds, and more.",
 
-    // Prod URL (no trailing slash)
-    url: "https://convert-toolss.pages.dev",
+    // ✅ PROD URL — artık ana domainin bu
+    // ⚠️ sondaki slash OLMASIN
+    url: "https://www.sakustudios.com.tr",
 
-    // Twitter handle like "@converttools" (leave empty if you don't have one)
+    // Sosyal hesap kullanmıyorsun → boş kalması doğru
     twitter: "",
 
-    // Default OG image path (served from /public)
+    // Varsayılan OG görseli
     defaultOgImage: "/og/og-default.png",
 };
 
