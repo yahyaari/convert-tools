@@ -229,7 +229,6 @@ button {
 }
 .primary-btn:hover,
 button:hover {
-  filter: brightness(1.02);
   transform: translateY(-1px) scale(1.02);
 }
 
