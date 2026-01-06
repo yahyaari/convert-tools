@@ -1,110 +1,91 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
+
+const pagePath = "/background-remover";
+const pageUrl = new URL(pagePath, SITE.url).toString();
 ---
 
 <BaseLayout
-  title="Background Remover – Arka Plan Kaldır"
-  description="Görselin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde çalışır, upload yok. Ücretsiz."
-  canonical="/background-remover"
-  lang="tr"
-  ogImage="/og/og-bg-remover.png"
-  jsonLd={[
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Saku Studios",
-      "url": "https://convert-toolss.pages.dev",
-      "logo": "https://convert-toolss.pages.dev/logo.svg"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Background Remover",
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "Web",
-      "url": "https://convert-toolss.pages.dev/background-remover/",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TRY" },
-      "description": "Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez, tarayıcı içinde çalışır."
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Background Remover – Arka Plan Kaldır",
-      "url": "https://convert-toolss.pages.dev/background-remover/",
-      "inLanguage": "tr",
-      "isPartOf": {
-        "@type": "WebSite",
-        "name": "Convert Tools",
-        "url": "https://convert-toolss.pages.dev"
-      },
-      "about": { "@type": "Organization", "name": "Saku Studios" }
-    },
-    {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Dosyalarım sunucuya yükleniyor mu?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Hayır. Arka plan kaldırma işlemi tamamen tarayıcınızda yapılır; dosyalarınız sunucuya gönderilmez."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Arka plan rengini nasıl seçiyorum?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Önizleme alanında arka plana tıklayın. Araç tıkladığınız noktadaki rengi pipet gibi alır ve o renge yakın alanları şeffaflaştırır."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Tolerance ve Feather ne işe yarar?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Tolerance, seçilen renge ne kadar yakın piksellerin silineceğini belirler. Feather ise kenarları yumuşatarak daha doğal geçiş sağlar."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Auto-crop ne yapar?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Auto-crop, şeffaf kalan boş kenarları otomatik kırpar ve görüntüyü daha kompakt hale getirir."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Hangi formatta indiriyor?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Sonuç şeffaflığı korumak için PNG olarak indirilir."
-      }
-    }
-  ]
-}
-
-  ]}
+    title="Background Remover – Arka Plan Kaldır"
+    description="Görselin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde çalışır, upload yok. Ücretsiz."
+    canonical={pagePath}
+    lang="tr"
+    ogImage="/og/og-bg-remover.png"
+    jsonLd={[
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Background Remover",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Web",
+            url: pageUrl,
+            isAccessibleForFree: true,
+            offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+            description:
+                "Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez, tarayıcı içinde çalışır.",
+            publisher: {
+                "@type": "Organization",
+                name: "Saku Studios",
+                url: SITE.url,
+            },
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Background Remover – Arka Plan Kaldır",
+            url: pageUrl,
+            inLanguage: "tr",
+            isPartOf: { "@type": "WebSite", name: SITE.name, url: SITE.url },
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Dosyalarım sunucuya yükleniyor mu?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Hayır. Arka plan kaldırma işlemi tamamen tarayıcınızda yapılır; dosyalarınız sunucuya gönderilmez.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Arka plan rengini nasıl seçiyorum?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Önizleme alanında arka plana tıklayın. Araç tıkladığınız noktadaki rengi pipet gibi alır ve o renge yakın alanları şeffaflaştırır.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Tolerance ve Feather ne işe yarar?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Tolerance, seçilen renge ne kadar yakın piksellerin silineceğini belirler. Feather ise kenarları yumuşatarak daha doğal geçiş sağlar.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Auto-crop ne yapar?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Auto-crop, şeffaf kalan boş kenarları otomatik kırpar ve görüntüyü daha kompakt hale getirir.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Hangi formatta indiriyor?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Sonuç şeffaflığı korumak için PNG olarak indirilir.",
+                    },
+                },
+            ],
+        },
+    ]}
 >
-
-
-    <script type="application/ld+json">
-    {JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Background Remover",
-        "applicationCategory": "MultimediaApplication",
-        "operatingSystem": "Web",
-        "url": "https://convert-toolss.pages.dev/background-remover/",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-        "isAccessibleForFree": true,
-        "description": "Arka planı tek tıkla şeffaf yap. Dosyalar sunucuya yüklenmez.",
-        "publisher": { "@type": "Organization", "name": "Saku Studios" }
-    })}
-    </script>
-
     <header class="topbar">
         <div class="container topbar-inner">
             <nav class="nav nav-left" aria-label="Primary left">
@@ -279,10 +260,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 </div>
             </div>
 
+            <!-- Senin mevcut JS kodun aynen duruyor -->
             <script type="module">
                 import { i18n } from "/i18n.js";
                 import { detectLang } from "/utils/lang.js";
-
 
                 const lang = detectLang();
                 const t = i18n[lang] || i18n.en;
@@ -292,7 +273,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     if (el && value != null) el.textContent = value;
                 };
 
-                // Mini-hero entrance
                 const miniHero = document.getElementById("miniHero");
                 requestAnimationFrame(() =>
                     miniHero?.classList.add("is-entered"),
@@ -301,7 +281,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 const pageName =
                     lang === "tr" ? "Arka Plan Silici" : "Background Remover";
 
-                // i18n (yoksa fallback)
                 set("t-back", t.back ?? "← Geri");
                 set(
                     "t-navTools",
@@ -390,7 +369,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
                 document.documentElement.lang = lang;
 
-                // ===== Language switch =====
                 const langBtns = document.querySelectorAll(".lang-btn");
                 function applyLangActive() {
                     const current = localStorage.getItem("lang") || lang;
