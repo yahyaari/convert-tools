@@ -227,10 +227,17 @@ button {
   cursor: pointer;
   transition: transform 0.15s ease, filter 0.15s ease;
 }
-.primary-btn:hover,
-button:hover {
+/* GENEL button hover'u kaldır */
+button:hover { 
+  transform: none;
+  filter: none;
+}
+
+/* sadece gerçek primary butonlar */
+.primary-btn:hover {
   transform: translateY(-1px) scale(1.02);
 }
+
 
 button:disabled,
 .primary-btn[aria-disabled="true"] {
