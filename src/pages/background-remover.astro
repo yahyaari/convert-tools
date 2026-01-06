@@ -75,12 +75,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr">
-                        TR
-                    </button>
-                    <button class="lang-btn" type="button" data-lang="en">
-                        EN
-                    </button>
+                    <button class="lang-btn" type="button" data-lang="tr"
+                        >TR</button
+                    >
+                    <button class="lang-btn" type="button" data-lang="en"
+                        >EN</button
+                    >
                 </div>
             </div>
         </div>
@@ -154,9 +154,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                         <div
                             style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;"
                         >
-                            <button id="toggleView" type="button">
-                                <span id="t-toggle">Show Original</span>
-                            </button>
+                            <button id="toggleView" type="button"
+                                ><span id="t-toggle">Show Original</span
+                                ></button
+                            >
                             <span
                                 class="muted"
                                 style="display:flex; align-items:center; gap:8px;"
@@ -217,15 +218,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                             >
                         </label>
 
-                        <button id="resetBg" type="button">
-                            <span id="t-resetBg">Reset BG</span>
-                        </button>
+                        <button id="resetBg" type="button"
+                            ><span id="t-resetBg">Reset BG</span></button
+                        >
                     </div>
 
                     <div style="margin-top: 12px;">
-                        <button id="download" hidden>
-                            <span id="t-download">Download PNG</span>
-                        </button>
+                        <button id="download" hidden
+                            ><span id="t-download">Download PNG</span></button
+                        >
                     </div>
 
                     <p id="result" class="muted" style="margin-top:10px;"></p>
@@ -244,7 +245,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     if (el && value != null) el.textContent = value;
                 };
 
-                // Mini-hero entrance
                 const miniHero = document.getElementById("miniHero");
                 requestAnimationFrame(() =>
                     miniHero?.classList.add("is-entered"),
@@ -253,7 +253,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 const pageName =
                     lang === "tr" ? "Arka Plan Silici" : "Background Remover";
 
-                // i18n (yoksa fallback)
                 set("t-back", t.back ?? "← Geri");
                 set(
                     "t-navTools",
@@ -342,7 +341,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
                 document.documentElement.lang = lang;
 
-                // ===== Language switch =====
                 const langBtns = document.querySelectorAll(".lang-btn");
                 function applyLangActive() {
                     const current = localStorage.getItem("lang") || lang;
@@ -361,7 +359,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 });
                 applyLangActive();
 
-                // ===== Page logic =====
+                // ===== Original page logic (senin kodun) =====
                 const fileInput = document.querySelector("#file");
                 const dropZone = document.querySelector("#dropZone");
 

@@ -75,12 +75,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr">
-                        TR
-                    </button>
-                    <button class="lang-btn" type="button" data-lang="en">
-                        EN
-                    </button>
+                    <button class="lang-btn" type="button" data-lang="tr"
+                        >TR</button
+                    >
+                    <button class="lang-btn" type="button" data-lang="en"
+                        >EN</button
+                    >
                 </div>
             </div>
         </div>
@@ -183,7 +183,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     if (el && value != null) el.textContent = value;
                 };
 
-                // Mini-hero entrance
                 const miniHero = document.getElementById("miniHero");
                 requestAnimationFrame(() =>
                     miniHero?.classList.add("is-entered"),
@@ -192,7 +191,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 const pageName =
                     lang === "tr" ? "Görsel Dönüştürücü" : "Image Converter";
 
-                // Texts (i18n.js'inde yoksa fallback)
                 set("t-back", t.back ?? "← Geri");
                 set(
                     "t-navTools",
@@ -247,7 +245,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
                 document.documentElement.lang = lang;
 
-                // ===== Language switch =====
                 const langBtns = document.querySelectorAll(".lang-btn");
                 function applyLangActive() {
                     const current = localStorage.getItem("lang") || lang;
@@ -266,7 +263,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 });
                 applyLangActive();
 
-                // ===== Page logic =====
                 const button = document.querySelector("#btn");
                 const result = document.querySelector("#result");
                 const fileInput = document.querySelector("#file");

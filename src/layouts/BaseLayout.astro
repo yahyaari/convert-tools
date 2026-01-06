@@ -25,18 +25,21 @@ const fullTitle = title?.includes(SITE.name)
     ? title
     : `${title} · ${SITE.name}`;
 
-// Base JSON-LD
+// Base JSON-LD (graph item)
 const baseWebSiteLd = {
-    "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE.name,
     url: SITE.url,
     inLanguage: lang,
     description: finalDescription,
+    potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE.url}/?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+    },
 };
 
 const baseOrgLd = {
-    "@context": "https://schema.org",
     "@type": "Organization",
     name: "Saku Studios",
     url: SITE.url,
@@ -45,10 +48,24 @@ const baseOrgLd = {
 
 // jsonLd normalize: object | array
 const pageJsonLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
-const allJsonLd = [baseWebSiteLd, baseOrgLd, ...pageJsonLd];
 
-// JSON stringify
-const jsonLdString = JSON.stringify(allJsonLd);
+// Eğer sayfa jsonLd içine @context koyduysan, graph içinde gereksiz kalıyor.
+// O yüzden güvenli şekilde @context'i çıkarıyoruz.
+const stripContext = (obj) => {
+    if (!obj || typeof obj !== "object") return obj;
+    const { ["@context"]: _ctx, ...rest } = obj;
+    return rest;
+};
+
+const graphItems = [baseWebSiteLd, baseOrgLd, ...pageJsonLd.map(stripContext)];
+
+// Tek ve garantili parse edilen JSON-LD
+const jsonLdGraph = {
+    "@context": "https://schema.org",
+    "@graph": graphItems,
+};
+
+const jsonLdString = JSON.stringify(jsonLdGraph);
 ---
 
 <!doctype html>
@@ -115,7 +132,7 @@ const jsonLdString = JSON.stringify(allJsonLd);
         <meta name="twitter:image" content={ogImageAbs} />
         {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
 
-        <!-- ✅ JSON-LD (tek script, garantili parse) -->
+        <!-- ✅ JSON-LD (tek script, @graph) -->
         <script type="application/ld+json" set:html={jsonLdString} />
     </head>
 
