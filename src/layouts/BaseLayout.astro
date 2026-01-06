@@ -7,7 +7,7 @@ const {
     description,
     canonical,
     lang = "tr",
-    ogImage = "/og/og-default.png",
+    ogImage = SITE.defaultOgImage ?? "/og/og-default.png",
     noindex = false,
     jsonLd = null, // object veya array
 } = Astro.props;
@@ -15,12 +15,15 @@ const {
 const finalDescription =
     description || (lang === "tr" ? SITE.descriptionTR : SITE.descriptionEN);
 
+// Canonical
 const canonicalUrl = canonical
     ? new URL(canonical, SITE.url).toString()
     : new URL(Astro.url.pathname, SITE.url).toString();
 
+// OG image absolute
 const ogImageAbs = new URL(ogImage, SITE.url).toString();
 
+// Title
 const fullTitle = `${title} · ${SITE.name}`;
 
 // Base JSON-LD
@@ -31,11 +34,7 @@ const baseWebSiteLd = {
     url: SITE.url,
     inLanguage: lang,
     description: finalDescription,
-    potentialAction: {
-        "@type": "SearchAction",
-        target: `${SITE.url}/?q={search_term_string}`,
-        "query-input": "required name=search_term_string",
-    },
+    // Not: Sitede gerçek bir arama yoksa SearchAction eklememek daha doğru.
 };
 
 const baseOrgLd = {
@@ -111,23 +110,27 @@ const baseOrgLd = {
         <meta name="twitter:image" content={ogImageAbs} />
         {SITE.twitter && <meta name="twitter:site" content={SITE.twitter} />}
 
-        <!-- Base JSON-LD -->
-        <script
-            type="application/ld+json"
-            set:html={JSON.stringify(baseWebSiteLd)}
-        />
-        <script
-            type="application/ld+json"
-            set:html={JSON.stringify(baseOrgLd)}
-        />
-
-        <!-- Page JSON-LD (object veya array) -->
+        <!-- JSON-LD: noindex ise basmamak daha temiz -->
         {
-            jsonLd && (
-                <script
-                    type="application/ld+json"
-                    set:html={JSON.stringify(jsonLd)}
-                />
+            !noindex && (
+                <>
+                    <script
+                        type="application/ld+json"
+                        set:html={JSON.stringify(baseWebSiteLd)}
+                    />
+                    <script
+                        type="application/ld+json"
+                        set:html={JSON.stringify(baseOrgLd)}
+                    />
+
+                    {/* Page JSON-LD (object veya array) */}
+                    {jsonLd && (
+                        <script
+                            type="application/ld+json"
+                            set:html={JSON.stringify(jsonLd)}
+                        />
+                    )}
+                </>
             )
         }
     </head>
