@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
 
 const tools = [
     {
@@ -39,6 +40,36 @@ const comingSoon = [
     { title: "DOCX ↔ PDF", desc: "Word ↔ PDF dönüştürme (yakında)." },
     { title: "Batch Convert", desc: "Toplu görsel dönüştürme." },
 ];
+
+const pageUrl = new URL("/", SITE.url).toString();
+
+// (SEO) WebPage’ye mainEntity olarak iki aracı da yazalım (rich result için iyi)
+const mainEntityApps = [
+    {
+        "@type": "SoftwareApplication",
+        name: "Image Converter",
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Web",
+        url: new URL("/image-converter", SITE.url).toString(),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        description:
+            "PNG, JPG ve WebP formatları arasında tarayıcı içinde çalışan ücretsiz görsel dönüştürücü.",
+    },
+    {
+        "@type": "SoftwareApplication",
+        name: "Background Remover",
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Web",
+        url: new URL("/background-remover", SITE.url).toString(),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        description:
+            "Arka planı tek tıkla kaldıran, tamamen tarayıcı içinde çalışan ücretsiz araç.",
+    },
+];
 ---
 
 <BaseLayout
@@ -49,42 +80,34 @@ const comingSoon = [
     ogImage="/og/og-home.png"
     jsonLd={[
         {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "Saku Studios",
-            url: "https://convert-toolss.pages.dev",
-            logo: "https://convert-toolss.pages.dev/logo.svg",
-            description:
-                "Saku Studios, tarayıcı içinde çalışan ücretsiz ve hızlı dijital medya araçları geliştirir.",
-        },
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Convert Tools",
-            url: "https://convert-toolss.pages.dev",
-            inLanguage: "tr",
-            potentialAction: {
-                "@type": "SearchAction",
-                target: "https://convert-toolss.pages.dev/?q={search_term_string}",
-                "query-input": "required name=search_term_string",
-            },
-        },
-        {
-            "@context": "https://schema.org",
             "@type": "WebPage",
+            "@id": `${pageUrl}#webpage`,
+            url: pageUrl,
             name: "Ücretsiz Görsel Araçları",
-            url: "https://convert-toolss.pages.dev/",
             inLanguage: "tr",
-            isPartOf: {
-                "@type": "WebSite",
-                name: "Convert Tools",
-                url: "https://convert-toolss.pages.dev",
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            about: { "@id": `${SITE.url}/#organization` },
+            description:
+                "Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL("/og/og-home.png", SITE.url).toString(),
+                width: 1200,
+                height: 630,
             },
-            about: {
-                "@type": "Organization",
-                name: "Saku Studios",
-                url: "https://convert-toolss.pages.dev",
-            },
+            mainEntity: mainEntityApps,
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": `${pageUrl}#breadcrumb`,
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Anasayfa",
+                    item: pageUrl,
+                },
+            ],
         },
     ]}
 >
@@ -98,19 +121,18 @@ const comingSoon = [
                 <span class="brand-mark">CT</span>
             </a>
 
-            <!-- SAĞ SÜTUN: en sağa hizalı (Tools + Dil Switch) -->
             <div class="topbar-right">
                 <nav class="nav nav-right" aria-label="Primary right">
                     <a href="#tools" id="t-navTools">Araçlar</a>
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr"
-                        >TR</button
-                    >
-                    <button class="lang-btn" type="button" data-lang="en"
-                        >EN</button
-                    >
+                    <button class="lang-btn" type="button" data-lang="tr">
+                        TR
+                    </button>
+                    <button class="lang-btn" type="button" data-lang="en">
+                        EN
+                    </button>
                 </div>
             </div>
         </div>
@@ -129,12 +151,12 @@ const comingSoon = [
                 </p>
 
                 <div class="hero-cta">
-                    <a class="primary-btn" href="#tools" id="t-cta"
-                        >Araçları Gör →</a
-                    >
-                    <span class="hero-note muted" id="t-note"
-                        >🔒 Dosyalar sunucuya yüklenmez</span
-                    >
+                    <a class="primary-btn" href="#tools" id="t-cta">
+                        Araçları Gör →
+                    </a>
+                    <span class="hero-note muted" id="t-note">
+                        🔒 Dosyalar sunucuya yüklenmez
+                    </span>
                 </div>
             </div>
         </div>
@@ -174,9 +196,9 @@ const comingSoon = [
             <div class="features-box">
                 <div class="features-inner">
                     <span id="t-f1">⚡ Hızlı İşlem</span>
-                    <span id="t-f2"
-                        >🔒 %100 Güvenli (Dosyalar sunucuya yüklenmez)</span
-                    >
+                    <span id="t-f2">
+                        🔒 %100 Güvenli (Dosyalar sunucuya yüklenmez)
+                    </span>
                     <span id="t-f3">✨ Yüksek Kalite</span>
                 </div>
             </div>
@@ -214,9 +236,9 @@ const comingSoon = [
                 <span
                     >© {new Date().getFullYear()} · A project by Saku Studios</span
                 >
-                <span class="muted" id="t-footerRight"
-                    >All processing happens in your browser.</span
-                >
+                <span class="muted" id="t-footerRight">
+                    All processing happens in your browser.
+                </span>
             </div>
         </div>
     </footer>
@@ -230,7 +252,7 @@ const comingSoon = [
 
         const set = (id, value) => {
             const el = document.getElementById(id);
-            if (el) el.textContent = value;
+            if (el && value != null) el.textContent = value;
         };
 
         // Landing text

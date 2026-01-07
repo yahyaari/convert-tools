@@ -7,27 +7,59 @@ const {
     description,
     canonical,
     lang = "tr",
-    ogImage = "/og/og-default.png",
+    ogImage = SITE.defaultOgImage ?? "/og/og-default.png",
     noindex = false,
-    jsonLd = null, // object veya array
+    jsonLd = null, // object | array
 } = Astro.props;
 
 const finalDescription =
     description || (lang === "tr" ? SITE.descriptionTR : SITE.descriptionEN);
 
-const canonicalUrl = canonical
-    ? new URL(canonical, SITE.url).toString()
-    : new URL(Astro.url.pathname, SITE.url).toString();
+// canonical normalize: "/x" veya "x" gelirse düzelt
+const canonicalPath = canonical
+    ? String(canonical).startsWith("/")
+        ? String(canonical)
+        : `/${canonical}`
+    : Astro.url.pathname;
 
+// absolute canonical
+const canonicalUrl = new URL(canonicalPath, SITE.url).toString();
+
+// absolute og image
 const ogImageAbs = new URL(ogImage, SITE.url).toString();
 
-const fullTitle = title?.includes(SITE.name)
-    ? title
-    : `${title} · ${SITE.name}`;
+// Title: zaten site adı geçiyorsa ekleme
+const fullTitle =
+    title && String(title).includes(SITE.name)
+        ? String(title)
+        : `${title} · ${SITE.name}`;
 
-// Base JSON-LD (graph item)
+// (SEO) hreflang alternates: TR/EN aynı URL'de dil switch ile çalıştığı için
+// "x-default" ve 2 dil için aynı canonical veriyoruz.
+const absolutePath = Astro.url.pathname || "/";
+const alternateTr = new URL(absolutePath, SITE.url).toString();
+const alternateEn = new URL(absolutePath, SITE.url).toString();
+
+// ------- JSON-LD helpers -------
+const stripContextDeep = (input) => {
+    if (!input) return input;
+
+    if (Array.isArray(input))
+        return input.map(stripContextDeep).filter(Boolean);
+    if (typeof input !== "object") return input;
+
+    // yalnızca top-level @context sil
+    const { ["@context"]: _ctx, ...rest } = input;
+    return rest;
+};
+
+// jsonLd normalize: object | array -> array
+const pageJsonLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+
+// Graph item’ları (context’siz)
 const baseWebSiteLd = {
     "@type": "WebSite",
+    "@id": `${SITE.url}/#website`,
     name: SITE.name,
     url: SITE.url,
     inLanguage: lang,
@@ -41,25 +73,22 @@ const baseWebSiteLd = {
 
 const baseOrgLd = {
     "@type": "Organization",
-    name: "Saku Studios",
+    "@id": `${SITE.url}/#organization`,
+    name: SITE.publisherName ?? "Saku Studios",
     url: SITE.url,
-    logo: new URL("/android-chrome-512x512.png", SITE.url).toString(),
+    logo: new URL(
+        SITE.logo512 ?? "/android-chrome-512x512.png",
+        SITE.url,
+    ).toString(),
 };
 
-// jsonLd normalize: object | array
-const pageJsonLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const graphItems = [
+    baseWebSiteLd,
+    baseOrgLd,
+    ...stripContextDeep(pageJsonLd),
+].filter(Boolean);
 
-// Eğer sayfa jsonLd içine @context koyduysan, graph içinde gereksiz kalıyor.
-// O yüzden güvenli şekilde @context'i çıkarıyoruz.
-const stripContext = (obj) => {
-    if (!obj || typeof obj !== "object") return obj;
-    const { ["@context"]: _ctx, ...rest } = obj;
-    return rest;
-};
-
-const graphItems = [baseWebSiteLd, baseOrgLd, ...pageJsonLd.map(stripContext)];
-
-// Tek ve garantili parse edilen JSON-LD
+// Tek ve garantili parse edilen JSON-LD (@graph)
 const jsonLdGraph = {
     "@context": "https://schema.org",
     "@graph": graphItems,
@@ -78,6 +107,11 @@ const jsonLdString = JSON.stringify(jsonLdGraph);
         <meta name="description" content={finalDescription} />
         <link rel="canonical" href={canonicalUrl} />
 
+        <!-- hreflang (tek URL, dil storage ile değişiyor) -->
+        <link rel="alternate" href={alternateTr} hreflang="tr" />
+        <link rel="alternate" href={alternateEn} hreflang="en" />
+        <link rel="alternate" href={alternateTr} hreflang="x-default" />
+
         {
             noindex ? (
                 <meta name="robots" content="noindex,nofollow" />
@@ -87,7 +121,7 @@ const jsonLdString = JSON.stringify(jsonLdGraph);
         }
 
         <meta name="application-name" content={SITE.name} />
-        <meta name="author" content="Saku Studios" />
+        <meta name="author" content={SITE.publisherName ?? "Saku Studios"} />
 
         <!-- Favicons -->
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -124,6 +158,10 @@ const jsonLdString = JSON.stringify(jsonLdGraph);
         <meta property="og:image" content={ogImageAbs} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta
+            property="og:locale"
+            content={lang === "tr" ? "tr_TR" : "en_US"}
+        />
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />

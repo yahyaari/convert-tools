@@ -1,35 +1,66 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
+
+const pagePath = "/image-converter";
+const pageUrl = new URL(pagePath, SITE.url).toString();
+const homeUrl = new URL("/", SITE.url).toString();
 ---
 
 <BaseLayout
     title="Image Converter – PNG, JPG, WebP Dönüştür"
     description="PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez. Ücretsiz."
-    canonical="/image-converter"
+    canonical={pagePath}
     lang="tr"
     ogImage="/og/og-image-converter.png"
     jsonLd={[
+        // WebPage entity
+        {
+            "@type": "WebPage",
+            "@id": `${pageUrl}#webpage`,
+            url: pageUrl,
+            name: "Image Converter – PNG, JPG, WebP Dönüştür",
+            inLanguage: "tr",
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            about: { "@id": `${SITE.url}/#organization` },
+            description:
+                "PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez. Ücretsiz.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL("/og/og-image-converter.png", SITE.url).toString(),
+                width: 1200,
+                height: 630,
+            },
+            mainEntity: { "@id": `${pageUrl}#app` },
+        },
+
+        // SoftwareApplication entity
         {
             "@type": "SoftwareApplication",
+            "@id": `${pageUrl}#app`,
             name: "Image Converter",
             applicationCategory: "MultimediaApplication",
             operatingSystem: "Web",
-            url: "https://www.sakustudios.com.tr/image-converter",
+            url: pageUrl,
+            inLanguage: "tr",
             isAccessibleForFree: true,
             offers: {
                 "@type": "Offer",
                 price: "0",
                 priceCurrency: "TRY",
             },
-            publisher: {
-                "@type": "Organization",
-                name: "Saku Studios",
-            },
+            publisher: { "@id": `${SITE.url}/#organization` },
+            isPartOf: { "@id": `${SITE.url}/#website` },
             description:
                 "PNG, JPG ve WebP formatları arasında tarayıcı içinde çalışan ücretsiz görsel dönüştürücü.",
         },
+
+        // FAQPage entity
         {
             "@type": "FAQPage",
+            "@id": `${pageUrl}#faq`,
+            url: pageUrl,
+            inLanguage: "tr",
             mainEntity: [
                 {
                     "@type": "Question",
@@ -57,6 +88,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 },
             ],
         },
+
+        // Breadcrumb
+        {
+            "@type": "BreadcrumbList",
+            "@id": `${pageUrl}#breadcrumb`,
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Anasayfa",
+                    item: homeUrl,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Image Converter",
+                    item: pageUrl,
+                },
+            ],
+        },
     ]}
 >
     <header class="topbar">
@@ -75,12 +126,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr"
-                        >TR</button
-                    >
-                    <button class="lang-btn" type="button" data-lang="en"
-                        >EN</button
-                    >
+                    <button class="lang-btn" type="button" data-lang="tr">
+                        TR
+                    </button>
+                    <button class="lang-btn" type="button" data-lang="en">
+                        EN
+                    </button>
                 </div>
             </div>
         </div>
@@ -122,9 +173,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     <div class="upload-state is-idle">
                         <div class="upload-icon">⬇</div>
                         <div class="upload-text">
-                            <label for="file" class="choose-link"
-                                ><b id="t-choose">Choose a file</b></label
-                            >
+                            <label for="file" class="choose-link">
+                                <b id="t-choose">Choose a file</b>
+                            </label>
                             <span id="idleHint">or drag it here.</span>
                         </div>
                     </div>
@@ -141,9 +192,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     <div class="upload-state is-done" hidden>
                         <div class="upload-text">
                             <span id="t-done">Done!</span>
-                            <a href="#" id="uploadMore" class="choose-link"
-                                ><b id="t-uploadMore">Upload more?</b></a
-                            >
+                            <a href="#" id="uploadMore" class="choose-link">
+                                <b id="t-uploadMore">Upload more?</b>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -163,9 +214,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 </select>
 
                 <div style="margin-top: 12px;">
-                    <button id="btn"
-                        ><span id="t-convertBtn">Convert</span></button
-                    >
+                    <button id="btn">
+                        <span id="t-convertBtn">Convert</span>
+                    </button>
                 </div>
 
                 <p id="result" class="muted" style="margin-top: 10px;"></p>
@@ -310,6 +361,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
                 function setSelectedFile(file) {
                     if (!file) return;
+
                     const dt = new DataTransfer();
                     dt.items.add(file);
                     fileInput.files = dt.files;

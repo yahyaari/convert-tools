@@ -1,35 +1,66 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
+
+const pagePath = "/background-remover";
+const pageUrl = new URL(pagePath, SITE.url).toString();
+const homeUrl = new URL("/", SITE.url).toString();
 ---
 
 <BaseLayout
     title="Background Remover – Arka Plan Kaldır"
     description="Görsellerin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde, upload yok. Ücretsiz."
-    canonical="/background-remover"
+    canonical={pagePath}
     lang="tr"
     ogImage="/og/og-bg-remover.png"
     jsonLd={[
+        // WebPage entity
+        {
+            "@type": "WebPage",
+            "@id": `${pageUrl}#webpage`,
+            url: pageUrl,
+            name: "Background Remover – Arka Plan Kaldır",
+            inLanguage: "tr",
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            about: { "@id": `${SITE.url}/#organization` },
+            description:
+                "Görsellerin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde, upload yok. Ücretsiz.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL("/og/og-bg-remover.png", SITE.url).toString(),
+                width: 1200,
+                height: 630,
+            },
+            mainEntity: { "@id": `${pageUrl}#app` },
+        },
+
+        // SoftwareApplication entity
         {
             "@type": "SoftwareApplication",
+            "@id": `${pageUrl}#app`,
             name: "Background Remover",
             applicationCategory: "MultimediaApplication",
             operatingSystem: "Web",
-            url: "https://www.sakustudios.com.tr/background-remover",
+            url: pageUrl,
+            inLanguage: "tr",
             isAccessibleForFree: true,
             offers: {
                 "@type": "Offer",
                 price: "0",
                 priceCurrency: "TRY",
             },
-            publisher: {
-                "@type": "Organization",
-                name: "Saku Studios",
-            },
+            publisher: { "@id": `${SITE.url}/#organization` },
+            isPartOf: { "@id": `${SITE.url}/#website` },
             description:
                 "Arka planı tek tıkla kaldıran, tamamen tarayıcı içinde çalışan ücretsiz araç.",
         },
+
+        // FAQPage entity
         {
             "@type": "FAQPage",
+            "@id": `${pageUrl}#faq`,
+            url: pageUrl,
+            inLanguage: "tr",
             mainEntity: [
                 {
                     "@type": "Question",
@@ -57,6 +88,26 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 },
             ],
         },
+
+        // Breadcrumb
+        {
+            "@type": "BreadcrumbList",
+            "@id": `${pageUrl}#breadcrumb`,
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Anasayfa",
+                    item: homeUrl,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Background Remover",
+                    item: pageUrl,
+                },
+            ],
+        },
     ]}
 >
     <header class="topbar">
@@ -75,12 +126,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr"
-                        >TR</button
-                    >
-                    <button class="lang-btn" type="button" data-lang="en"
-                        >EN</button
-                    >
+                    <button class="lang-btn" type="button" data-lang="tr">
+                        TR
+                    </button>
+                    <button class="lang-btn" type="button" data-lang="en">
+                        EN
+                    </button>
                 </div>
             </div>
         </div>
@@ -104,7 +155,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 </div>
             </div>
 
-            <div style="height:14px;"></div>
+            <div style="height: 14px;"></div>
 
             <div class="panel">
                 <div class="breadcrumb">
@@ -119,9 +170,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     <div class="upload-state is-idle">
                         <div class="upload-icon">⬇</div>
                         <div class="upload-text">
-                            <label for="file" class="choose-link"
-                                ><b id="t-choose">Choose a file</b></label
-                            >
+                            <label for="file" class="choose-link">
+                                <b id="t-choose">Choose a file</b>
+                            </label>
                             <span id="idleHint">or drag it here.</span>
                         </div>
                     </div>
@@ -136,28 +187,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                     <div class="upload-state is-done" hidden>
                         <div class="upload-text">
                             <span id="t-ready">Ready!</span>
-                            <a href="#" id="uploadMore" class="choose-link"
-                                ><b id="t-uploadMore">Upload more?</b></a
-                            >
+                            <a href="#" id="uploadMore" class="choose-link">
+                                <b id="t-uploadMore">Upload more?</b>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div id="previewWrap" style="margin-top:14px;" hidden>
+                <div id="previewWrap" style="margin-top: 14px;" hidden>
                     <div
                         style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;"
                     >
-                        <p class="muted" style="margin:0;" id="t-previewTitle">
+                        <p class="muted" style="margin: 0;" id="t-previewTitle">
                             Preview (tıkla: arka plan rengi seç)
                         </p>
 
                         <div
                             style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;"
                         >
-                            <button id="toggleView" type="button"
-                                ><span id="t-toggle">Show Original</span
-                                ></button
-                            >
+                            <button id="toggleView" type="button">
+                                <span id="t-toggle">Show Original</span>
+                            </button>
                             <span
                                 class="muted"
                                 style="display:flex; align-items:center; gap:8px;"
@@ -176,7 +226,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                         <canvas id="canvas"></canvas>
                     </div>
 
-                    <p class="muted" style="margin-top:8px;" id="t-previewHint">
+                    <p
+                        class="muted"
+                        style="margin-top: 8px;"
+                        id="t-previewHint"
+                    >
                         İpucu: Arka plana 1 kere tıkla → pipet rengi seçer.
                         “Reset BG” ile auto’ya dön.
                     </p>
@@ -213,23 +267,23 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                             style="display:flex; gap:8px; align-items:center;"
                         >
                             <input id="autoCrop" type="checkbox" checked />
-                            <span id="t-autocrop"
-                                >Auto-crop (şeffaf boşlukları kırp)</span
-                            >
+                            <span id="t-autocrop">
+                                Auto-crop (şeffaf boşlukları kırp)
+                            </span>
                         </label>
 
-                        <button id="resetBg" type="button"
-                            ><span id="t-resetBg">Reset BG</span></button
-                        >
+                        <button id="resetBg" type="button">
+                            <span id="t-resetBg">Reset BG</span>
+                        </button>
                     </div>
 
                     <div style="margin-top: 12px;">
-                        <button id="download" hidden
-                            ><span id="t-download">Download PNG</span></button
-                        >
+                        <button id="download" hidden>
+                            <span id="t-download">Download PNG</span>
+                        </button>
                     </div>
 
-                    <p id="result" class="muted" style="margin-top:10px;"></p>
+                    <p id="result" class="muted" style="margin-top: 10px;"></p>
                 </div>
             </div>
 
