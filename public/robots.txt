@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://www.sakustudios.com.tr/sitemap-index.xml
+Sitemap: https://www.sakustudios.com.tr/sitemap.xml
 
 User-agent: GPTBot
 Disallow: /
