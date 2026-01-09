@@ -303,23 +303,38 @@ const homeUrl = new URL("/", SITE.url).toString();
                     <p id="result" class="muted" style="margin-top: 10px;"></p>
                 </div>
 
-                <!-- ✅ Sayfa içi SEO metni (TR) -->
-                <section class="seo-text" style="margin-top:18px">
-                    <h2>Saku Arka Plan Silici Nedir?</h2>
-                    <p>
-                        Saku Convert arka plan silici, fotoğraf, ürün görseli ve
-                        logo gibi görüntülerde arka planı kaldırarak şeffaf PNG
-                        oluşturmanı sağlar. “Saku arka plan kaldır”, “şeffaf PNG
-                        yap” veya “logo arka plan sil” aramalarında hızlı ve
-                        güvenli bir çözümdür.
-                    </p>
-                    <p>
-                        En önemli fark: İşlemler tamamen tarayıcında
-                        gerçekleşir; dosyaların sunucuya yüklenmez. Bu sayede
-                        hızlı, ücretsiz ve güvenli şekilde arka plan kaldırma
-                        yapabilirsin.
-                    </p>
-                </section>
+                <div class="panel">
+                    <section class="seo-text" style="margin-top:18px">
+                        <h2 id="t-seoH2">Saku Arka Plan Silici Nedir?</h2>
+
+                        <p class="seo-lead" id="t-seoLead">
+                            Saku Background Remover ile görsellerin arka planını
+                            tek tıkla şeffaf yap. İşlemler tarayıcıda yapılır,
+                            upload yok.
+                        </p>
+
+                        <details class="seo-details">
+                            <summary id="t-seoSummary">Detayları göster</summary
+                            >
+
+                            <div class="details-content">
+                                <p id="t-seoP1">
+                                    Arka plandaki rengi pipetle seçerek o renge
+                                    yakın pikselleri şeffaf hale getirirsin.
+                                    Tolerance ve Feather ayarları ile temizliği
+                                    ve kenar yumuşaklığını kontrol edebilirsin.
+                                </p>
+
+                                <p id="t-seoP2">
+                                    Auto-crop seçeneği şeffaf boşlukları kırpar
+                                    ve sonucu PNG olarak indirmeni sağlar. Tüm
+                                    işlem cihazında gerçekleştiği için
+                                    dosyaların sunucuya yüklenmez.
+                                </p>
+                            </div>
+                        </details>
+                    </section>
+                </div>
             </div>
 
             <script type="module">
@@ -429,6 +444,39 @@ const homeUrl = new URL("/", SITE.url).toString();
                 );
                 set("t-resetBg", lang === "tr" ? "BG Sıfırla" : "Reset BG");
                 set("t-download", lang === "tr" ? "PNG İndir" : "Download PNG");
+
+                // ===== SEO section i18n (Background Remover) =====
+                if (lang === "tr") {
+                    set("t-seoH2", "Saku Arka Plan Silici Nedir?");
+                    set(
+                        "t-seoLead",
+                        "Saku Background Remover ile görsellerin arka planını tek tıkla şeffaf yap. İşlemler tarayıcıda yapılır, upload yok.",
+                    );
+                    set("t-seoSummary", "Detayları göster");
+                    set(
+                        "t-seoP1",
+                        "Arka plandaki rengi pipetle seçerek o renge yakın pikselleri şeffaf hale getirirsin. Tolerance ve Feather ayarları ile temizliği ve kenar yumuşaklığını kontrol edebilirsin.",
+                    );
+                    set(
+                        "t-seoP2",
+                        "Auto-crop seçeneği şeffaf boşlukları kırpar ve sonucu PNG olarak indirmeni sağlar. Tüm işlem cihazında gerçekleştiği için dosyaların sunucuya yüklenmez.",
+                    );
+                } else {
+                    set("t-seoH2", "What is Saku Background Remover?");
+                    set(
+                        "t-seoLead",
+                        "Remove an image background in one click and export with transparency. Everything runs in your browser—no uploads.",
+                    );
+                    set("t-seoSummary", "Show details");
+                    set(
+                        "t-seoP1",
+                        "Click the background in the preview to pick a color. Pixels close to that color become transparent. Use Tolerance and Feather to control cleanup and edge softness.",
+                    );
+                    set(
+                        "t-seoP2",
+                        "Auto-crop trims empty transparent space and the result is downloaded as PNG to keep transparency. Since processing happens locally, your files are never uploaded.",
+                    );
+                }
 
                 document.documentElement.lang = lang;
 

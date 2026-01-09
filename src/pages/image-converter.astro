@@ -232,21 +232,39 @@ const homeUrl = new URL("/", SITE.url).toString();
                 </div>
 
                 <p id="result" class="muted" style="margin-top: 10px;"></p>
+            </div>
 
+            <div class="panel">
                 <section class="seo-text" style="margin-top:18px">
-                    <h2>PNG Dönüştürücü (Saku Convert) Nasıl Çalışır?</h2>
-                    <p>
-                        Saku PNG dönüştürücü ile görsellerinizi PNG ↔ JPG ↔ WebP
-                        arasında ücretsiz dönüştürebilirsiniz. Bu bir online
-                        görsel dönüştürücü gibi görünür ama işlemler tamamen
-                        tarayıcınızda gerçekleşir; dosyalarınız sunucuya
-                        yüklenmez.
+                    <h2 id="t-seoH2">
+                        PNG Dönüştürücü (Saku Convert) Nasıl Çalışır?
+                    </h2>
+
+                    <p class="seo-lead" id="t-seoLead">
+                        Saku Convert ile görsellerinizi PNG ↔ JPG ↔ WebP
+                        arasında ücretsiz dönüştürün. İşlemler tarayıcıda
+                        yapılır, upload yok.
                     </p>
-                    <p>
-                        “Saku PNG”, “Saku dönüştürücü”, “PNG dönüştürücü”, “JPG
-                        dönüştürücü” ve “WebP dönüştürücü” aramalarında hızlı ve
-                        güvenli bir çözüm sunar.
-                    </p>
+
+                    <details class="seo-details">
+                        <summary id="t-seoSummary">Detayları göster</summary>
+                        <div class="details-content">
+                            <p id="t-seoP1">
+                                Saku PNG dönüştürücü ile görsellerinizi PNG ↔
+                                JPG ↔ WebP arasında ücretsiz
+                                dönüştürebilirsiniz. Bu bir online görsel
+                                dönüştürücü gibi görünür ama işlemler tamamen
+                                tarayıcınızda gerçekleşir; dosyalarınız sunucuya
+                                yüklenmez.
+                            </p>
+                            <p id="t-seoP2">
+                                “Saku PNG”, “Saku dönüştürücü”, “PNG
+                                dönüştürücü”, “JPG dönüştürücü” ve “WebP
+                                dönüştürücü” aramalarında hızlı ve güvenli bir
+                                çözüm sunar.
+                            </p>
+                        </div>
+                    </details>
                 </section>
             </div>
 
@@ -283,12 +301,29 @@ const homeUrl = new URL("/", SITE.url).toString();
                             ? "Ücretsiz & Sınırsız"
                             : "Free & Unlimited"),
                 );
-                set("t-title", t.imageConvTitle ?? "Image Converter");
+                // ✅ TR metin SSR kalsın: sadece EN’de değiştir
+                if (lang === "en") {
+                    set("t-title", t.bgRemTitle ?? "Image Converter");
+                    set(
+                        "t-sub",
+                        t.bgRemDesc ??
+                            "Your file is processed in your browser. Nothing is uploaded.",
+                    );
+                }
+                /*set(
+                    "t-title",
+                    t.imageConvTitle ??
+                        (lang === "tr"
+                            ? "Görsel Dönüştürücü"
+                            : "Image Converter"),
+                );
                 set(
                     "t-sub",
                     t.imageConvDesc ??
-                        "Your file is processed in your browser. Nothing is uploaded.",
-                );
+                        (lang === "tr"
+                            ? "Saku PNG Dönüştürücü – Görsel Dönüştürücü (PNG, JPG, WebP)"
+                            : "Your file is processed in your browser. Nothing is uploaded."),
+                );*/
 
                 set("t-f1", lang === "tr" ? "⚡ Hızlı" : "⚡ Fast");
                 set("t-f2", lang === "tr" ? "🔒 Upload yok" : "🔒 No uploads");
@@ -319,6 +354,42 @@ const homeUrl = new URL("/", SITE.url).toString();
                     lang === "tr" ? "Çıktı formatı:" : "Output format:",
                 );
                 set("t-convertBtn", lang === "tr" ? "Dönüştür" : "Convert");
+
+                // ===== SEO section i18n =====
+                if (lang === "tr") {
+                    set(
+                        "t-seoH2",
+                        "PNG Dönüştürücü (Saku Convert) Nasıl Çalışır?",
+                    );
+                    set(
+                        "t-seoLead",
+                        "Saku Convert ile görsellerinizi PNG ↔ JPG ↔ WebP arasında ücretsiz dönüştürün. İşlemler tarayıcıda yapılır, upload yok.",
+                    );
+                    set("t-seoSummary", "Detayları göster");
+                    set(
+                        "t-seoP1",
+                        "Saku PNG dönüştürücü ile görsellerinizi PNG ↔ JPG ↔ WebP arasında ücretsiz dönüştürebilirsiniz. Bu bir online görsel dönüştürücü gibi görünür ama işlemler tamamen tarayıcınızda gerçekleşir; dosyalarınız sunucuya yüklenmez.",
+                    );
+                    set(
+                        "t-seoP2",
+                        "“Saku PNG”, “Saku dönüştürücü”, “PNG dönüştürücü”, “JPG dönüştürücü” ve “WebP dönüştürücü” aramalarında hızlı ve güvenli bir çözüm sunar.",
+                    );
+                } else {
+                    set("t-seoH2", "How does Saku Image Converter work?");
+                    set(
+                        "t-seoLead",
+                        "Convert images between PNG ↔ JPG ↔ WebP for free. Everything runs in your browser—no uploads.",
+                    );
+                    set("t-seoSummary", "Show details");
+                    set(
+                        "t-seoP1",
+                        "Saku Image Converter lets you convert between PNG, JPG, and WebP quickly. It works like an online converter, but processing happens locally in your browser—your files are not uploaded to any server.",
+                    );
+                    set(
+                        "t-seoP2",
+                        "It’s a fast and privacy-friendly solution for searches like “PNG converter”, “JPG converter”, and “WebP converter”.",
+                    );
+                }
 
                 document.documentElement.lang = lang;
 

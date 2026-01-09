@@ -170,6 +170,7 @@ p {
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   padding: 2.2rem;
+  margin-bottom: 20px;
 }
 
 .panel-head {
@@ -809,4 +810,73 @@ input[type="range"] {
 /* Responsive tweaks */
 @media (max-width: 768px) {
   .hero-box h1 { font-size: 2.4rem; }
+}
+/* SEO Bölümü Genel Düzenleme */
+.seo-text {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.seo-text h2 {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.seo-lead {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Details ve Summary Stilize Etme */
+.seo-details {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.seo-details[open] {
+    padding-bottom: 15px;
+    background: #f0f7ff; /* Açıldığında hafif mavi bir arka plan */
+}
+
+.seo-details summary {
+    list-style: none; /* Varsayılan oku kaldırır */
+    padding: 12px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #4a90e2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    outline: none;
+    user-select: none;
+}
+
+/* Kendi ok simgemizi ekleyelim */
+.seo-details summary::after {
+    content: "＋";
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+}
+
+.seo-details[open] summary::after {
+    content: "−";
+    transform: rotate(180deg);
+}
+
+/* İçerik Yazısı */
+.seo-details p {
+    padding: 0 15px;
+    margin: 10px 0;
+    line-height: 1.6;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* Chrome/Safari için varsayılan oku gizle */
+.seo-details summary::-webkit-details-marker {
+    display: none;
 }
