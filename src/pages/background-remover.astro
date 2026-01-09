@@ -8,8 +8,8 @@ const homeUrl = new URL("/", SITE.url).toString();
 ---
 
 <BaseLayout
-    title="Background Remover – Arka Plan Kaldır"
-    description="Görsellerin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde, upload yok. Ücretsiz."
+    title="Saku Arka Plan Silici – Şeffaf PNG (Background Remover)"
+    description="Saku Convert arka plan silici ile fotoğraf, ürün ve logo arka planını tek tıkla kaldır. Şeffaf PNG indir. Tamamen tarayıcı içinde, upload yok, ücretsiz."
     canonical={pagePath}
     lang="tr"
     ogImage="/og/og-bg-remover.png"
@@ -19,12 +19,12 @@ const homeUrl = new URL("/", SITE.url).toString();
             "@type": "WebPage",
             "@id": `${pageUrl}#webpage`,
             url: pageUrl,
-            name: "Background Remover – Arka Plan Kaldır",
+            name: "Saku Arka Plan Silici – Şeffaf PNG (Background Remover)",
             inLanguage: "tr",
             isPartOf: { "@id": `${SITE.url}/#website` },
             about: { "@id": `${SITE.url}/#organization` },
             description:
-                "Görsellerin arka planını tek tıkla şeffaf yap. Tamamen tarayıcı içinde, upload yok. Ücretsiz.",
+                "Saku Convert arka plan silici ile fotoğraf, ürün ve logo arka planını tek tıkla kaldır. Şeffaf PNG indir. Tamamen tarayıcı içinde, upload yok, ücretsiz.",
             primaryImageOfPage: {
                 "@type": "ImageObject",
                 url: new URL("/og/og-bg-remover.png", SITE.url).toString(),
@@ -38,11 +38,22 @@ const homeUrl = new URL("/", SITE.url).toString();
         {
             "@type": "SoftwareApplication",
             "@id": `${pageUrl}#app`,
-            name: "Background Remover",
+            name: "Saku Arka Plan Silici (Background Remover)",
+            alternateName: [
+                "Saku arka plan kaldır",
+                "Saku arka plan sil",
+                "Saku şeffaf PNG",
+                "Saku logo arka plan kaldır",
+                "Saku Background Remover",
+                "Arka plan silici",
+                "Arka plan kaldırma",
+                "Şeffaf PNG yap",
+                "Logo arka plan sil",
+            ],
             applicationCategory: "MultimediaApplication",
             operatingSystem: "Web",
             url: pageUrl,
-            inLanguage: "tr",
+            inLanguage: ["tr", "en"],
             isAccessibleForFree: true,
             offers: {
                 "@type": "Offer",
@@ -52,7 +63,7 @@ const homeUrl = new URL("/", SITE.url).toString();
             publisher: { "@id": `${SITE.url}/#organization` },
             isPartOf: { "@id": `${SITE.url}/#website` },
             description:
-                "Arka planı tek tıkla kaldıran, tamamen tarayıcı içinde çalışan ücretsiz araç.",
+                "Saku arka plan silici ile görsellerin arka planını tek tıkla kaldırın ve şeffaf PNG olarak indirin. Tüm işlemler tarayıcı içinde yapılır; dosyalar sunucuya yüklenmez.",
         },
 
         // FAQPage entity
@@ -67,7 +78,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                     name: "Dosyalar sunucuya yükleniyor mu?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "Hayır. Tüm işlemler tarayıcınızda yapılır.",
+                        text: "Hayır. Tüm işlemler tarayıcınızda yapılır, upload yoktur.",
                     },
                 },
                 {
@@ -83,7 +94,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                     name: "Auto-crop ne işe yarar?",
                     acceptedAnswer: {
                         "@type": "Answer",
-                        text: "Şeffaf kalan boş alanları otomatik olarak kırpar.",
+                        text: "Şeffaf kalan boş alanları otomatik olarak kırpar, daha temiz bir çıktı verir.",
                     },
                 },
             ],
@@ -103,7 +114,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                 {
                     "@type": "ListItem",
                     position: 2,
-                    name: "Background Remover",
+                    name: "Saku Arka Plan Silici",
                     item: pageUrl,
                 },
             ],
@@ -141,11 +152,17 @@ const homeUrl = new URL("/", SITE.url).toString();
         <div class="container">
             <div class="mini-hero" id="miniHero">
                 <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
-                <h1 class="page-title" id="t-title">Background Remover</h1>
+
+                <!-- ✅ TR SSR H1: Google net görsün -->
+                <h1 class="page-title" id="t-title">
+                    Saku Arka Plan Silici – Şeffaf PNG (Logo / Ürün Fotoğrafı)
+                </h1>
+
+                <!-- ✅ TR SSR subtitle -->
                 <p class="page-subtitle muted" id="t-sub">
-                    Ürün/logo gibi görsellerde arka planı şeffaf yapar.
-                    Preview’de arka plana tıklayıp arka plan rengini
-                    seçebilirsin.
+                    Fotoğraf, ürün ve logo görsellerinde arka planı tek tıkla
+                    kaldır. Şeffaf PNG indir. Tüm işlem tarayıcı içinde, upload
+                    yok.
                 </p>
 
                 <div class="mini-features">
@@ -285,6 +302,24 @@ const homeUrl = new URL("/", SITE.url).toString();
 
                     <p id="result" class="muted" style="margin-top: 10px;"></p>
                 </div>
+
+                <!-- ✅ Sayfa içi SEO metni (TR) -->
+                <section class="seo-text" style="margin-top:18px">
+                    <h2>Saku Arka Plan Silici Nedir?</h2>
+                    <p>
+                        Saku Convert arka plan silici, fotoğraf, ürün görseli ve
+                        logo gibi görüntülerde arka planı kaldırarak şeffaf PNG
+                        oluşturmanı sağlar. “Saku arka plan kaldır”, “şeffaf PNG
+                        yap” veya “logo arka plan sil” aramalarında hızlı ve
+                        güvenli bir çözümdür.
+                    </p>
+                    <p>
+                        En önemli fark: İşlemler tamamen tarayıcında
+                        gerçekleşir; dosyaların sunucuya yüklenmez. Bu sayede
+                        hızlı, ücretsiz ve güvenli şekilde arka plan kaldırma
+                        yapabilirsin.
+                    </p>
+                </section>
             </div>
 
             <script type="module">
@@ -320,14 +355,16 @@ const homeUrl = new URL("/", SITE.url).toString();
                             ? "Ücretsiz & Sınırsız"
                             : "Free & Unlimited"),
                 );
-                set("t-title", t.bgRemTitle ?? pageName);
-                set(
-                    "t-sub",
-                    t.bgRemDesc ??
-                        (lang === "tr"
-                            ? "Ürün/logo gibi görsellerde arka planı şeffaf yapar. Preview’de arka plana tıklayıp arka plan rengini seçebilirsin."
-                            : "Remove backgrounds in-browser. Click on the background in preview to pick a color."),
-                );
+
+                // ✅ TR metin SSR kalsın: sadece EN’de değiştir
+                if (lang === "en") {
+                    set("t-title", t.bgRemTitle ?? "Background Remover");
+                    set(
+                        "t-sub",
+                        t.bgRemDesc ??
+                            "Remove backgrounds in-browser. Download a transparent PNG. Nothing is uploaded.",
+                    );
+                }
 
                 set(
                     "t-f1",

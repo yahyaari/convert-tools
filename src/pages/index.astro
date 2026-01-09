@@ -6,8 +6,8 @@ const tools = [
     {
         key: "img",
         href: "/image-converter#top",
-        title: "Image Converter",
-        desc: "PNG, JPG, WebP ve daha fazlası arasında hızlı geçiş yapın.",
+        title: "Saku Görsel Dönüştürücü (PNG / JPG / WebP)",
+        desc: "Saku dönüştürücü ile PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapın.",
         cta: "Hemen Dönüştür →",
         color: "blue",
         icon: `
@@ -22,8 +22,8 @@ const tools = [
     {
         key: "bg",
         href: "/background-remover#top",
-        title: "Background Remover",
-        desc: "Tek tıkla arka planı şeffaf yapın (tarayıcı içinde).",
+        title: "Saku Arka Plan Silici (Background Remover)",
+        desc: "Saku arka plan silici ile görsellerin arka planını tek tıkla kaldırın (tarayıcı içinde).",
         cta: "Arka Planı Sil →",
         color: "purple",
         icon: `
@@ -47,34 +47,42 @@ const pageUrl = new URL("/", SITE.url).toString();
 const mainEntityApps = [
     {
         "@type": "SoftwareApplication",
-        name: "Image Converter",
+        name: "Saku Image Converter",
+        alternateName: [
+            "Saku PNG Dönüştürücü",
+            "Saku Görsel Dönüştürücü",
+            "Saku PNG Converter",
+        ],
         applicationCategory: "MultimediaApplication",
         operatingSystem: "Web",
         url: new URL("/image-converter", SITE.url).toString(),
         isAccessibleForFree: true,
         offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
         publisher: { "@id": `${SITE.url}/#organization` },
+        inLanguage: ["tr", "en"],
         description:
-            "PNG, JPG ve WebP formatları arasında tarayıcı içinde çalışan ücretsiz görsel dönüştürücü.",
+            "Saku Convert ile PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapın. Ücretsiz görsel dönüştürücü; işlemler tarayıcı içinde, dosyalar yüklenmez.",
     },
     {
         "@type": "SoftwareApplication",
-        name: "Background Remover",
+        name: "Saku Background Remover",
+        alternateName: ["Saku Arka Plan Silici", "Saku Background Remover"],
         applicationCategory: "MultimediaApplication",
         operatingSystem: "Web",
         url: new URL("/background-remover", SITE.url).toString(),
         isAccessibleForFree: true,
         offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
         publisher: { "@id": `${SITE.url}/#organization` },
+        inLanguage: ["tr", "en"],
         description:
-            "Arka planı tek tıkla kaldıran, tamamen tarayıcı içinde çalışan ücretsiz araç.",
+            "Saku arka plan silici ile görsellerin arka planını tek tıkla kaldırın. Tamamen tarayıcı içinde çalışır, dosyalar sunucuya yüklenmez.",
     },
 ];
 ---
 
 <BaseLayout
-    title="Ücretsiz Görsel Araçları"
-    description="Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır."
+    title="Saku Convert – PNG, JPG, WebP Görsel Dönüştürücü + Arka Plan Silici"
+    description="Saku Convert: Ücretsiz PNG/JPG/WebP dönüştürücü ve arka plan silici. Tamamen tarayıcı içinde çalışır, upload yok."
     canonical="/"
     lang="tr"
     ogImage="/og/og-home.png"
@@ -83,12 +91,12 @@ const mainEntityApps = [
             "@type": "WebPage",
             "@id": `${pageUrl}#webpage`,
             url: pageUrl,
-            name: "Ücretsiz Görsel Araçları",
+            name: "Saku Convert – PNG/JPG/WebP Görsel Dönüştürücü ve Arka Plan Silici",
             inLanguage: "tr",
             isPartOf: { "@id": `${SITE.url}/#website` },
             about: { "@id": `${SITE.url}/#organization` },
             description:
-                "Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır.",
+                "Saku Convert: Ücretsiz PNG/JPG/WebP görsel dönüştürücü ve arka plan silici. Tamamen tarayıcı içinde çalışır, dosyalar sunucuya yüklenmez.",
             primaryImageOfPage: {
                 "@type": "ImageObject",
                 url: new URL("/og/og-home.png", SITE.url).toString(),
@@ -143,11 +151,13 @@ const mainEntityApps = [
             <div class="hero-box">
                 <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
                 <h1 id="t-heroTitle">
-                    Ücretsiz Image Converter & Background Remover
+                    Saku Convert – Ücretsiz Görsel Dönüştürücü & Background
+                    Remover
                 </h1>
                 <p id="t-heroDesc">
-                    Görsellerinizi saniyeler içinde dönüştürün, arka planları
-                    temizleyin. Üstelik tamamen tarayıcınızda çalışır.
+                    Saku Convert ile PNG, JPG ve WebP görsellerinizi ücretsiz
+                    şekilde dönüştürün. Saku görsel dönüştürücü tamamen tarayıcı
+                    içinde çalışır, dosyalarınız sunucuya yüklenmez.
                 </p>
 
                 <div class="hero-cta">
@@ -174,13 +184,22 @@ const mainEntityApps = [
             <div class="grid">
                 {
                     tools.map((t) => (
-                        <a href={t.href} class="tool-card">
+                        <a
+                            href={t.href}
+                            class="tool-card"
+                            title={`Saku Convert - ${t.title}`}
+                        >
                             <div
                                 class={`card-icon ${t.color}`}
                                 set:html={t.icon}
                             />
                             <h3 id={`t-${t.key}-title`}>{t.title}</h3>
                             <p id={`t-${t.key}-desc`}>{t.desc}</p>
+                            <small class="muted" id={`t-${t.key}-hint`}>
+                                {t.key === "img"
+                                    ? "PNG / JPG / WebP dönüştürücü"
+                                    : "Arka plan silici (PNG şeffaf)"}
+                            </small>
                             <span class="btn-text" id={`t-${t.key}-cta`}>
                                 {t.cta}
                             </span>
@@ -227,6 +246,30 @@ const mainEntityApps = [
                     }
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="seo-text">
+        <div class="container">
+            <h2>Saku Dönüştürücü Nedir?</h2>
+            <p>
+                Saku Convert, PNG, JPG ve WebP formatları arasında hızlı dönüşüm
+                yapmanızı sağlayan ücretsiz bir görsel dönüştürücüdür. Saku
+                dönüştürücü araçları tamamen tarayıcı içinde çalışır ve
+                dosyalarınız sunucuya yüklenmez.
+            </p>
+
+            <p>
+                “Saku PNG dönüştürücü” arayan kullanıcılar için geliştirilen bu
+                araç sayesinde görsellerinizi saniyeler içinde güvenle
+                dönüştürebilirsiniz.
+            </p>
+            <p>
+                Ücretsiz dönüştürücü arayanlar için Saku Convert; PNG
+                dönüştürücü, JPG dönüştürücü ve WebP dönüştürücü ihtiyaçlarını
+                tek sayfada çözer. Görsel dönüştürme işlemi hızlıdır ve tüm
+                dönüşümler tarayıcınızda gerçekleşir.
+            </p>
         </div>
     </section>
 
@@ -283,29 +326,36 @@ const mainEntityApps = [
 
         // Tool cards
         if (lang === "tr") {
-            set("t-img-title", "Görsel Dönüştürücü");
+            set("t-img-title", "Saku Görsel Dönüştürücü (PNG/JPG/WebP)");
             set(
                 "t-img-desc",
-                "PNG, JPG, WebP ve daha fazlası arasında hızlı geçiş yapın.",
+                "Saku PNG dönüştürücü ile PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapın.",
             );
             set("t-img-cta", "Hemen Dönüştür →");
 
-            set("t-bg-title", "Arka Plan Silici");
+            set("t-bg-title", "Saku Arka Plan Silici");
             set(
                 "t-bg-desc",
-                "Tek tıkla arka planı şeffaf yapın (tarayıcı içinde).",
+                "Saku background remover ile arka planı tek tıkla kaldırın (tarayıcı içinde).",
             );
             set("t-bg-cta", "Arka Planı Sil →");
         } else {
-            set("t-img-title", "Image Converter");
+            set("t-img-title", "Saku Image Converter (PNG/JPG/WebP)");
             set(
                 "t-img-desc",
-                "Quickly convert between PNG, JPG, WebP and more.",
+                "Convert PNG, JPG, and WebP instantly with Saku Convert — free and in-browser.",
             );
+
+            set("t-img-hint", "PNG / JPG / WebP converter");
             set("t-img-cta", "Convert Now →");
 
-            set("t-bg-title", "Background Remover");
-            set("t-bg-desc", "Remove backgrounds in one click (in-browser).");
+            set("t-bg-title", "Saku Background Remover");
+            set(
+                "t-bg-desc",
+                "Remove image backgrounds in one click with Saku — fully in-browser.",
+            );
+
+            set("t-bg-hint", "Background remover (transparent PNG)");
             set("t-bg-cta", "Remove Background →");
         }
 

@@ -8,8 +8,8 @@ const homeUrl = new URL("/", SITE.url).toString();
 ---
 
 <BaseLayout
-    title="Image Converter – PNG, JPG, WebP Dönüştür"
-    description="PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez. Ücretsiz."
+    title="Saku PNG Dönüştürücü – PNG, JPG, WebP Görsel Dönüştürücü"
+    description="Saku Convert ile PNG ↔ JPG ↔ WebP dönüştür. Ücretsiz görsel dönüştürücü: işlemler tarayıcıda, upload yok."
     canonical={pagePath}
     lang="tr"
     ogImage="/og/og-image-converter.png"
@@ -19,12 +19,21 @@ const homeUrl = new URL("/", SITE.url).toString();
             "@type": "WebPage",
             "@id": `${pageUrl}#webpage`,
             url: pageUrl,
-            name: "Image Converter – PNG, JPG, WebP Dönüştür",
-            inLanguage: "tr",
+            name: "Saku PNG Dönüştürücü (Image Converter)",
+            alternateName: [
+                "Saku Görsel Dönüştürücü",
+                "Saku Dönüştürücü",
+                "PNG dönüştürücü",
+                "JPG dönüştürücü",
+                "WebP dönüştürücü",
+                "Saku PNG",
+                "Saku PNG Converter",
+            ],
+            inLanguage: ["tr", "en"],
             isPartOf: { "@id": `${SITE.url}/#website` },
             about: { "@id": `${SITE.url}/#organization` },
             description:
-                "PNG ↔ JPG ↔ WebP anında dönüştür. Dosyalar tarayıcıda işlenir, sunucuya yüklenmez. Ücretsiz.",
+                "Saku Convert ile PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapın. Ücretsiz görsel dönüştürücü; işlemler tarayıcı içinde, dosyalar sunucuya yüklenmez.",
             primaryImageOfPage: {
                 "@type": "ImageObject",
                 url: new URL("/og/og-image-converter.png", SITE.url).toString(),
@@ -141,9 +150,12 @@ const homeUrl = new URL("/", SITE.url).toString();
         <div class="container">
             <div class="mini-hero" id="miniHero">
                 <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
-                <h1 class="page-title" id="t-title">Image Converter</h1>
+                <h1 class="page-title" id="t-title">
+                    Saku PNG Dönüştürücü – Görsel Dönüştürücü (PNG, JPG, WebP)
+                </h1>
                 <p class="page-subtitle muted" id="t-sub">
-                    Dosyan tarayıcında dönüştürülür, sunucuya yüklenmez.
+                    Saku Convert ile PNG ↔ JPG ↔ WebP dönüştür. İşlemler
+                    tarayıcıda olur, upload yok.
                 </p>
 
                 <div class="mini-features">
@@ -220,6 +232,22 @@ const homeUrl = new URL("/", SITE.url).toString();
                 </div>
 
                 <p id="result" class="muted" style="margin-top: 10px;"></p>
+
+                <section class="seo-text" style="margin-top:18px">
+                    <h2>PNG Dönüştürücü (Saku Convert) Nasıl Çalışır?</h2>
+                    <p>
+                        Saku PNG dönüştürücü ile görsellerinizi PNG ↔ JPG ↔ WebP
+                        arasında ücretsiz dönüştürebilirsiniz. Bu bir online
+                        görsel dönüştürücü gibi görünür ama işlemler tamamen
+                        tarayıcınızda gerçekleşir; dosyalarınız sunucuya
+                        yüklenmez.
+                    </p>
+                    <p>
+                        “Saku PNG”, “Saku dönüştürücü”, “PNG dönüştürücü”, “JPG
+                        dönüştürücü” ve “WebP dönüştürücü” aramalarında hızlı ve
+                        güvenli bir çözüm sunar.
+                    </p>
+                </section>
             </div>
 
             <script type="module">
@@ -255,13 +283,11 @@ const homeUrl = new URL("/", SITE.url).toString();
                             ? "Ücretsiz & Sınırsız"
                             : "Free & Unlimited"),
                 );
-                set("t-title", t.imageConvTitle ?? pageName);
+                set("t-title", t.imageConvTitle ?? "Image Converter");
                 set(
                     "t-sub",
                     t.imageConvDesc ??
-                        (lang === "tr"
-                            ? "Dosyan tarayıcında dönüştürülür, sunucuya yüklenmez."
-                            : "Your file is processed in your browser. Nothing is uploaded."),
+                        "Your file is processed in your browser. Nothing is uploaded.",
                 );
 
                 set("t-f1", lang === "tr" ? "⚡ Hızlı" : "⚡ Fast");

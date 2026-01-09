@@ -550,21 +550,55 @@ input[type="range"] {
 }
 
 @media (max-width: 560px) {
+  /* Topbar tek satır kalsın */
   .topbar-inner {
-    height: auto;
-    grid-template-columns: 1fr;
-    row-gap: 10px;
-    padding: 10px 0;
-    justify-items: center;
+    height: var(--topbar-h);
+    padding: 0;                 /* auto padding’i kaldır */
+    row-gap: 0;                 /* satır boşluğunu kaldır */
+    grid-template-columns: auto 1fr auto;  /* sol - orta - sağ */
+    align-items: center;
+    column-gap: 10px;
   }
-  .nav-left, .nav-right { justify-self: center; }
 
-  .topbar-right {
-    justify-self: center;
-    justify-content: center;
+  /* Sol nav artık sağa değil sola yaslansın */
+  .nav-left {
+    justify-self: start;
   }
-  .lang-switch { justify-content: center; }
+
+  /* Brand ortada */
+  .brand {
+    justify-self: center;
+  }
+
+  /* Sağ taraf tek satır, sağa yaslı */
+  .topbar-right {
+    justify-self: end;
+    justify-content: flex-end;
+    gap: 8px;
+    width: auto;               /* 100% olmasın */
+  }
+
+  /* Linkler mobilde biraz küçülsün */
+  .nav a {
+    font-size: 0.85rem;
+    padding: 6px 8px;
+  }
+
+  /* Dil switch biraz sıkılaşsın */
+  .lang-switch {
+    padding: 4px;
+    gap: 4px;
+  }
+  .lang-btn {
+    padding: 6px 9px;
+    font-size: 0.82rem;
+  }
 }
+
+@media (max-width: 380px) {
+  .nav-right { display: none; }
+}
+
 
 @media (max-width: 520px) {
   .preview-frame { height: 260px; }
@@ -731,6 +765,7 @@ input[type="range"] {
   color: var(--text-muted);
   font-size: 0.95rem;
   font-weight: 850;
+  text-align: center;
 }
 
 
