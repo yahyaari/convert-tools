@@ -2,13 +2,20 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SITE from "../consts";
 
+// ✅ Tool cards (SSR: TR yazıyoruz, EN JS ile değişecek)
 const tools = [
     {
         key: "img",
         href: "/image-converter#top",
-        title: "Saku Görsel Dönüştürücü (PNG / JPG / WebP)",
-        desc: "Saku dönüştürücü ile PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapın.",
-        cta: "Hemen Dönüştür →",
+        title_tr: "Saku Görsel Dönüştürücü",
+        title_en: "Saku Image Converter",
+        desc_tr:
+            "PNG, JPG ve WebP formatlarını tarayıcı içinde hızlıca dönüştürün.",
+        desc_en: "Convert PNG, JPG, and WebP instantly in your browser.",
+        cta_tr: "Hemen Dönüştür →",
+        cta_en: "Convert Now →",
+        hint_tr: "PNG / JPG / WebP dönüştürücü",
+        hint_en: "PNG / JPG / WebP converter",
         color: "blue",
         icon: `
       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
@@ -22,9 +29,14 @@ const tools = [
     {
         key: "bg",
         href: "/background-remover#top",
-        title: "Saku Arka Plan Silici (Background Remover)",
-        desc: "Saku arka plan silici ile görsellerin arka planını tek tıkla kaldırın (tarayıcı içinde).",
-        cta: "Arka Planı Sil →",
+        title_tr: "Saku Arka Plan Silici",
+        title_en: "Saku Background Remover",
+        desc_tr: "Görsellerin arka planını tek tıkla kaldırın. Upload yok.",
+        desc_en: "Remove image backgrounds in one click. No uploads.",
+        cta_tr: "Arka Planı Sil →",
+        cta_en: "Remove Background →",
+        hint_tr: "Arka plan silici (PNG şeffaf)",
+        hint_en: "Background remover (transparent PNG)",
         color: "purple",
         icon: `
       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
@@ -33,25 +45,170 @@ const tools = [
       </svg>
     `,
     },
+    {
+        key: "cmp",
+        href: "/image-compressor#top",
+        title_tr: "Saku Görsel Sıkıştırıcı",
+        title_en: "Saku Image Compressor",
+        desc_tr:
+            "Görselleri tarayıcı içinde JPG olarak sıkıştırın. Upload yok.",
+        desc_en: "Compress images to JPG in your browser. No uploads.",
+        cta_tr: "Hemen Sıkıştır →",
+        cta_en: "Compress Now →",
+        hint_tr: "JPG sıkıştırma (HEIC/HEIF destekli)",
+        hint_en: "JPG compression (HEIC/HEIF supported)",
+        color: "teal",
+        icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 3H5a2 2 0 0 0-2 2v5"></path>
+        <path d="M14 21h5a2 2 0 0 0 2-2v-5"></path>
+        <path d="M21 10V5a2 2 0 0 0-2-2h-5"></path>
+        <path d="M3 14v5a2 2 0 0 0 2 2h5"></path>
+        <path d="M9 9h6v6H9z"></path>
+      </svg>
+    `,
+    },
+
+    // ✅ Yeni araçlar
+    {
+        key: "pdfc",
+        href: "/pdf-compressor#top",
+        title_tr: "PDF Boyutu Küçült",
+        title_en: "PDF Compressor",
+        desc_tr: "PDF boyutunu küçültün. Hızlı ve pratik sıkıştırma.",
+        desc_en: "Reduce PDF size quickly and easily.",
+        cta_tr: "Sıkıştır →",
+        cta_en: "Compress →",
+        hint_tr: "PDF boyutu küçültme",
+        hint_en: "Reduce PDF size",
+        color: "orange",
+        icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <path d="M14 2v6h6"></path>
+        <path d="M8 13h8"></path>
+        <path d="M8 17h6"></path>
+      </svg>
+    `,
+    },
+    {
+        key: "crop",
+        href: "/image-resize#top",
+        title_tr: "Boyutlandır & Kırp",
+        title_en: "Resize & Crop",
+        desc_tr:
+            "Görseli boyutlandırın ve kırpın. Oran + pixel ile hızlı export.",
+        desc_en: "Resize and crop with ratio presets and pixel controls.",
+        cta_tr: "Boyutlandır →",
+        cta_en: "Resize →",
+        hint_tr: "Boyutlandır & Kırp",
+        hint_en: "Resize & crop",
+        color: "blue",
+        icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2v6H2"></path>
+        <path d="M2 6l6-4"></path>
+        <path d="M18 22v-6h4"></path>
+        <path d="M22 18l-6 4"></path>
+        <path d="M7 7h10v10H7z"></path>
+      </svg>
+    `,
+    },
+    {
+        key: "mp4",
+        href: "/mp4-to-mp3#top",
+        title_tr: "MP4 → MP3 (Ses Çıkar)",
+        title_en: "MP4 → MP3",
+        desc_tr: "Video dosyasından sesi çıkarın ve MP3 indir.",
+        desc_en: "Extract audio from video and download as MP3.",
+        cta_tr: "MP3'e Dönüştür →",
+        cta_en: "Convert →",
+        hint_tr: "MP4 → MP3",
+        hint_en: "MP4 to MP3",
+        color: "purple",
+        icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"></path>
+        <circle cx="6" cy="18" r="3"></circle>
+        <circle cx="18" cy="16" r="3"></circle>
+      </svg>
+    `,
+    },
+    {
+        key: "batch",
+        href: "/batch-image-converter#top",
+        title_tr: "Toplu Görsel Dönüştür",
+        title_en: "Batch Image Converter",
+        desc_tr: "Birden çok görsel seçin, dönüştürün ve tek ZIP indir.",
+        desc_en: "Convert multiple images and download as a single ZIP.",
+        cta_tr: "Toplu Dönüştür →",
+        cta_en: "Batch Convert →",
+        hint_tr: "Toplu dönüştürme",
+        hint_en: "Batch convert",
+        color: "teal",
+        icon: `
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="2"></rect>
+        <rect x="14" y="3" width="7" height="7" rx="2"></rect>
+        <rect x="3" y="14" width="7" height="7" rx="2"></rect>
+        <path d="M14 14h7v7h-7z"></path>
+      </svg>
+    `,
+    },
 ];
 
+// ✅ “Yakında” kısmını daha iyi fikirlerle güncelledim
 const comingSoon = [
-    { title: "PDF Compressor", desc: "PDF boyutunu küçült (kaliteyi koru)." },
-    { title: "DOCX ↔ PDF", desc: "Word ↔ PDF dönüştürme (yakında)." },
-    { title: "Batch Convert", desc: "Toplu görsel dönüştürme." },
+    {
+        tr: {
+            title: "Favicon Generator",
+            desc: "Logo → favicon seti (16/32/180/512) üret.",
+        },
+        en: {
+            title: "Favicon Generator",
+            desc: "Generate a full favicon set (16/32/180/512).",
+        },
+    },
+    {
+        tr: {
+            title: "PDF → JPG",
+            desc: "PDF sayfalarını tek tek görsele çıkar.",
+        },
+        en: { title: "PDF → JPG", desc: "Export PDF pages as images." },
+    },
+    {
+        tr: {
+            title: "PDF Merge / Split",
+            desc: "PDF birleştir / böl — hızlı ve kolay.",
+        },
+        en: { title: "PDF Merge / Split", desc: "Merge or split PDFs easily." },
+    },
+    {
+        tr: {
+            title: "WAV → MP3",
+            desc: "Ses dosyalarını MP3 formatına dönüştür.",
+        },
+        en: { title: "WAV → MP3", desc: "Convert audio files to MP3." },
+    },
 ];
 
 const pageUrl = new URL("/", SITE.url).toString();
 
-// (SEO) WebPage’ye mainEntity olarak iki aracı da yazalım (rich result için iyi)
+// ✅ SEO mainEntity list
 const mainEntityApps = [
     {
         "@type": "SoftwareApplication",
         name: "Saku Image Converter",
         alternateName: [
-            "Saku PNG Dönüştürücü",
             "Saku Görsel Dönüştürücü",
-            "Saku PNG Converter",
+            "PNG converter",
+            "JPG converter",
+            "WebP converter",
         ],
         applicationCategory: "MultimediaApplication",
         operatingSystem: "Web",
@@ -61,12 +218,12 @@ const mainEntityApps = [
         publisher: { "@id": `${SITE.url}/#organization` },
         inLanguage: ["tr", "en"],
         description:
-            "Saku Convert ile PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapın. Ücretsiz görsel dönüştürücü; işlemler tarayıcı içinde, dosyalar yüklenmez.",
+            "PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapan ücretsiz görsel dönüştürücü. İşlem tarayıcı içinde, upload yok.",
     },
     {
         "@type": "SoftwareApplication",
         name: "Saku Background Remover",
-        alternateName: ["Saku Arka Plan Silici", "Saku Background Remover"],
+        alternateName: ["Saku Arka Plan Silici", "Background remover"],
         applicationCategory: "MultimediaApplication",
         operatingSystem: "Web",
         url: new URL("/background-remover", SITE.url).toString(),
@@ -75,14 +232,82 @@ const mainEntityApps = [
         publisher: { "@id": `${SITE.url}/#organization` },
         inLanguage: ["tr", "en"],
         description:
-            "Saku arka plan silici ile görsellerin arka planını tek tıkla kaldırın. Tamamen tarayıcı içinde çalışır, dosyalar sunucuya yüklenmez.",
+            "Arka planı tek tıkla kaldıran tarayıcı içi ücretsiz araç. Dosyalar yüklenmez.",
+    },
+    {
+        "@type": "SoftwareApplication",
+        name: "Saku Image Compressor",
+        alternateName: ["Saku Görsel Sıkıştırıcı", "JPG compressor"],
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Web",
+        url: new URL("/image-compressor", SITE.url).toString(),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        inLanguage: ["tr", "en"],
+        description:
+            "Görselleri tarayıcı içinde JPG olarak sıkıştıran ücretsiz araç. Upload yok.",
+    },
+    {
+        "@type": "SoftwareApplication",
+        name: "Saku PDF Compressor",
+        alternateName: ["PDF Compressor", "PDF Boyutu Küçült"],
+        applicationCategory: "ProductivityApplication",
+        operatingSystem: "Web",
+        url: new URL("/pdf-compressor", SITE.url).toString(),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        inLanguage: ["tr", "en"],
+        description: "PDF boyutunu küçültme aracı (tarayıcı içi).",
+    },
+    {
+        "@type": "SoftwareApplication",
+        name: "Saku Resize & Crop",
+        alternateName: ["Image Resize", "Image Crop", "Boyutlandır", "Kırp"],
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Web",
+        url: new URL("/image-resize", SITE.url).toString(),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        inLanguage: ["tr", "en"],
+        description:
+            "Görsel boyutlandırma ve kırpma aracı. Oran ve pixel kontrolü.",
+    },
+    {
+        "@type": "SoftwareApplication",
+        name: "Saku MP4 to MP3",
+        alternateName: ["MP4 → MP3", "Audio Extractor", "Ses çıkar"],
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Web",
+        url: new URL("/mp4-to-mp3", SITE.url).toString(),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        inLanguage: ["tr", "en"],
+        description: "MP4 videodan ses çıkarıp MP3 olarak indirme aracı.",
+    },
+    {
+        "@type": "SoftwareApplication",
+        name: "Saku Batch Image Converter",
+        alternateName: ["Batch Convert", "Toplu Dönüştür"],
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Web",
+        url: new URL("/batch-image-converter", SITE.url).toString(),
+        isAccessibleForFree: true,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+        publisher: { "@id": `${SITE.url}/#organization` },
+        inLanguage: ["tr", "en"],
+        description:
+            "Birden fazla görseli dönüştürüp tek ZIP dosyası olarak indirme aracı.",
     },
 ];
 ---
 
 <BaseLayout
-    title="Saku Convert – PNG, JPG, WebP Görsel Dönüştürücü + Arka Plan Silici"
-    description="Saku Convert: Ücretsiz PNG/JPG/WebP dönüştürücü ve arka plan silici. Tamamen tarayıcı içinde çalışır, upload yok."
+    title="Saku Convert – Görsel Dönüştürücü + Arka Plan Silici"
+    description="Saku Convert: Ücretsiz görsel dönüştürücü ve arka plan silici. Tamamen tarayıcı içinde çalışır, upload yok."
     canonical="/"
     lang="tr"
     ogImage="/og/og-home.png"
@@ -91,12 +316,12 @@ const mainEntityApps = [
             "@type": "WebPage",
             "@id": `${pageUrl}#webpage`,
             url: pageUrl,
-            name: "Saku Convert – PNG/JPG/WebP Görsel Dönüştürücü ve Arka Plan Silici",
+            name: "Saku Convert – Görsel Dönüştürücü ve Arka Plan Silici",
             inLanguage: "tr",
             isPartOf: { "@id": `${SITE.url}/#website` },
             about: { "@id": `${SITE.url}/#organization` },
             description:
-                "Saku Convert: Ücretsiz PNG/JPG/WebP görsel dönüştürücü ve arka plan silici. Tamamen tarayıcı içinde çalışır, dosyalar sunucuya yüklenmez.",
+                "Saku Convert: Ücretsiz görsel dönüştürücü ve arka plan silici. Tamamen tarayıcı içinde çalışır, dosyalar sunucuya yüklenmez.",
             primaryImageOfPage: {
                 "@type": "ImageObject",
                 url: new URL("/og/og-home.png", SITE.url).toString(),
@@ -135,12 +360,12 @@ const mainEntityApps = [
                 </nav>
 
                 <div class="lang-switch" aria-label="Language switch">
-                    <button class="lang-btn" type="button" data-lang="tr">
-                        TR
-                    </button>
-                    <button class="lang-btn" type="button" data-lang="en">
-                        EN
-                    </button>
+                    <button class="lang-btn" type="button" data-lang="tr"
+                        >TR</button
+                    >
+                    <button class="lang-btn" type="button" data-lang="en"
+                        >EN</button
+                    >
                 </div>
             </div>
         </div>
@@ -150,23 +375,24 @@ const mainEntityApps = [
         <div class="container">
             <div class="hero-box">
                 <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
+
                 <h1 id="t-heroTitle">
-                    Saku Convert – Ücretsiz Görsel Dönüştürücü & Background
-                    Remover
+                    Saku Convert – Ücretsiz Görsel Dönüştürücü & Arka Plan
+                    Silici
                 </h1>
+
                 <p id="t-heroDesc">
-                    Saku Convert ile PNG, JPG ve WebP görsellerinizi ücretsiz
-                    şekilde dönüştürün. Saku görsel dönüştürücü tamamen tarayıcı
-                    içinde çalışır, dosyalarınız sunucuya yüklenmez.
+                    PNG, JPG ve WebP görsellerinizi ücretsiz şekilde dönüştürün.
+                    Tüm işlemler tarayıcı içinde gerçekleşir, upload yok.
                 </p>
 
                 <div class="hero-cta">
-                    <a class="primary-btn" href="#tools" id="t-cta">
-                        Araçları Gör →
-                    </a>
-                    <span class="hero-note muted" id="t-note">
-                        🔒 Dosyalar sunucuya yüklenmez
-                    </span>
+                    <a class="primary-btn" href="#tools" id="t-cta"
+                        >Araçları Gör →</a
+                    >
+                    <span class="hero-note muted" id="t-note"
+                        >🔒 Dosyalar sunucuya yüklenmez</span
+                    >
                 </div>
             </div>
         </div>
@@ -187,21 +413,19 @@ const mainEntityApps = [
                         <a
                             href={t.href}
                             class="tool-card"
-                            title={`Saku Convert - ${t.title}`}
+                            title={`Saku Convert - ${t.title_tr}`}
                         >
                             <div
                                 class={`card-icon ${t.color}`}
                                 set:html={t.icon}
                             />
-                            <h3 id={`t-${t.key}-title`}>{t.title}</h3>
-                            <p id={`t-${t.key}-desc`}>{t.desc}</p>
+                            <h3 id={`t-${t.key}-title`}>{t.title_tr}</h3>
+                            <p id={`t-${t.key}-desc`}>{t.desc_tr}</p>
                             <small class="muted" id={`t-${t.key}-hint`}>
-                                {t.key === "img"
-                                    ? "PNG / JPG / WebP dönüştürücü"
-                                    : "Arka plan silici (PNG şeffaf)"}
+                                {t.hint_tr}
                             </small>
                             <span class="btn-text" id={`t-${t.key}-cta`}>
-                                {t.cta}
+                                {t.cta_tr}
                             </span>
                         </a>
                     ))
@@ -215,9 +439,9 @@ const mainEntityApps = [
             <div class="features-box">
                 <div class="features-inner">
                     <span id="t-f1">⚡ Hızlı İşlem</span>
-                    <span id="t-f2">
-                        🔒 %100 Güvenli (Dosyalar sunucuya yüklenmez)
-                    </span>
+                    <span id="t-f2"
+                        >🔒 %100 Güvenli (Dosyalar sunucuya yüklenmez)</span
+                    >
                     <span id="t-f3">✨ Yüksek Kalite</span>
                 </div>
             </div>
@@ -230,8 +454,8 @@ const mainEntityApps = [
                 <div class="section-head">
                     <h2 id="t-roadmapHead">Yakında</h2>
                     <p class="muted" id="t-roadmapDesc">
-                        Sürekli yeni araçlar ekliyoruz. İşte üzerinde
-                        çalıştığımız bazı özellikler:
+                        Sürekli yeni araçlar ekliyoruz. İşte sıradaki
+                        geliştirmeler:
                     </p>
                 </div>
 
@@ -239,8 +463,20 @@ const mainEntityApps = [
                     {
                         comingSoon.map((c) => (
                             <div class="soon-card">
-                                <div class="soon-title">{c.title}</div>
-                                <div class="soon-desc">{c.desc}</div>
+                                <div
+                                    class="soon-title"
+                                    data-soon-tr={c.tr.title}
+                                    data-soon-en={c.en.title}
+                                >
+                                    {c.tr.title}
+                                </div>
+                                <div
+                                    class="soon-desc"
+                                    data-soon-desc-tr={c.tr.desc}
+                                    data-soon-desc-en={c.en.desc}
+                                >
+                                    {c.tr.desc}
+                                </div>
                             </div>
                         ))
                     }
@@ -249,29 +485,20 @@ const mainEntityApps = [
         </div>
     </section>
 
-    <section class="seo-text">
-        <div class="container">
-            <h2>Saku Dönüştürücü Nedir?</h2>
-            <p>
-                Saku Convert, PNG, JPG ve WebP formatları arasında hızlı dönüşüm
-                yapmanızı sağlayan ücretsiz bir görsel dönüştürücüdür. Saku
-                dönüştürücü araçları tamamen tarayıcı içinde çalışır ve
-                dosyalarınız sunucuya yüklenmez.
+    <div class="panel">
+        <section class="seo-text">
+            <h2 id="t-seoH2">Saku Convert Nedir?</h2>
+            <p id="t-seoP1">
+                Saku Convert; PNG, JPG ve WebP formatları arasında hızlı dönüşüm
+                yapmanızı sağlayan ücretsiz bir dönüştürücüdür. Tüm işlemler
+                tarayıcı içinde gerçekleşir ve dosyalarınız sunucuya yüklenmez.
             </p>
-
-            <p>
-                “Saku PNG dönüştürücü” arayan kullanıcılar için geliştirilen bu
-                araç sayesinde görsellerinizi saniyeler içinde güvenle
-                dönüştürebilirsiniz.
+            <p id="t-seoP2">
+                Arka plan silme, toplu dönüştürme ve medya araçlarıyla Saku
+                Convert tek sayfada pratik bir çözüm sunar.
             </p>
-            <p>
-                Ücretsiz dönüştürücü arayanlar için Saku Convert; PNG
-                dönüştürücü, JPG dönüştürücü ve WebP dönüştürücü ihtiyaçlarını
-                tek sayfada çözer. Görsel dönüştürme işlemi hızlıdır ve tüm
-                dönüşümler tarayıcınızda gerçekleşir.
-            </p>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <footer class="footer-wrap">
         <div class="container">
@@ -279,9 +506,9 @@ const mainEntityApps = [
                 <span
                     >© {new Date().getFullYear()} · A project by Saku Studios</span
                 >
-                <span class="muted" id="t-footerRight">
-                    All processing happens in your browser.
-                </span>
+                <span class="muted" id="t-footerRight"
+                    >All processing happens in your browser.</span
+                >
             </div>
         </div>
     </footer>
@@ -298,87 +525,190 @@ const mainEntityApps = [
             if (el && value != null) el.textContent = value;
         };
 
-        // Landing text
-        set("t-badge", t.badge);
-        set("t-heroTitle", t.heroTitle);
-        set("t-heroDesc", t.heroDesc);
-        set("t-cta", t.cta);
-        set("t-note", t.note);
+        // Hero + generic
+        set(
+            "t-badge",
+            t.badge ??
+                (lang === "tr" ? "Ücretsiz & Sınırsız" : "Free & Unlimited"),
+        );
+        set(
+            "t-heroTitle",
+            t.heroTitle ??
+                (lang === "tr"
+                    ? "Saku Convert – Ücretsiz Görsel Dönüştürücü & Arka Plan Silici"
+                    : "Saku Convert — Free Image Tools"),
+        );
+        set(
+            "t-heroDesc",
+            t.heroDesc ??
+                (lang === "tr"
+                    ? "PNG, JPG ve WebP görsellerinizi ücretsiz şekilde dönüştürün. Tüm işlemler tarayıcı içinde gerçekleşir, upload yok."
+                    : "Convert your images for free. Everything runs in your browser — no uploads."),
+        );
+        set(
+            "t-cta",
+            t.cta ?? (lang === "tr" ? "Araçları Gör →" : "See Tools →"),
+        );
+        set(
+            "t-note",
+            t.note ??
+                (lang === "tr"
+                    ? "🔒 Dosyalar sunucuya yüklenmez"
+                    : "🔒 No uploads"),
+        );
 
-        set("t-toolsHead", t.toolsHead);
-        set("t-toolsDesc", t.toolsDesc);
+        set(
+            "t-toolsHead",
+            t.toolsHead ?? (lang === "tr" ? "Araçlar" : "Tools"),
+        );
+        set(
+            "t-toolsDesc",
+            t.toolsDesc ??
+                (lang === "tr"
+                    ? "Hızlı ve güvenli dijital medya araçlarımızla tanışın:"
+                    : "Try our fast and privacy-friendly tools:"),
+        );
 
-        set("t-roadmapHead", t.roadmapHead);
-        set("t-roadmapDesc", t.roadmapDesc);
+        set(
+            "t-roadmapHead",
+            t.roadmapHead ?? (lang === "tr" ? "Yakında" : "Coming soon"),
+        );
+        set(
+            "t-roadmapDesc",
+            t.roadmapDesc ??
+                (lang === "tr"
+                    ? "Sürekli yeni araçlar ekliyoruz. İşte sıradaki geliştirmeler:"
+                    : "We’re building new tools continuously. Next up:"),
+        );
 
-        set("t-footerRight", t.footerRight);
+        set(
+            "t-footerRight",
+            t.footerRight ??
+                (lang === "tr"
+                    ? "Tüm işlemler tarayıcı içinde olur."
+                    : "All processing happens in your browser."),
+        );
 
-        // Nav labels
-        set("t-navTools", t.toolsHead);
-        set("t-navRoadmap", "Roadmap");
+        set("t-navTools", t.toolsHead ?? (lang === "tr" ? "Araçlar" : "Tools"));
+        set("t-navRoadmap", lang === "tr" ? "Roadmap" : "Roadmap");
 
-        // Features line
+        // Features
         if (lang === "en") {
             set("t-f1", "⚡ Fast");
             set("t-f2", "🔒 100% Secure (no uploads)");
             set("t-f3", "✨ High Quality");
         }
 
-        // Tool cards
-        if (lang === "tr") {
-            set("t-img-title", "Saku Görsel Dönüştürücü (PNG/JPG/WebP)");
-            set(
-                "t-img-desc",
-                "Saku PNG dönüştürücü ile PNG, JPG ve WebP formatları arasında hızlı dönüşüm yapın.",
-            );
-            set("t-img-cta", "Hemen Dönüştür →");
+        // ✅ Tool cards TR SSR / EN client swap
+        const tools = [
+            {
+                key: "img",
+                en: {
+                    title: "Saku Image Converter",
+                    desc: "Convert PNG, JPG, and WebP instantly in your browser.",
+                    hint: "PNG / JPG / WebP converter",
+                    cta: "Convert Now →",
+                },
+            },
+            {
+                key: "bg",
+                en: {
+                    title: "Saku Background Remover",
+                    desc: "Remove image backgrounds in one click. No uploads.",
+                    hint: "Background remover (transparent PNG)",
+                    cta: "Remove Background →",
+                },
+            },
+            {
+                key: "cmp",
+                en: {
+                    title: "Saku Image Compressor",
+                    desc: "Compress images to JPG in your browser. No uploads.",
+                    hint: "JPG compression (HEIC/HEIF supported)",
+                    cta: "Compress Now →",
+                },
+            },
+            {
+                key: "pdfc",
+                en: {
+                    title: "PDF Compressor",
+                    desc: "Reduce PDF size quickly and easily.",
+                    hint: "Reduce PDF size",
+                    cta: "Compress →",
+                },
+            },
+            {
+                key: "crop",
+                en: {
+                    title: "Resize & Crop",
+                    desc: "Resize and crop with ratio presets and pixel controls.",
+                    hint: "Resize & crop",
+                    cta: "Resize →",
+                },
+            },
+            {
+                key: "mp4",
+                en: {
+                    title: "MP4 → MP3",
+                    desc: "Extract audio from video and download as MP3.",
+                    hint: "MP4 to MP3",
+                    cta: "Convert →",
+                },
+            },
+            {
+                key: "batch",
+                en: {
+                    title: "Batch Image Converter",
+                    desc: "Convert multiple images and download as a single ZIP.",
+                    hint: "Batch convert",
+                    cta: "Batch Convert →",
+                },
+            },
+        ];
 
-            set("t-bg-title", "Saku Arka Plan Silici");
-            set(
-                "t-bg-desc",
-                "Saku background remover ile arka planı tek tıkla kaldırın (tarayıcı içinde).",
-            );
-            set("t-bg-cta", "Arka Planı Sil →");
-        } else {
-            set("t-img-title", "Saku Image Converter (PNG/JPG/WebP)");
-            set(
-                "t-img-desc",
-                "Convert PNG, JPG, and WebP instantly with Saku Convert — free and in-browser.",
-            );
+        if (lang === "en") {
+            for (const it of tools) {
+                set(`t-${it.key}-title`, it.en.title);
+                set(`t-${it.key}-desc`, it.en.desc);
+                set(`t-${it.key}-hint`, it.en.hint);
+                set(`t-${it.key}-cta`, it.en.cta);
+            }
 
-            set("t-img-hint", "PNG / JPG / WebP converter");
-            set("t-img-cta", "Convert Now →");
+            // Roadmap cards EN swap (data attr)
+            document.querySelectorAll(".soon-title").forEach((el) => {
+                const v = el.getAttribute("data-soon-en");
+                if (v) el.textContent = v;
+            });
+            document.querySelectorAll(".soon-desc").forEach((el) => {
+                const v = el.getAttribute("data-soon-desc-en");
+                if (v) el.textContent = v;
+            });
 
-            set("t-bg-title", "Saku Background Remover");
+            // SEO EN
+            set("t-seoH2", "What is Saku Convert?");
             set(
-                "t-bg-desc",
-                "Remove image backgrounds in one click with Saku — fully in-browser.",
+                "t-seoP1",
+                "Saku Convert is a set of free tools to convert images in your browser. Nothing is uploaded to a server.",
             );
-
-            set("t-bg-hint", "Background remover (transparent PNG)");
-            set("t-bg-cta", "Remove Background →");
+            set(
+                "t-seoP2",
+                "Convert images, remove backgrounds, batch export as ZIP, and use practical media tools — all in one place.",
+            );
         }
 
         document.documentElement.lang = lang;
 
-        // ===== Language switch =====
+        // Language switch
         const langBtns = document.querySelectorAll(".lang-btn");
-
-        function applyLangActive() {
-            const current = localStorage.getItem("lang") || lang;
-            langBtns.forEach((b) =>
-                b.classList.toggle("is-active", b.dataset.lang === current),
-            );
-        }
-
+        const current = localStorage.getItem("lang") || lang;
+        langBtns.forEach((b) =>
+            b.classList.toggle("is-active", b.dataset.lang === current),
+        );
         langBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
-                const next = btn.dataset.lang;
-                localStorage.setItem("lang", next);
+                localStorage.setItem("lang", btn.dataset.lang);
                 location.reload();
             });
         });
-
-        applyLangActive();
     </script>
 </BaseLayout>

@@ -1,0 +1,1129 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
+
+const pagePath = "/pdf-compressor";
+const pageUrl = new URL(pagePath, SITE.url).toString();
+const homeUrl = new URL("/", SITE.url).toString();
+---
+
+<BaseLayout
+    title="PDF Compressor – PDF Boyutu Küçült (Tarayıcı İçi)"
+    description="PDF boyutunu küçült. Çok sıkıştır / kaliteyi koru modlarıyla tarayıcı içinde sıkıştırma. Upload yok."
+    canonical={pagePath}
+    lang="tr"
+    ogImage="/og/og-pdf-compressor.png"
+    jsonLd={[
+        {
+            "@type": "WebPage",
+            "@id": `${pageUrl}#webpage`,
+            url: pageUrl,
+            name: "PDF Compressor – PDF Boyutu Küçült",
+            inLanguage: ["tr", "en"],
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            about: { "@id": `${SITE.url}/#organization` },
+            description:
+                "PDF boyutunu küçültme aracı. Tüm işlem tarayıcı içinde yapılır, dosyalar sunucuya yüklenmez.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL("/og/og-pdf-compressor.png", SITE.url).toString(),
+                width: 1200,
+                height: 630,
+            },
+            mainEntity: { "@id": `${pageUrl}#app` },
+        },
+        {
+            "@type": "SoftwareApplication",
+            "@id": `${pageUrl}#app`,
+            name: "PDF Compressor",
+            applicationCategory: "ProductivityApplication",
+            operatingSystem: "Web",
+            url: pageUrl,
+            inLanguage: ["tr", "en"],
+            isAccessibleForFree: true,
+            offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+            publisher: { "@id": `${SITE.url}/#organization` },
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            description:
+                "PDF boyutunu tarayıcı içinde küçültür. Çok sıkıştır / dengeli / kaliteyi koru seçenekleri. Upload yok.",
+        },
+        {
+            "@type": "FAQPage",
+            "@id": `${pageUrl}#faq`,
+            url: pageUrl,
+            inLanguage: "tr",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Dosyalarım sunucuya yükleniyor mu?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Hayır. Tüm işlem tarayıcı içinde yapılır.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "PDF nasıl küçültülüyor?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Sayfalar görüntü olarak yeniden kodlanıp yeni PDF üretilir. Tarama/görsel PDF’lerde çok etkili olur.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Sıkıştırınca metinler seçilebilir kalır mı?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Bu sürümde sayfalar görsele çevrilerek yeni PDF üretildiği için metin seçimi/kopyalama korunmaz. Tarama (scan) PDF gibi davranır.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Kaliteyi seçebilir miyim?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Evet. Çok sıkıştır / dengeli / kaliteyi koru modları var.",
+                    },
+                },
+            ],
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": `${pageUrl}#breadcrumb`,
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Anasayfa",
+                    item: homeUrl,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "PDF Compressor",
+                    item: pageUrl,
+                },
+            ],
+        },
+    ]}
+>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <nav class="nav nav-left" aria-label="Primary left">
+                <a href="/" class="back-link" id="t-back">← Geri</a>
+            </nav>
+
+            <a class="brand" href="/" aria-label="Convert Tools">
+                <span class="brand-mark">CT</span>
+            </a>
+
+            <div class="topbar-right">
+                <nav class="nav nav-right" aria-label="Primary right">
+                    <a href="/#tools" id="t-navTools">Araçlar</a>
+                </nav>
+
+                <div class="lang-switch" aria-label="Language switch">
+                    <button class="lang-btn" type="button" data-lang="tr"
+                        >TR</button
+                    >
+                    <button class="lang-btn" type="button" data-lang="en"
+                        >EN</button
+                    >
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page" id="top">
+        <div class="container">
+            <div class="mini-hero" id="miniHero">
+                <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
+                <h1 class="page-title" id="t-title">PDF Compressor</h1>
+                <p class="page-subtitle muted" id="t-sub">
+                    PDF boyutunu küçült. Upload yok, tarayıcı içinde.
+                </p>
+
+                <div class="mini-features">
+                    <span id="t-f1">🗜️ Küçült</span>
+                    <span id="t-f2">🔒 Upload yok</span>
+                    <span id="t-f3">⚡ Hızlı</span>
+                </div>
+            </div>
+
+            <div style="height:14px;"></div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="breadcrumb">
+                        <a href="/" id="t-bcHome">Anasayfa</a>
+                        <span class="sep">›</span>
+                        <span id="t-bcHere">PDF Compressor</span>
+                    </div>
+                </div>
+
+                <input id="file" type="file" accept="application/pdf" hidden />
+
+                <div class="upload-box" id="dropZone">
+                    <div class="upload-state is-idle">
+                        <div class="upload-icon">⬇</div>
+                        <div class="upload-text">
+                            <label for="file" class="choose-link">
+                                <b id="t-choose">PDF seç</b>
+                            </label>
+                            <span id="idleHint">veya buraya sürükle.</span>
+                        </div>
+                    </div>
+
+                    <div class="upload-state is-processing" hidden>
+                        <div class="upload-spinner"></div>
+                        <div class="upload-text">
+                            <b id="t-processing">İşleniyor…</b>
+                        </div>
+                    </div>
+
+                    <div class="upload-state is-done" hidden>
+                        <div class="upload-text">
+                            <span id="t-ready">Hazır!</span>
+                            <a href="#" id="uploadMore" class="choose-link">
+                                <b id="t-uploadMore">Başka yükle?</b>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bilgilendirme kutusu -->
+                <div class="info-box" id="infoBox" style="margin-top:12px;">
+                    <div class="info-ico" aria-hidden="true">ℹ️</div>
+                    <div>
+                        <div class="info-title" id="t-infoTitle">Bilgi</div>
+                        <div class="info-desc" id="t-infoDesc">
+                            Bu sıkıştırma yöntemi sayfaları görsele çevirerek
+                            yeni PDF üretir. Tarama (scan) PDF’lerde harika
+                            küçültür; metin PDF’lerde metin seçimi/kopyalama
+                            korunmayabilir.
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="compress-controls"
+                    style="margin-top:14px"
+                    id="controls"
+                    hidden
+                >
+                    <div class="row">
+                        <p class="muted" style="margin:0;">
+                            <span id="t-mode">Mod:</span>
+                            <b id="modeText">Dengeli</b>
+                        </p>
+                        <p class="muted" style="margin:0;" id="sizeLine">—</p>
+                    </div>
+
+                    <div class="preset-row" aria-label="Compression presets">
+                        <button
+                            type="button"
+                            class="preset-btn"
+                            data-mode="small"
+                            id="presetSmall"
+                        >
+                            Çok sıkıştır
+                        </button>
+                        <button
+                            type="button"
+                            class="preset-btn is-active"
+                            data-mode="balanced"
+                            id="presetBalanced"
+                        >
+                            Dengeli
+                        </button>
+                        <button
+                            type="button"
+                            class="preset-btn"
+                            data-mode="quality"
+                            id="presetQuality"
+                        >
+                            Kaliteyi koru
+                        </button>
+                    </div>
+
+                    <!-- Mod açıklaması -->
+                    <p
+                        class="mode-hint muted"
+                        id="modeHint"
+                        style="margin-top:10px;"
+                    >
+                    </p>
+
+                    <!-- ÖNİZLEME: İndir’den önce -->
+                    <div class="preview-panel" id="previewPanel" hidden>
+                        <div class="preview-head">
+                            <p class="muted" id="t-previewTitle">Önizleme</p>
+                            <span class="muted" id="previewHint">
+                                Bu, sıkıştırılmış PDF'in 1. sayfasının hızlı
+                                önizlemesidir.
+                            </span>
+                        </div>
+                        <div class="preview-frame-pdf" id="previewFrame">
+                            <canvas id="previewCanvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <button id="compress" type="button">
+                            <span id="t-compress">Sıkıştır</span>
+                        </button>
+                        <button
+                            id="download"
+                            type="button"
+                            class="ghost-btn"
+                            disabled
+                        >
+                            <span id="t-download">İndir</span>
+                        </button>
+                        <button id="reset" type="button" class="ghost-btn">
+                            <span id="t-reset">Sıfırla</span>
+                        </button>
+                    </div>
+
+                    <!-- İlerleme bilgisi -->
+                    <div class="progress-wrap" id="progressWrap" hidden>
+                        <div class="progress-top">
+                            <span class="muted" id="progressText">—</span>
+                            <span class="muted" id="progressPct">0%</span>
+                        </div>
+                        <div
+                            class="progress-bar"
+                            aria-label="Compression progress"
+                        >
+                            <div
+                                class="progress-fill"
+                                id="progressFill"
+                                style="width:0%;"
+                            >
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="muted" style="margin-top:10px;" id="hintLine"></p>
+                </div>
+
+                <p id="result" class="muted" style="margin-top:10px;"></p>
+            </div>
+
+            <div class="panel">
+                <section class="seo-text" style="margin-top:18px">
+                    <h2 id="t-seoH2">Saku PDF Compressor Nedir?</h2>
+
+                    <p class="seo-lead" id="t-seoLead">
+                        PDF boyutunu küçültmek için tarayıcı içinde çalışan bir
+                        araç. Upload yok.
+                    </p>
+
+                    <details class="seo-details">
+                        <summary id="t-seoSummary">Detayları göster</summary>
+                        <div class="details-content">
+                            <p id="t-seoP1">
+                                Bu araç “online gibi” görünse de tüm işlem
+                                cihazınızda gerçekleşir. Bu sayede gizlilik
+                                korunur.
+                            </p>
+                            <p id="t-seoP2">
+                                Sıkıştırma, sayfaları görüntü olarak yeniden
+                                kodlayıp yeni PDF üretme mantığıyla çalışır.
+                                Tarama/görsel PDF’lerde çok etkili olur.
+                            </p>
+                            <p id="t-seoP3">
+                                Bu yöntem metin katmanını korumaz; yani
+                                sıkıştırılmış PDF içinde metin seçimi/kopyalama
+                                her zaman mümkün olmayabilir.
+                            </p>
+                        </div>
+                    </details>
+                </section>
+            </div>
+
+            <style>
+                .compress-controls .row {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+                .preset-row {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                    margin-top: 10px;
+                }
+                .preset-btn {
+                    padding: 10px 12px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(148, 163, 184, 0.45);
+                    background: rgba(255, 255, 255, 0.75);
+                    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+                    font-weight: 800;
+                    cursor: pointer;
+                    color: #475569;
+                }
+                .preset-btn.is-active {
+                    outline: 2px solid rgba(79, 70, 229, 0.35);
+                }
+                .btn-row {
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    margin-top: 12px;
+                    align-items: center;
+                }
+                .ghost-btn {
+                    background: rgba(255, 255, 255, 0.75);
+                    color: #0f172a;
+                    border: 1px solid rgba(148, 163, 184, 0.45);
+                    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+                }
+                .ghost-btn:hover {
+                    transform: none;
+                    filter: none;
+                }
+
+                /* Info box */
+                .info-box {
+                    display: flex;
+                    gap: 10px;
+                    border-radius: 14px;
+                    border: 1px solid rgba(148, 163, 184, 0.35);
+                    background: rgba(2, 132, 199, 0.06);
+                    padding: 12px 12px;
+                }
+                .info-ico {
+                    width: 26px;
+                    height: 26px;
+                    display: grid;
+                    place-items: center;
+                    border-radius: 10px;
+                    background: rgba(2, 132, 199, 0.12);
+                    flex: 0 0 auto;
+                }
+                .info-title {
+                    font-weight: 900;
+                    color: #0f172a;
+                    line-height: 1.1;
+                }
+                .info-desc {
+                    margin-top: 3px;
+                    color: rgba(15, 23, 42, 0.78);
+                    font-size: 0.95rem;
+                    line-height: 1.35;
+                }
+
+                /* Mode hint */
+                .mode-hint {
+                    margin: 0;
+                    padding: 10px 12px;
+                    border-radius: 12px;
+                    background: rgba(148, 163, 184, 0.12);
+                    border: 1px solid rgba(148, 163, 184, 0.18);
+                }
+
+                /* Progress */
+                .progress-wrap {
+                    margin-top: 12px;
+                }
+                .progress-top {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
+                    margin-bottom: 6px;
+                }
+                .progress-bar {
+                    width: 100%;
+                    height: 10px;
+                    border-radius: 999px;
+                    background: rgba(148, 163, 184, 0.22);
+                    border: 1px solid rgba(148, 163, 184, 0.35);
+                    overflow: hidden;
+                }
+                .progress-fill {
+                    height: 100%;
+                    border-radius: 999px;
+                    background: linear-gradient(
+                        90deg,
+                        rgba(79, 70, 229, 0.7),
+                        rgba(14, 165, 233, 0.55)
+                    );
+                    width: 0%;
+                }
+
+                /* Preview */
+                .preview-panel {
+                    margin-top: 14px;
+                }
+                .preview-head {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                    margin-bottom: 6px;
+                }
+
+                /* PDF preview container */
+                .preview-frame-pdf {
+                    width: 100%;
+                    max-height: 1080px;
+                    border-radius: 16px;
+                    border: 1px solid rgba(148, 163, 184, 0.45);
+                    background: #f8fafc;
+                    overflow: auto; /* büyük sayfalarda scroll */
+                    padding: 6px;
+
+                    display: flex; /* canvas’ı ortalamak için */
+                    justify-content: center;
+                }
+
+                /* PDF canvas - ekranda sabit genişlik */
+                .preview-frame-pdf canvas {
+                    display: block;
+                    width: min(
+                        900px,
+                        100%
+                    ); /* büyük ekranda 900px, küçükte tam genişlik */
+                    height: auto; /* oranı koru, yamulma olmasın */
+                }
+                @media (max-width: 640px) {
+                    .preview-frame-pdf {
+                        max-height: 70vh;
+                    }
+                }
+            </style>
+
+            <script type="module">
+                import { i18n } from "/i18n.js";
+                import { detectLang } from "/utils/lang.js";
+
+                // pdfjs + pdf-lib
+                let _pdfjsPromise = null;
+
+                async function getPdfjs() {
+                    if (!_pdfjsPromise)
+                        _pdfjsPromise = import("/pdfjs/pdf.min.mjs");
+                    const pdfjs = await _pdfjsPromise;
+
+                    pdfjs.GlobalWorkerOptions.workerSrc =
+                        "/pdfjs/pdf.worker.min.mjs";
+                    return pdfjs;
+                }
+
+                let _pdfLibPromise = null;
+
+                async function getPdfLib() {
+                    if (!_pdfLibPromise) {
+                        _pdfLibPromise = import("/pdf-lib/pdf-lib.esm.js");
+                    }
+                    const pdfLib = await _pdfLibPromise;
+                    return pdfLib;
+                }
+
+                const lang = detectLang();
+                const t = i18n[lang] || i18n.en;
+
+                const $ = (id) => document.getElementById(id);
+                const set = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el && value != null) el.textContent = value;
+                };
+
+                // Mini hero anim
+                const miniHero = $("miniHero");
+                requestAnimationFrame(() =>
+                    miniHero?.classList.add("is-entered"),
+                );
+
+                const TEXT = {
+                    tr: {
+                        back: "← Geri",
+                        tools: "Araçlar",
+                        badge: "Ücretsiz & Sınırsız",
+                        title: "PDF Sıkıştır",
+                        sub: "PDF boyutunu küçült. Upload yok, tarayıcı içinde.",
+                        f1: "🗜️ Küçült",
+                        f2: "🔒 Upload yok",
+                        f3: "⚡ Hızlı",
+                        bcHome: "Anasayfa",
+                        choose: "PDF seç",
+                        idleHint: "veya buraya sürükle.",
+                        processing: "İşleniyor…",
+                        ready: "Hazır!",
+                        uploadMore: "Başka yükle?",
+                        mode: "Mod:",
+                        small: "Çok sıkıştır",
+                        balanced: "Dengeli",
+                        quality: "Kaliteyi koru",
+                        compress: "Sıkıştır",
+                        download: "İndir",
+                        reset: "Sıfırla",
+                        hint: "İpucu: Tarama/görsel PDF’lerde çok iyi küçültür. Metin PDF’lerde kalite kaybı olabilir.",
+                        pleasePdf: "Lütfen PDF dosyası seçin.",
+                        preparing: "Hazırlanıyor…",
+                        selected: (name, size) => `Seçildi: ${name} (${size})`,
+                        working: (p, total) =>
+                            `Sıkıştırılıyor… Sayfa ${p}/${total}`,
+                        done: (o, n, pct) =>
+                            `Bitti ✅ Orijinal: ${o} → Çıktı: ${n} (−%${pct})`,
+                        err: "PDF işlenirken hata oldu. PDF çok büyük olabilir veya tarayıcı kısıtı olabilir.",
+                        infoTitle: "Bilgi",
+                        infoDesc:
+                            "Bu sıkıştırma yöntemi sayfaları görsele çevirerek yeni PDF üretir. Tarama (scan) PDF’lerde harika küçültür; metin PDF’lerde metin seçimi/kopyalama korunmayabilir.",
+                        modeHintSmall:
+                            "Çok sıkıştır: Daha küçük dosya, daha fazla kalite kaybı olabilir.",
+                        modeHintBalanced:
+                            "Dengeli: Boyut/kalite dengesi (önerilen).",
+                        modeHintQuality:
+                            "Kaliteyi koru: Daha iyi görünüm, daha az küçültme.",
+                        progress: (p, total) => `İşleniyor: ${p}/${total}`,
+                        previewTitle: "Önizleme",
+                        previewHint:
+                            "Bu, sıkıştırılmış PDF'in 1. sayfasının hızlı önizlemesidir (orijinal oranlarda).",
+                    },
+                    en: {
+                        back: "← Back",
+                        tools: "Tools",
+                        badge: "Free & Unlimited",
+                        title: "PDF Compressor",
+                        sub: "Reduce PDF size. No uploads, runs in your browser.",
+                        f1: "🗜️ Compress",
+                        f2: "🔒 No uploads",
+                        f3: "⚡ Fast",
+                        bcHome: "Home",
+                        choose: "Choose PDF",
+                        idleHint: "or drag it here.",
+                        processing: "Processing…",
+                        ready: "Ready!",
+                        uploadMore: "Upload more?",
+                        mode: "Mode:",
+                        small: "Strong",
+                        balanced: "Balanced",
+                        quality: "Keep quality",
+                        compress: "Compress",
+                        download: "Download",
+                        reset: "Reset",
+                        hint: "Tip: Works best for scanned/image PDFs. Text PDFs may lose quality.",
+                        pleasePdf: "Please choose a PDF file.",
+                        preparing: "Preparing…",
+                        selected: (name, size) => `Selected: ${name} (${size})`,
+                        working: (p, total) =>
+                            `Compressing… Page ${p}/${total}`,
+                        done: (o, n, pct) =>
+                            `Done ✅ Original: ${o} → Output: ${n} (−${pct}%)`,
+                        err: "Error while processing. The PDF may be too large or browser-limited.",
+                        infoTitle: "Info",
+                        infoDesc:
+                            "This method recreates the PDF by re-encoding pages as images. Great for scanned PDFs; text selection/copy may not be preserved for text PDFs.",
+                        modeHintSmall:
+                            "Strong: Smaller file, quality may drop more.",
+                        modeHintBalanced:
+                            "Balanced: Recommended size/quality trade-off.",
+                        modeHintQuality:
+                            "Keep quality: Better look, less size reduction.",
+                        progress: (p, total) => `Processing: ${p}/${total}`,
+                        previewTitle: "Preview",
+                        previewHint:
+                            "Quick preview of the first page of the compressed PDF (original aspect).",
+                    },
+                };
+
+                const L = TEXT[lang] || TEXT.en;
+
+                // Apply i18n
+                set("t-back", t.back ?? L.back);
+                set("t-navTools", t.toolsHead ?? L.tools);
+                set("t-badge", t.badge ?? L.badge);
+                set("t-title", L.title);
+                set("t-sub", L.sub);
+                set("t-f1", L.f1);
+                set("t-f2", L.f2);
+                set("t-f3", L.f3);
+                set("t-bcHome", L.bcHome);
+                set("t-bcHere", "PDF Compressor");
+
+                set("t-choose", L.choose);
+                set("idleHint", L.idleHint);
+                set("t-processing", L.processing);
+                set("t-ready", L.ready);
+                set("t-uploadMore", L.uploadMore);
+                set("t-mode", L.mode);
+                set("presetSmall", L.small);
+                set("presetBalanced", L.balanced);
+                set("presetQuality", L.quality);
+                set("t-compress", L.compress);
+                set("t-download", L.download);
+                set("t-reset", L.reset);
+
+                set("hintLine", L.hint);
+
+                set("t-infoTitle", L.infoTitle);
+                set("t-infoDesc", L.infoDesc);
+
+                set("t-previewTitle", L.previewTitle);
+                const previewHintEl = document.getElementById("previewHint");
+                if (previewHintEl) previewHintEl.textContent = L.previewHint;
+
+                if (lang === "en") {
+                    set("t-seoH2", "What is Saku PDF Compressor?");
+                    set(
+                        "t-seoLead",
+                        "An in-browser tool to reduce PDF size. No uploads.",
+                    );
+                    set("t-seoSummary", "Show details");
+                    set(
+                        "t-seoP1",
+                        "Even though it feels like an online tool, everything runs locally on your device for privacy.",
+                    );
+                    set(
+                        "t-seoP2",
+                        "Compression works by re-encoding pages as images and generating a new PDF. Great for scanned/image PDFs.",
+                    );
+                    set(
+                        "t-seoP3",
+                        "This method may not preserve text selection/copy because pages are rebuilt as images.",
+                    );
+                }
+
+                document.documentElement.lang = lang;
+
+                // Language buttons
+                const langBtns = document.querySelectorAll(".lang-btn");
+                const current = localStorage.getItem("lang") || lang;
+                langBtns.forEach((b) =>
+                    b.classList.toggle("is-active", b.dataset.lang === current),
+                );
+                langBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        localStorage.setItem("lang", btn.dataset.lang);
+                        location.reload();
+                    });
+                });
+
+                // UI refs
+                const fileInput = $("file");
+                const dropZone = $("dropZone");
+                const uploadMore = $("uploadMore");
+
+                const controls = $("controls");
+                const result = $("result");
+                const sizeLine = $("sizeLine");
+                const modeText = $("modeText");
+                const modeHint = $("modeHint");
+
+                const compressBtn = $("compress");
+                const downloadBtn = $("download");
+                const resetBtn = $("reset");
+                const presetBtns = document.querySelectorAll(".preset-btn");
+
+                // progress
+                const progressWrap = $("progressWrap");
+                const progressText = $("progressText");
+                const progressPct = $("progressPct");
+                const progressFill = $("progressFill");
+
+                // preview
+                const previewPanel = $("previewPanel");
+                const previewFrame = $("previewFrame");
+                const previewCanvas = $("previewCanvas");
+                const previewCtx =
+                    previewCanvas?.getContext("2d", {
+                        willReadFrequently: true,
+                    }) ?? null;
+
+                const stateIdle = document.querySelector(
+                    ".upload-state.is-idle",
+                );
+                const stateProcessing = document.querySelector(
+                    ".upload-state.is-processing",
+                );
+                const stateDone = document.querySelector(
+                    ".upload-state.is-done",
+                );
+
+                function showIdle() {
+                    stateIdle.hidden = false;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = true;
+                }
+                function showProcessing() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = false;
+                    stateDone.hidden = true;
+                }
+                function showDone() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = false;
+                }
+
+                function bytesToNice(n) {
+                    const kb = n / 1024;
+                    if (kb < 1024) return `${Math.round(kb)} KB`;
+                    return `${(kb / 1024).toFixed(2)} MB`;
+                }
+
+                function setPresetActive(m) {
+                    presetBtns.forEach((b) =>
+                        b.classList.toggle("is-active", b.dataset.mode === m),
+                    );
+                }
+
+                function setModeHint(mode) {
+                    if (mode === "small")
+                        modeHint.textContent = L.modeHintSmall;
+                    else if (mode === "quality")
+                        modeHint.textContent = L.modeHintQuality;
+                    else modeHint.textContent = L.modeHintBalanced;
+                }
+
+                function setProgress(p, total) {
+                    const pct = total ? Math.round((p / total) * 100) : 0;
+                    progressWrap.hidden = false;
+                    progressText.textContent = L.progress(p, total);
+                    progressPct.textContent = `${pct}%`;
+                    progressFill.style.width = `${pct}%`;
+                }
+
+                function resetProgress() {
+                    progressWrap.hidden = true;
+                    progressText.textContent = "—";
+                    progressPct.textContent = "0%";
+                    progressFill.style.width = "0%";
+                }
+
+                function resetPreview() {
+                    if (!previewPanel || !previewCanvas || !previewCtx) return;
+                    previewPanel.hidden = true;
+                    previewCtx.clearRect(
+                        0,
+                        0,
+                        previewCanvas.width,
+                        previewCanvas.height,
+                    );
+                    previewCanvas.width = 1;
+                    previewCanvas.height = 1;
+                }
+
+                // ÖNEMLİ: Artık hiçbir ölçekleme yok, canvas orijinal boyutta,
+                // container scroll ile gösteriyor. Böylece yamulma olmaz.
+                function drawPreviewFromCanvas(srcCanvas) {
+                    if (!previewPanel || !previewCanvas || !previewCtx) return;
+
+                    previewCanvas.width = srcCanvas.width;
+                    previewCanvas.height = srcCanvas.height;
+
+                    previewCtx.clearRect(
+                        0,
+                        0,
+                        previewCanvas.width,
+                        previewCanvas.height,
+                    );
+                    previewCtx.drawImage(
+                        srcCanvas,
+                        0,
+                        0,
+                        srcCanvas.width,
+                        srcCanvas.height,
+                    );
+
+                    previewPanel.hidden = false;
+                }
+
+                // params by mode
+                function paramsForMode(m) {
+                    if (m === "small") return { scale: 1.0, jpegQ: 0.55 };
+                    if (m === "quality") return { scale: 1.8, jpegQ: 0.82 };
+                    return { scale: 1.35, jpegQ: 0.7 }; // balanced
+                }
+
+                let selectedFile = null;
+                let mode = "balanced";
+                let outBlob = null;
+                let outName = "compressed.pdf";
+                let outUrl = null;
+                let isBusy = false;
+
+                function setBusy(v) {
+                    isBusy = v;
+                    compressBtn.disabled = v || !selectedFile;
+                    resetBtn.disabled = v;
+                    presetBtns.forEach((b) => (b.disabled = v));
+                    downloadBtn.disabled = v || !outBlob;
+                }
+
+                function resetAll() {
+                    selectedFile = null;
+                    outBlob = null;
+                    outName = "compressed.pdf";
+                    if (outUrl) URL.revokeObjectURL(outUrl);
+                    outUrl = null;
+
+                    fileInput.value = "";
+                    controls.hidden = true;
+                    result.textContent = "";
+                    sizeLine.textContent = "—";
+
+                    mode = "balanced";
+                    setPresetActive("balanced");
+                    modeText.textContent = L.balanced;
+                    setModeHint("balanced");
+
+                    set("idleHint", L.idleHint);
+                    resetProgress();
+                    resetPreview();
+
+                    showIdle();
+                    setBusy(false);
+                }
+
+                async function setSelectedFile(file) {
+                    if (!file) return;
+                    if (
+                        file.type !== "application/pdf" &&
+                        !file.name.toLowerCase().endsWith(".pdf")
+                    ) {
+                        result.textContent = L.pleasePdf;
+                        return;
+                    }
+
+                    selectedFile = file;
+                    outBlob = null;
+                    if (outUrl) URL.revokeObjectURL(outUrl);
+                    outUrl = null;
+
+                    controls.hidden = false;
+                    showDone();
+                    resetProgress();
+                    resetPreview();
+
+                    const nice = bytesToNice(file.size);
+                    result.textContent = L.selected(file.name, nice);
+
+                    modeText.textContent =
+                        mode === "small"
+                            ? L.small
+                            : mode === "quality"
+                              ? L.quality
+                              : L.balanced;
+
+                    sizeLine.textContent =
+                        lang === "tr"
+                            ? `Orijinal: ${nice} · Seçili mod: ${modeText.textContent}`
+                            : `Original: ${nice} · Mode: ${modeText.textContent}`;
+
+                    outName =
+                        file.name.replace(/\.pdf$/i, "") + "-compressed.pdf";
+                    downloadBtn.disabled = true;
+
+                    setModeHint(mode);
+                    setBusy(false);
+                }
+
+                presetBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        mode = btn.dataset.mode;
+                        setPresetActive(mode);
+
+                        modeText.textContent =
+                            mode === "small"
+                                ? L.small
+                                : mode === "quality"
+                                  ? L.quality
+                                  : L.balanced;
+
+                        setModeHint(mode);
+
+                        if (selectedFile) {
+                            const nice = bytesToNice(selectedFile.size);
+                            sizeLine.textContent =
+                                lang === "tr"
+                                    ? `Orijinal: ${nice} · Seçili mod: ${modeText.textcontent}`
+                                    : `Original: ${nice} · Mode: ${modeText.textContent}`;
+                        }
+                    });
+                });
+
+                async function canvasToJpegBytes(canvas, quality) {
+                    const blob = await new Promise((resolve) =>
+                        canvas.toBlob(resolve, "image/jpeg", quality),
+                    );
+                    const buf = await blob.arrayBuffer();
+                    return new Uint8Array(buf);
+                }
+
+                async function compressPdf() {
+                    if (!selectedFile || isBusy) return;
+
+                    try {
+                        setBusy(true);
+                        showProcessing();
+                        resetProgress();
+                        resetPreview();
+                        result.textContent = L.preparing;
+
+                        const originalBytes = selectedFile.size;
+                        const { scale, jpegQ } = paramsForMode(mode);
+
+                        const pdfjs = await getPdfjs();
+                        const { PDFDocument } = await getPdfLib();
+
+                        const srcBuf = await selectedFile.arrayBuffer();
+                        const loadingTask = pdfjs.getDocument({ data: srcBuf });
+                        const pdf = await loadingTask.promise;
+
+                        const total = pdf.numPages;
+
+                        const outPdf = await PDFDocument.create();
+
+                        const canvas = document.createElement("canvas");
+                        const ctx = canvas.getContext("2d", { alpha: false });
+
+                        for (let i = 1; i <= total; i++) {
+                            setProgress(i, total);
+                            result.textContent = L.working(i, total);
+
+                            const page = await pdf.getPage(i);
+
+                            const viewport = page.getViewport({ scale });
+                            canvas.width = Math.max(
+                                1,
+                                Math.floor(viewport.width),
+                            );
+                            canvas.height = Math.max(
+                                1,
+                                Math.floor(viewport.height),
+                            );
+
+                            ctx.fillStyle = "#ffffff";
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                            await page.render({
+                                canvasContext: ctx,
+                                viewport,
+                                background: "white",
+                            }).promise;
+
+                            // İlk sayfa için önizleme (orijinal boyutlarında)
+                            if (i === 1) {
+                                drawPreviewFromCanvas(canvas);
+                            }
+
+                            const jpgBytes = await canvasToJpegBytes(
+                                canvas,
+                                jpegQ,
+                            );
+                            const jpg = await outPdf.embedJpg(jpgBytes);
+
+                            const w = canvas.width;
+                            const h = canvas.height;
+
+                            const outPage = outPdf.addPage([w, h]);
+                            outPage.drawImage(jpg, {
+                                x: 0,
+                                y: 0,
+                                width: w,
+                                height: h,
+                            });
+
+                            await new Promise((r) => setTimeout(r, 0));
+                        }
+
+                        const outBytes = await outPdf.save();
+                        outBlob = new Blob([outBytes], {
+                            type: "application/pdf",
+                        });
+
+                        if (outUrl) URL.revokeObjectURL(outUrl);
+                        outUrl = URL.createObjectURL(outBlob);
+
+                        const outNice = bytesToNice(outBlob.size);
+                        const origNice = bytesToNice(originalBytes);
+                        const pct = Math.max(
+                            0,
+                            Math.round(
+                                (1 - outBlob.size / originalBytes) * 100,
+                            ),
+                        );
+
+                        sizeLine.textContent =
+                            lang === "tr"
+                                ? `Orijinal: ${origNice} → Çıktı: ${outNice} (−%${pct})`
+                                : `Original: ${origNice} → Output: ${outNice} (−${pct}%)`;
+
+                        result.textContent = L.done(origNice, outNice, pct);
+
+                        showDone();
+                        setBusy(false);
+                        downloadBtn.disabled = false;
+                    } catch (e) {
+                        console.error(e);
+                        showDone();
+                        setBusy(false);
+                        result.textContent = L.err;
+                    }
+                }
+
+                compressBtn.addEventListener("click", compressPdf);
+
+                downloadBtn.addEventListener("click", () => {
+                    if (!outBlob || !outUrl) return;
+                    const a = document.createElement("a");
+                    a.href = outUrl;
+                    a.download = outName;
+                    a.click();
+                });
+
+                resetBtn.addEventListener("click", resetAll);
+
+                // file events
+                fileInput.addEventListener("change", () => {
+                    const file = fileInput.files?.[0];
+                    if (file) setSelectedFile(file);
+                });
+
+                ["dragenter", "dragover"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add("is-dragover");
+                    });
+                });
+                ["dragleave", "dragend"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove("is-dragover");
+                    });
+                });
+                dropZone.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove("is-dragover");
+                    const file = e.dataTransfer?.files?.[0];
+                    if (file) setSelectedFile(file);
+                });
+
+                uploadMore.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    resetAll();
+                });
+
+                // init
+                showIdle();
+                setPresetActive("balanced");
+                modeText.textContent = L.balanced;
+                setModeHint("balanced");
+                resetProgress();
+                resetPreview();
+                setBusy(false);
+            </script>
+        </div>
+    </section>
+</BaseLayout>

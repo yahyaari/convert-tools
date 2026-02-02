@@ -284,9 +284,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                             style="display:flex; gap:8px; align-items:center;"
                         >
                             <input id="autoCrop" type="checkbox" checked />
-                            <span id="t-autocrop">
-                                Auto-crop (şeffaf boşlukları kırp)
-                            </span>
+                            <span id="t-autocrop"> Otomatik Kırp </span>
                         </label>
 
                         <button id="resetBg" type="button">
@@ -302,39 +300,84 @@ const homeUrl = new URL("/", SITE.url).toString();
 
                     <p id="result" class="muted" style="margin-top: 10px;"></p>
                 </div>
+            </div>
 
-                <div class="panel">
-                    <section class="seo-text" style="margin-top:18px">
-                        <h2 id="t-seoH2">Saku Arka Plan Silici Nedir?</h2>
-
-                        <p class="seo-lead" id="t-seoLead">
-                            Saku Background Remover ile görsellerin arka planını
-                            tek tıkla şeffaf yap. İşlemler tarayıcıda yapılır,
-                            upload yok.
-                        </p>
-
-                        <details class="seo-details">
-                            <summary id="t-seoSummary">Detayları göster</summary
-                            >
-
-                            <div class="details-content">
-                                <p id="t-seoP1">
-                                    Arka plandaki rengi pipetle seçerek o renge
-                                    yakın pikselleri şeffaf hale getirirsin.
-                                    Tolerance ve Feather ayarları ile temizliği
-                                    ve kenar yumuşaklığını kontrol edebilirsin.
-                                </p>
-
-                                <p id="t-seoP2">
-                                    Auto-crop seçeneği şeffaf boşlukları kırpar
-                                    ve sonucu PNG olarak indirmeni sağlar. Tüm
-                                    işlem cihazında gerçekleştiği için
-                                    dosyaların sunucuya yüklenmez.
-                                </p>
+            <div class="panel">
+                <section class="htu-text" style="margin-top:18px">
+                    <h2 id="t-htuH2">Nasıl kullanılır?</h2>
+                    <ol class="steps-list">
+                        <li>
+                            <div>
+                                <b id="t-htuStep1Title">Dosya seç:</b>
+                                <span id="t-htuStep1Desc">
+                                    Üstteki kutuya tıkla veya görselini
+                                    sürükle-bırak yap.
+                                </span>
                             </div>
-                        </details>
-                    </section>
-                </div>
+                        </li>
+                        <li>
+                            <div>
+                                <b id="t-htuStep2Title">Önizleme:</b>
+                                <span id="t-htuStep2Desc">
+                                    Görsel yüklendikten sonra önizleme çıkar.
+                                    Arka plana tıklayarak pipetle renk
+                                    seçebilirsin.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <b id="t-htuStep3Title">Ayarla:</b>
+                                <span id="t-htuStep3Desc">
+                                    Tolerance ve Feather sliderları ile
+                                    şeffaflaştırma ayarlarını yap. Auto-crop ile
+                                    şeffaf boşlukları kırp.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <b id="t-htuStep4Title">İndir:</b>
+                                <span id="t-htuStep4Desc">
+                                    Ayarları yaptıktan sonra "Download PNG"
+                                    butonuna tıklayarak şeffaf PNG dosyasını
+                                    indir.
+                                </span>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
+            </div>
+
+            <div class="panel">
+                <section class="seo-text" style="margin-top:18px">
+                    <h2 id="t-seoH2">Saku Arka Plan Silici Nedir?</h2>
+                    <p class="seo-lead" id="t-seoLead">
+                        Saku Background Remover ile görsellerin arka planını tek
+                        tıkla şeffaf yap. İşlemler tarayıcıda yapılır, upload
+                        yok.
+                    </p>
+
+                    <details class="seo-details">
+                        <summary id="t-seoSummary">Detayları göster</summary>
+
+                        <div class="details-content">
+                            <p id="t-seoP1">
+                                Arka plandaki rengi pipetle seçerek o renge
+                                yakın pikselleri şeffaf hale getirirsin.
+                                Tolerance ve Feather ayarları ile temizliği ve
+                                kenar yumuşaklığını kontrol edebilirsin.
+                            </p>
+
+                            <p id="t-seoP2">
+                                Auto-crop seçeneği şeffaf boşlukları kırpar ve
+                                sonucu PNG olarak indirmeni sağlar. Tüm işlem
+                                cihazında gerçekleştiği için dosyaların sunucuya
+                                yüklenmez.
+                            </p>
+                        </div>
+                    </details>
+                </section>
             </div>
 
             <script type="module">
@@ -426,23 +469,21 @@ const homeUrl = new URL("/", SITE.url).toString();
                     "t-toggle",
                     lang === "tr" ? "Orijinali Göster" : "Show Original",
                 );
-                set(
-                    "t-tolLabel",
-                    lang === "tr" ? "Tolerance (yakınlık):" : "Tolerance:",
-                );
+                set("t-tolLabel", lang === "tr" ? "Yakınlık:" : "Tolerance:");
                 set(
                     "t-featherLabel",
                     lang === "tr"
-                        ? "Kenar yumuşatma (feather):"
+                        ? "Kenar yumuşatma:"
                         : "Edge softness (feather):",
                 );
                 set(
                     "t-autocrop",
-                    lang === "tr"
-                        ? "Auto-crop (şeffaf boşlukları kırp)"
-                        : "Auto-crop (trim transparent edges)",
+                    lang === "tr" ? "Otomatik Kırp" : "Auto-crop",
                 );
-                set("t-resetBg", lang === "tr" ? "BG Sıfırla" : "Reset BG");
+                set(
+                    "t-resetBg",
+                    lang === "tr" ? "Arka Plan Sıfırla" : "Reset Back Ground",
+                );
                 set("t-download", lang === "tr" ? "PNG İndir" : "Download PNG");
 
                 // ===== SEO section i18n (Background Remover) =====
@@ -475,6 +516,53 @@ const homeUrl = new URL("/", SITE.url).toString();
                     set(
                         "t-seoP2",
                         "Auto-crop trims empty transparent space and the result is downloaded as PNG to keep transparency. Since processing happens locally, your files are never uploaded.",
+                    );
+                }
+
+                // ===== HTU section i18n (How To Use) =====
+                if (lang === "tr") {
+                    set("t-htuH2", "Nasıl kullanılır?");
+                    set("t-htuStep1Title", "Dosya seç:");
+                    set(
+                        "t-htuStep1Desc",
+                        "Üstteki kutuya tıkla veya görselini sürükle-bırak yap.",
+                    );
+                    set("t-htuStep2Title", "Önizleme:");
+                    set(
+                        "t-htuStep2Desc",
+                        "Görsel yüklendikten sonra önizleme çıkar. Arka plana tıklayarak pipetle renk seçebilirsin.",
+                    );
+                    set("t-htuStep3Title", "Ayarla:");
+                    set(
+                        "t-htuStep3Desc",
+                        "Yakınlık ve Kenar yumuşatma sliderları ile şeffaflaştırma ayarlarını yap. Otomatik kırp ile şeffaf boşlukları kırp.",
+                    );
+                    set("t-htuStep4Title", "İndir:");
+                    set(
+                        "t-htuStep4Desc",
+                        'Ayarları yaptıktan sonra "PNG İndir" butonuna tıklayarak şeffaf PNG dosyasını indir.',
+                    );
+                } else {
+                    set("t-htuH2", "How to use?");
+                    set("t-htuStep1Title", "Choose file:");
+                    set(
+                        "t-htuStep1Desc",
+                        "Click the box above or drag and drop your image.",
+                    );
+                    set("t-htuStep2Title", "Preview:");
+                    set(
+                        "t-htuStep2Desc",
+                        "Once the image is loaded, a preview appears. Click on the background to pick a color with the eyedropper.",
+                    );
+                    set("t-htuStep3Title", "Adjust:");
+                    set(
+                        "t-htuStep3Desc",
+                        "Use Tolerance and Feather sliders to adjust transparency. Use Auto-crop to trim transparent edges.",
+                    );
+                    set("t-htuStep4Title", "Download:");
+                    set(
+                        "t-htuStep4Desc",
+                        'After adjusting, click the "Download PNG" button to save your transparent PNG file.',
                     );
                 }
 

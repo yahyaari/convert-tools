@@ -178,7 +178,12 @@ const homeUrl = new URL("/", SITE.url).toString();
                     </div>
                 </div>
 
-                <input id="file" type="file" accept="image/*" hidden />
+                <input
+                    id="file"
+                    type="file"
+                    accept="image/*,.jpg,.jpeg,.png,.webp,.jfif,.heic,.heif,image/heic,image/heif"
+                    hidden
+                />
 
                 <div class="upload-box" id="dropZone">
                     <!-- IDLE -->
@@ -275,6 +280,8 @@ const homeUrl = new URL("/", SITE.url).toString();
                 const lang = detectLang();
                 const t = i18n[lang] || i18n.en;
 
+                const BRAND = "saku"; // dosya adı suffix
+
                 const set = (id, value) => {
                     const el = document.getElementById(id);
                     if (el && value != null) el.textContent = value;
@@ -288,6 +295,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                 const pageName =
                     lang === "tr" ? "Görsel Dönüştürücü" : "Image Converter";
 
+                // ===== Header i18n =====
                 set("t-back", t.back ?? "← Geri");
                 set(
                     "t-navTools",
@@ -301,6 +309,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                             ? "Ücretsiz & Sınırsız"
                             : "Free & Unlimited"),
                 );
+
                 // ✅ TR metin SSR kalsın: sadece EN’de değiştir
                 if (lang === "en") {
                     set("t-title", t.bgRemTitle ?? "Image Converter");
@@ -310,20 +319,6 @@ const homeUrl = new URL("/", SITE.url).toString();
                             "Your file is processed in your browser. Nothing is uploaded.",
                     );
                 }
-                /*set(
-                    "t-title",
-                    t.imageConvTitle ??
-                        (lang === "tr"
-                            ? "Görsel Dönüştürücü"
-                            : "Image Converter"),
-                );
-                set(
-                    "t-sub",
-                    t.imageConvDesc ??
-                        (lang === "tr"
-                            ? "Saku PNG Dönüştürücü – Görsel Dönüştürücü (PNG, JPG, WebP)"
-                            : "Your file is processed in your browser. Nothing is uploaded."),
-                );*/
 
                 set("t-f1", lang === "tr" ? "⚡ Hızlı" : "⚡ Fast");
                 set("t-f2", lang === "tr" ? "🔒 Upload yok" : "🔒 No uploads");
@@ -393,6 +388,7 @@ const homeUrl = new URL("/", SITE.url).toString();
 
                 document.documentElement.lang = lang;
 
+                // ===== Language switch =====
                 const langBtns = document.querySelectorAll(".lang-btn");
                 function applyLangActive() {
                     const current = localStorage.getItem("lang") || lang;
@@ -411,6 +407,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                 });
                 applyLangActive();
 
+                // ===== App Refs =====
                 const button = document.querySelector("#btn");
                 const result = document.querySelector("#result");
                 const fileInput = document.querySelector("#file");
@@ -446,16 +443,106 @@ const homeUrl = new URL("/", SITE.url).toString();
                     stateDone.hidden = false;
                 }
 
+                // ===== Helpers =====
                 function extFromMime(mime) {
                     if (mime === "image/png") return "png";
                     if (mime === "image/jpeg") return "jpg";
                     if (mime === "image/webp") return "webp";
+                    if (mime === "image/avif") return "avif";
                     return "png";
                 }
+
                 function cleanBaseName(name) {
-                    return name.replace(/\.[^.]+$/, "");
+                    return (name || "output").replace(/\.[^.]+$/, "");
                 }
 
+                function safeBrandSuffix() {
+                    return String(BRAND || "saku").replace(/[^\w\-]+/g, "_");
+                }
+
+                function isHeicFile(file) {
+                    const name = (file?.name || "").toLowerCase();
+                    const type = (file?.type || "").toLowerCase();
+                    return (
+                        name.endsWith(".heic") ||
+                        name.endsWith(".heif") ||
+                        type === "image/heic" ||
+                        type === "image/heif"
+                    );
+                }
+
+                function isLikelyImage(file) {
+                    const name = (file?.name || "").toLowerCase();
+                    const type = (file?.type || "").toLowerCase();
+                    if (isHeicFile(file)) return true;
+                    if (type.startsWith("image/")) return true;
+                    if (name.endsWith(".jfif")) return true;
+                    if (
+                        name.endsWith(".png") ||
+                        name.endsWith(".jpg") ||
+                        name.endsWith(".jpeg") ||
+                        name.endsWith(".webp") ||
+                        name.endsWith(".avif")
+                    )
+                        return true;
+                    return false;
+                }
+
+                // HEIC lazy import
+                let heic2anyFn = null;
+                async function ensureHeic2any() {
+                    if (heic2anyFn) return heic2anyFn;
+                    const mod = await import("heic2any");
+                    heic2anyFn = mod.default;
+                    return heic2anyFn;
+                }
+
+                async function heicToPngBlob(file) {
+                    const heic2any = await ensureHeic2any();
+                    const res = await heic2any({
+                        blob: file,
+                        toType: "image/png",
+                        quality: 1,
+                    });
+                    return Array.isArray(res) ? res[0] : res;
+                }
+
+                async function fileToBitmapSmart(file) {
+                    if (isHeicFile(file)) {
+                        // status
+                        result.textContent =
+                            lang === "tr" ? "HEIC açılıyor…" : "Decoding HEIC…";
+
+                        const pngBlob = await heicToPngBlob(file);
+                        return await createImageBitmap(pngBlob);
+                    }
+                    return await createImageBitmap(file);
+                }
+
+                async function canvasToBlob(canvas, mime) {
+                    const isJpg = mime === "image/jpeg";
+                    const isWebp = mime === "image/webp";
+                    const quality = isJpg || isWebp ? 0.92 : undefined;
+
+                    return await new Promise((resolve) => {
+                        canvas.toBlob((b) => resolve(b), mime, quality);
+                    });
+                }
+
+                // AVIF fallback (tarayıcı desteklemiyorsa null dönebilir)
+                async function tryBlobWithFallback(canvas, targetMime) {
+                    let blob = await canvasToBlob(canvas, targetMime);
+
+                    if (!blob && targetMime === "image/avif") {
+                        // fallback -> webp
+                        blob = await canvasToBlob(canvas, "image/webp");
+                        return { blob, mime: "image/webp", usedFallback: true };
+                    }
+
+                    return { blob, mime: targetMime, usedFallback: false };
+                }
+
+                // ===== File selection =====
                 function setSelectedFile(file) {
                     if (!file) return;
 
@@ -463,7 +550,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                     dt.items.add(file);
                     fileInput.files = dt.files;
 
-                    if (!file.type || !file.type.startsWith("image/")) {
+                    if (!isLikelyImage(file)) {
                         result.textContent =
                             lang === "tr"
                                 ? "Lütfen bir görsel dosyası seçin."
@@ -486,7 +573,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                 }
 
                 fileInput.addEventListener("change", () => {
-                    const file = fileInput.files[0];
+                    const file = fileInput.files?.[0];
                     if (!file) {
                         idleHintEl.textContent =
                             lang === "tr"
@@ -499,6 +586,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                     setSelectedFile(file);
                 });
 
+                // Drag drop
                 ["dragenter", "dragover"].forEach((ev) => {
                     dropZone.addEventListener(ev, (e) => {
                         e.preventDefault();
@@ -506,6 +594,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                         dropZone.classList.add("is-dragover");
                     });
                 });
+
                 ["dragleave", "dragend"].forEach((ev) => {
                     dropZone.addEventListener(ev, (e) => {
                         e.preventDefault();
@@ -513,6 +602,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                         dropZone.classList.remove("is-dragover");
                     });
                 });
+
                 dropZone.addEventListener("drop", (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -532,8 +622,9 @@ const homeUrl = new URL("/", SITE.url).toString();
                     showIdle();
                 });
 
-                button.onclick = () => {
-                    const file = fileInput.files[0];
+                // ===== Convert =====
+                button.onclick = async () => {
+                    const file = fileInput.files?.[0];
 
                     if (!file) {
                         result.textContent =
@@ -544,7 +635,7 @@ const homeUrl = new URL("/", SITE.url).toString();
                         return;
                     }
 
-                    if (!file.type || !file.type.startsWith("image/")) {
+                    if (!isLikelyImage(file)) {
                         result.textContent =
                             lang === "tr"
                                 ? "Lütfen bir görsel dosyası seçin."
@@ -558,80 +649,82 @@ const homeUrl = new URL("/", SITE.url).toString();
                         lang === "tr" ? "Dönüştürülüyor..." : "Converting...";
 
                     const targetMime = formatSelect.value;
-                    const url = URL.createObjectURL(file);
-                    const img = new Image();
 
-                    img.onload = () => {
+                    try {
+                        const bmp = await fileToBitmapSmart(file);
+
                         const canvas = document.createElement("canvas");
-                        canvas.width = img.naturalWidth;
-                        canvas.height = img.naturalHeight;
+                        canvas.width = bmp.width;
+                        canvas.height = bmp.height;
+
                         const ctx = canvas.getContext("2d");
 
+                        // JPG seçilirse alpha için beyaz zemin bas
                         if (targetMime === "image/jpeg") {
                             ctx.fillStyle = "#ffffff";
                             ctx.fillRect(0, 0, canvas.width, canvas.height);
                         }
 
-                        ctx.drawImage(img, 0, 0);
+                        ctx.drawImage(bmp, 0, 0);
+                        bmp.close?.();
 
-                        canvas.toBlob(
-                            (blob) => {
-                                if (!blob) {
-                                    result.textContent =
-                                        lang === "tr"
-                                            ? "Çıktı oluşturulamadı (tarayıcı kısıtlaması olabilir)."
-                                            : "Could not create output (browser limitation).";
-                                    URL.revokeObjectURL(url);
-                                    showIdle();
-                                    return;
-                                }
+                        const { blob, mime, usedFallback } =
+                            await tryBlobWithFallback(canvas, targetMime);
 
-                                const ext = extFromMime(targetMime);
-                                const outName =
-                                    cleanBaseName(file.name) + "." + ext;
+                        if (!blob) {
+                            result.textContent =
+                                lang === "tr"
+                                    ? "Çıktı oluşturulamadı (tarayıcı bu formatı desteklemiyor olabilir)."
+                                    : "Could not create output (your browser may not support this format).";
+                            showIdle();
+                            return;
+                        }
 
-                                const a = document.createElement("a");
-                                a.href = URL.createObjectURL(blob);
-                                a.download = outName;
-                                a.click();
+                        const ext = extFromMime(mime);
+                        const outName =
+                            cleanBaseName(file.name) +
+                            "_" +
+                            safeBrandSuffix() +
+                            "." +
+                            ext;
 
-                                setTimeout(
-                                    () => URL.revokeObjectURL(a.href),
-                                    2000,
-                                );
-                                URL.revokeObjectURL(url);
+                        const a = document.createElement("a");
+                        a.href = URL.createObjectURL(blob);
+                        a.download = outName;
+                        a.click();
 
-                                result.textContent =
-                                    lang === "tr"
-                                        ? `Hazır! ${ext.toUpperCase()} indirildi ✅`
-                                        : `Ready! Downloaded ${ext.toUpperCase()} ✅`;
+                        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 
-                                result.classList.add("success-glow");
-                                setTimeout(
-                                    () =>
-                                        result.classList.remove("success-glow"),
-                                    950,
-                                );
+                        if (usedFallback) {
+                            result.textContent =
+                                lang === "tr"
+                                    ? `AVIF desteklenmedi, WEBP indirildi ✅`
+                                    : `AVIF not supported, downloaded WEBP ✅`;
+                        } else {
+                            result.textContent =
+                                lang === "tr"
+                                    ? `Hazır! ${ext.toUpperCase()} indirildi ✅`
+                                    : `Ready! Downloaded ${ext.toUpperCase()} ✅`;
+                        }
 
-                                showDone();
-                            },
-                            targetMime,
-                            targetMime === "image/jpeg" ? 0.92 : undefined,
+                        result.classList.add("success-glow");
+                        setTimeout(
+                            () => result.classList.remove("success-glow"),
+                            950,
                         );
-                    };
 
-                    img.onerror = () => {
+                        showDone();
+                    } catch (err) {
+                        console.error(err);
                         result.textContent =
                             lang === "tr"
-                                ? "Resim okunamadı (format desteklenmiyor olabilir)."
-                                : "Could not read image (format may be unsupported).";
-                        URL.revokeObjectURL(url);
+                                ? "Hata: Dönüştürme başarısız oldu (format desteklenmiyor olabilir)."
+                                : "Error: Conversion failed (format may be unsupported).";
                         showIdle();
-                    };
-
-                    img.src = url;
+                    }
                 };
 
+                // Init
                 showIdle();
             </script>
         </div>

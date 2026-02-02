@@ -1,0 +1,1059 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
+
+const pagePath = "/image-compressor";
+const pageUrl = new URL(pagePath, SITE.url).toString();
+const homeUrl = new URL("/", SITE.url).toString();
+---
+
+<BaseLayout
+    title="Image Compressor – JPG Sıkıştır (HEIC/HEIF Destekli)"
+    description="JPG görsellerini tarayıcı içinde sıkıştır. HEIC/HEIF destekli. Upload yok, ücretsiz."
+    canonical={pagePath}
+    lang="tr"
+    ogImage="/og/og-image-compressor.png"
+    jsonLd={[
+        {
+            "@type": "WebPage",
+            "@id": `${pageUrl}#webpage`,
+            url: pageUrl,
+            name: "Image Compressor – JPG Sıkıştır",
+            inLanguage: ["tr", "en"],
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            about: { "@id": `${SITE.url}/#organization` },
+            description:
+                "JPG görsellerini tarayıcı içinde sıkıştır. HEIC/HEIF destekli. Upload yok, ücretsiz.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL(
+                    "/og/og-image-compressor.png",
+                    SITE.url,
+                ).toString(),
+                width: 1200,
+                height: 630,
+            },
+            mainEntity: { "@id": `${pageUrl}#app` },
+        },
+        {
+            "@type": "SoftwareApplication",
+            "@id": `${pageUrl}#app`,
+            name: "Image Compressor",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Web",
+            url: pageUrl,
+            inLanguage: ["tr", "en"],
+            isAccessibleForFree: true,
+            offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+            publisher: { "@id": `${SITE.url}/#organization` },
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            description:
+                "Tarayıcı içinde JPG sıkıştırma aracı. HEIC/HEIF dosyalarını açıp JPG’ye çevirerek sıkıştırır.",
+        },
+        {
+            "@type": "FAQPage",
+            "@id": `${pageUrl}#faq`,
+            url: pageUrl,
+            inLanguage: "tr",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Dosyalar sunucuya yükleniyor mu?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Hayır. Tüm işlem tarayıcınızda yapılır.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "HEIC/HEIF destekli mi?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Evet. HEIC/HEIF açılır, JPG olarak işlenir.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Kaliteyi ben seçebilir miyim?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Evet. Slider ile kalite/bitrate dengesini seçebilirsiniz.",
+                    },
+                },
+            ],
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": `${pageUrl}#breadcrumb`,
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Anasayfa",
+                    item: homeUrl,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Image Compressor",
+                    item: pageUrl,
+                },
+            ],
+        },
+    ]}
+>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <nav class="nav nav-left" aria-label="Primary left">
+                <a href="/" class="back-link" id="t-back">← Geri</a>
+            </nav>
+
+            <a class="brand" href="/" aria-label="Convert Tools">
+                <span class="brand-mark">CT</span>
+            </a>
+
+            <div class="topbar-right">
+                <nav class="nav nav-right" aria-label="Primary right">
+                    <a href="/#tools" id="t-navTools">Araçlar</a>
+                </nav>
+
+                <div class="lang-switch" aria-label="Language switch">
+                    <button class="lang-btn" type="button" data-lang="tr"
+                        >TR</button
+                    >
+                    <button class="lang-btn" type="button" data-lang="en"
+                        >EN</button
+                    >
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page" id="top">
+        <div class="container">
+            <div class="mini-hero" id="miniHero">
+                <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
+                <h1 class="page-title" id="t-title">Image Compressor</h1>
+                <p class="page-subtitle muted" id="t-sub">
+                    JPG sıkıştır. HEIC/HEIF de destekli. Upload yok, tarayıcı
+                    içinde.
+                </p>
+
+                <div class="mini-features">
+                    <span id="t-f1">🗜️ Sıkıştır</span>
+                    <span id="t-f2">🔒 Upload yok</span>
+                    <span id="t-f3">📱 Mobil uyumlu</span>
+                </div>
+            </div>
+
+            <div style="height:14px;"></div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="breadcrumb">
+                        <a href="/" id="t-bcHome">Anasayfa</a>
+                        <span class="sep">›</span>
+                        <span id="t-bcHere">Image Compressor</span>
+                    </div>
+                </div>
+
+                <input
+                    id="file"
+                    type="file"
+                    accept="image/*,.heic,.heif"
+                    hidden
+                />
+
+                <div class="upload-box" id="dropZone">
+                    <div class="upload-state is-idle">
+                        <div class="upload-icon">⬇</div>
+                        <div class="upload-text">
+                            <label for="file" class="choose-link">
+                                <b id="t-choose">Dosya seç</b>
+                            </label>
+                            <span id="idleHint">veya buraya sürükle.</span>
+                        </div>
+                    </div>
+
+                    <div class="upload-state is-processing" hidden>
+                        <div class="upload-spinner"></div>
+                        <div class="upload-text">
+                            <b id="t-processing">İşleniyor…</b>
+                        </div>
+                    </div>
+
+                    <div class="upload-state is-done" hidden>
+                        <div class="upload-text">
+                            <span id="t-ready">Hazır!</span>
+                            <a href="#" id="uploadMore" class="choose-link">
+                                <b id="t-uploadMore">Başka yükle?</b>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="previewWrap" style="margin-top:14px;" hidden>
+                    <div class="preview-head">
+                        <p class="muted" style="margin:0;" id="t-previewTitle">
+                            Önizleme
+                        </p>
+
+                        <div class="preview-actions">
+                            <button
+                                id="toggleView"
+                                type="button"
+                                class="ghost-btn"
+                            >
+                                <span id="t-toggle">Orijinali Göster</span>
+                            </button>
+
+                            <span class="muted outfmt">
+                                <span id="t-outFmt">Çıktı:</span>
+                                <b>JPG</b>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="preview-frame" id="previewFrame">
+                        <canvas id="canvas"></canvas>
+                    </div>
+
+                    <div class="compress-controls">
+                        <div class="row">
+                            <p class="muted" style="margin:0;">
+                                <span id="t-qualityLabel">Kalite:</span>
+                                <b id="qText">75</b>
+                            </p>
+
+                            <p class="muted" style="margin:0;" id="sizeLine">
+                                —
+                            </p>
+                        </div>
+
+                        <div
+                            class="preset-row"
+                            aria-label="Compression presets"
+                        >
+                            <button
+                                type="button"
+                                class="preset-btn"
+                                data-q="35"
+                                id="presetSmall">Hızlı küçült</button
+                            >
+                            <button
+                                type="button"
+                                class="preset-btn is-active"
+                                data-q="75"
+                                id="presetBalanced">Dengeli</button
+                            >
+                            <button
+                                type="button"
+                                class="preset-btn"
+                                data-q="92"
+                                id="presetQuality">Kaliteyi koru</button
+                            >
+                        </div>
+
+                        <input
+                            id="quality"
+                            type="range"
+                            min="0"
+                            max="100"
+                            value="75"
+                        />
+
+                        <div class="size-bar" aria-label="Estimated size bar">
+                            <div
+                                class="size-bar-fill"
+                                id="barFill"
+                                style="width: 75%;"
+                            >
+                            </div>
+                        </div>
+
+                        <div class="row small">
+                            <span class="muted" id="minText">Min: —</span>
+                            <span class="muted" id="selText">Seçili: —</span>
+                            <span class="muted" id="maxText">Max: —</span>
+                        </div>
+
+                        <div class="btn-row">
+                            <button id="download" type="button" hidden>
+                                <span id="t-download">JPG İndir</span>
+                            </button>
+                            <button
+                                id="reset"
+                                type="button"
+                                class="ghost-btn"
+                                hidden
+                            >
+                                <span id="t-reset">Sıfırla</span>
+                            </button>
+                        </div>
+
+                        <p id="result" class="muted" style="margin-top:10px;">
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <section class="seo-text" style="margin-top:18px">
+                    <h2 id="t-seoH2">Saku Image Compressor Nedir?</h2>
+
+                    <p class="seo-lead" id="t-seoLead">
+                        Saku Convert ile JPG görsellerinizi tarayıcı içinde
+                        sıkıştırın. Upload yok. HEIC/HEIF dosyaları da açılır ve
+                        JPG’ye dönüştürülerek küçültülür.
+                    </p>
+
+                    <details class="seo-details">
+                        <summary id="t-seoSummary">Detayları göster</summary>
+                        <div class="details-content">
+                            <p id="t-seoP1">
+                                Bu araç “online gibi” görünse de tüm işlem
+                                cihazınızda gerçekleşir. Bu sayede gizlilik
+                                korunur ve hızlı çalışır.
+                            </p>
+                            <p id="t-seoP2">
+                                Slider ile kaliteyi seçerek “çok sıkıştır” ile
+                                “kaliteyi koru” arasında denge kurabilirsiniz.
+                                Önizleme alanında farkı anında görürsünüz.
+                            </p>
+                        </div>
+                    </details>
+                </section>
+            </div>
+
+            <style>
+                .preview-head {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                }
+                .preview-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+                .outfmt {
+                    font-weight: 850;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .ghost-btn {
+                    background: rgba(255, 255, 255, 0.75);
+                    color: #0f172a;
+                    border: 1px solid rgba(148, 163, 184, 0.45);
+                    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+                }
+                .ghost-btn:hover {
+                    transform: none;
+                    filter: none;
+                }
+
+                .compress-controls {
+                    margin-top: 12px;
+                }
+                .compress-controls .row {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+                .compress-controls .row.small {
+                    font-size: 0.9rem;
+                    opacity: 0.95;
+                    margin-top: 6px;
+                }
+
+                .preset-row {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                    margin: 10px 0 8px;
+                }
+                .preset-btn {
+                    border: 1px solid rgba(120, 120, 140, 0.22);
+                    background: rgba(255, 255, 255, 0.55);
+                    padding: 8px 12px;
+                    border-radius: 12px;
+                    font-weight: 750;
+                    cursor: pointer;
+                    transition:
+                        transform 0.08s ease,
+                        background 0.12s ease,
+                        border-color 0.12s ease;
+                    color: #475569;
+                }
+                .preset-btn:hover {
+                    transform: translateY(-1px);
+                }
+                .preset-btn.is-active {
+                    border-color: rgba(90, 90, 255, 0.35);
+                    background: rgba(120, 120, 255, 0.12);
+                }
+
+                .size-bar {
+                    width: 100%;
+                    height: 10px;
+                    border-radius: 999px;
+                    background: rgba(148, 163, 184, 0.22);
+                    border: 1px solid rgba(148, 163, 184, 0.35);
+                    overflow: hidden;
+                    margin-top: 10px;
+                }
+                .size-bar-fill {
+                    height: 100%;
+                    border-radius: 999px;
+                    background: linear-gradient(
+                        90deg,
+                        rgba(79, 70, 229, 0.7),
+                        rgba(14, 165, 233, 0.55)
+                    );
+                }
+                .btn-row {
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    margin-top: 12px;
+                    align-items: center;
+                }
+            </style>
+
+            <script type="module">
+                import { i18n } from "/i18n.js";
+                import { detectLang } from "/utils/lang.js";
+
+                // --- heic2any: dynamic import (client only) ---
+                let _heic2anyPromise = null;
+                async function getHeic2any() {
+                    if (!_heic2anyPromise)
+                        _heic2anyPromise = import("heic2any");
+                    const mod = await _heic2anyPromise;
+                    return mod.default;
+                }
+
+                const lang = detectLang();
+                const t = i18n[lang] || i18n.en;
+
+                const $ = (id) => document.getElementById(id);
+                const setText = (id, value) => {
+                    const el = $(id);
+                    if (el && value != null) el.textContent = value;
+                };
+
+                const TEXT = {
+                    tr: {
+                        back: "← Geri",
+                        tools: "Araçlar",
+                        badge: "Ücretsiz & Sınırsız",
+                        title: "Görsel Sıkıştırıcı",
+                        sub: "JPG sıkıştır. HEIC/HEIF de destekli. Upload yok, tarayıcı içinde.",
+                        f1: "🗜️ Sıkıştır",
+                        f2: "🔒 Upload yok",
+                        f3: "📱 Mobil uyumlu",
+                        choose: "Dosya seç",
+                        idleHint: "veya buraya sürükle.",
+                        processing: "İşleniyor…",
+                        ready: "Hazır!",
+                        uploadMore: "Başka yükle?",
+                        preview: "Önizleme",
+                        toggleOriginal: "Orijinali Göster",
+                        toggleCompressed: "Sıkıştırılmışı Göster",
+                        quality: "Kalite:",
+                        output: "Çıktı:",
+                        download: "JPG İndir",
+                        reset: "Sıfırla",
+                        preparing: "Hazırlanıyor...",
+                        loaded: "Görsel yüklendi ✅ Şimdi sıkıştırmayı ayarla.",
+                        loadedHeic:
+                            "HEIC/HEIF açıldı ✅ Şimdi sıkıştırmayı ayarla.",
+                        updated: "Önizleme güncellendi ✅",
+                        downloaded: "JPG indirildi ✅",
+                        errHeic:
+                            "HEIC/HEIF dönüştürülemedi. Başka bir görsel deneyin.",
+                        errRead:
+                            "Dosya okunamadı (format desteklenmiyor olabilir).",
+                        errOut: "Çıktı üretilemedi (tarayıcı kısıtı olabilir).",
+                        errCompress: "Sıkıştırma sırasında hata oluştu.",
+                        seoH2: "Saku Görsel Sıkıştırıcı Nedir?",
+                        seoLead:
+                            "Saku Convert ile JPG görsellerinizi tarayıcı içinde sıkıştırın. Upload yok. HEIC/HEIF dosyaları da açılır ve JPG’ye dönüştürülerek küçültülür.",
+                        seoSummary: "Detayları göster",
+                        seoP1: "Bu araç “online gibi” görünse de tüm işlem cihazınızda gerçekleşir. Bu sayede gizlilik korunur ve hızlı çalışır.",
+                        seoP2: "Slider ile kaliteyi seçerek “çok sıkıştır” ile “kaliteyi koru” arasında denge kurabilirsiniz. Önizleme alanında farkı anında görürsünüz.",
+                        min: "Min: ",
+                        max: "Max: ",
+                        sel: "Seçili: ",
+                        original: "Orijinal",
+                        out: "Çıktı",
+                        selectedDash: "Seçili: —",
+                    },
+                    en: {
+                        back: "← Back",
+                        tools: "Tools",
+                        badge: "Free & Unlimited",
+                        title: "Image Compressor",
+                        sub: "Compress to JPG in-browser. HEIC/HEIF supported. No uploads.",
+                        f1: "🗜️ Compress",
+                        f2: "🔒 No uploads",
+                        f3: "📱 Mobile friendly",
+                        choose: "Choose a file",
+                        idleHint: "or drag it here.",
+                        processing: "Processing…",
+                        ready: "Ready!",
+                        uploadMore: "Upload more?",
+                        preview: "Preview",
+                        toggleOriginal: "Show Original",
+                        toggleCompressed: "Show Compressed",
+                        quality: "Quality:",
+                        output: "Output:",
+                        download: "Download JPG",
+                        reset: "Reset",
+                        preparing: "Preparing...",
+                        loaded: "Image loaded ✅ Adjust compression.",
+                        loadedHeic: "HEIC/HEIF loaded ✅ Adjust compression.",
+                        updated: "Preview updated ✅",
+                        downloaded: "JPG downloaded ✅",
+                        errHeic:
+                            "Could not convert HEIC/HEIF. Try another file.",
+                        errRead:
+                            "Could not read file (format may be unsupported).",
+                        errOut: "Could not create output (browser limitation).",
+                        errCompress: "Error while compressing.",
+                        seoH2: "What is Saku Image Compressor?",
+                        seoLead:
+                            "Compress images to JPG in your browser. No uploads. HEIC/HEIF are opened and converted to JPG.",
+                        seoSummary: "Show details",
+                        seoP1: "Even though it feels like an online tool, everything runs locally on your device for privacy and speed.",
+                        seoP2: "Use the slider to balance file size and quality. You can preview the difference instantly.",
+                        min: "Min: ",
+                        max: "Max: ",
+                        sel: "Selected: ",
+                        original: "Original",
+                        out: "Output",
+                        selectedDash: "Selected: —",
+                    },
+                };
+
+                const L = TEXT[lang] || TEXT.en;
+
+                function applyText() {
+                    setText("t-back", t.back ?? L.back);
+                    setText("t-navTools", t.toolsHead ?? L.tools);
+                    setText("t-badge", t.badge ?? L.badge);
+                    setText("t-title", L.title);
+                    setText("t-sub", L.sub);
+                    setText("t-f1", L.f1);
+                    setText("t-f2", L.f2);
+                    setText("t-f3", L.f3);
+
+                    setText("t-bcHome", lang === "tr" ? "Anasayfa" : "Home");
+                    setText("t-bcHere", "Image Compressor");
+
+                    setText("t-choose", L.choose);
+                    setText("idleHint", L.idleHint);
+                    setText("t-processing", L.processing);
+                    setText("t-ready", L.ready);
+                    setText("t-uploadMore", L.uploadMore);
+
+                    setText("t-previewTitle", L.preview);
+                    setText("t-toggle", L.toggleOriginal);
+                    setText("t-qualityLabel", L.quality);
+                    setText("t-outFmt", L.output);
+                    setText("t-download", L.download);
+                    setText("t-reset", L.reset);
+
+                    setText("t-seoH2", L.seoH2);
+                    setText("t-seoLead", L.seoLead);
+                    setText("t-seoSummary", L.seoSummary);
+                    setText("t-seoP1", L.seoP1);
+                    setText("t-seoP2", L.seoP2);
+
+                    document.documentElement.lang = lang;
+                }
+
+                applyText();
+
+                // language buttons
+                const langBtns = document.querySelectorAll(".lang-btn");
+                const current = localStorage.getItem("lang") || lang;
+                langBtns.forEach((b) =>
+                    b.classList.toggle("is-active", b.dataset.lang === current),
+                );
+                langBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        localStorage.setItem("lang", btn.dataset.lang);
+                        location.reload();
+                    });
+                });
+
+                // mini hero anim
+                const miniHero = $("miniHero");
+                requestAnimationFrame(() =>
+                    miniHero?.classList.add("is-entered"),
+                );
+
+                // refs
+                const fileInput = $("file");
+                const dropZone = $("dropZone");
+
+                const previewWrap = $("previewWrap");
+                const previewFrame = $("previewFrame");
+                const canvas = $("canvas");
+                const ctx = canvas.getContext("2d", {
+                    willReadFrequently: true,
+                });
+
+                const quality = $("quality");
+                const qText = $("qText");
+                const barFill = $("barFill");
+                const minText = $("minText");
+                const selText = $("selText");
+                const maxText = $("maxText");
+
+                const sizeLine = $("sizeLine");
+                const result = $("result");
+
+                const toggleViewBtn = $("toggleView");
+                const downloadBtn = $("download");
+                const resetBtn = $("reset");
+                const uploadMore = $("uploadMore");
+
+                const stateIdle = document.querySelector(
+                    ".upload-state.is-idle",
+                );
+                const stateProcessing = document.querySelector(
+                    ".upload-state.is-processing",
+                );
+                const stateDone = document.querySelector(
+                    ".upload-state.is-done",
+                );
+
+                const presetBtns = document.querySelectorAll(".preset-btn");
+
+                function showIdle() {
+                    stateIdle.hidden = false;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = true;
+                }
+                function showProcessing() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = false;
+                    stateDone.hidden = true;
+                }
+                function showDone() {
+                    stateIdle.hidden = true;
+                    stateProcessing.hidden = true;
+                    stateDone.hidden = false;
+                }
+
+                const cleanBaseName = (name) =>
+                    (name || "").replace(/\.[^.]+$/, "");
+                const bytesToNice = (n) => {
+                    if (n == null) return "—";
+                    const kb = n / 1024;
+                    if (kb < 1024) return `${Math.round(kb)} KB`;
+                    return `${(kb / 1024).toFixed(2)} MB`;
+                };
+
+                function sliderToQuality(v) {
+                    // 0..100 -> 0.35..0.95
+                    const minQ = 0.35,
+                        maxQ = 0.95;
+                    return minQ + (v / 100) * (maxQ - minQ);
+                }
+
+                function resizeCanvasToFrame() {
+                    const rect = previewFrame.getBoundingClientRect();
+                    const dpr = window.devicePixelRatio || 1;
+                    const w = Math.max(1, Math.round(rect.width * dpr));
+                    const h = Math.max(1, Math.round(rect.height * dpr));
+                    if (canvas.width !== w || canvas.height !== h) {
+                        canvas.width = w;
+                        canvas.height = h;
+                    }
+                }
+
+                function drawBitmapContained(bitmap) {
+                    resizeCanvasToFrame();
+                    const dstW = canvas.width,
+                        dstH = canvas.height;
+
+                    const scale = Math.min(
+                        dstW / bitmap.width,
+                        dstH / bitmap.height,
+                    );
+                    const w = Math.round(bitmap.width * scale);
+                    const h = Math.round(bitmap.height * scale);
+                    const x = Math.round((dstW - w) / 2);
+                    const y = Math.round((dstH - h) / 2);
+
+                    ctx.clearRect(0, 0, dstW, dstH);
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = "high";
+                    ctx.drawImage(bitmap, x, y, w, h);
+                }
+
+                function bitmapToJpegBlob(bitmap, q) {
+                    const c = document.createElement("canvas");
+                    c.width = bitmap.width;
+                    c.height = bitmap.height;
+                    const cctx = c.getContext("2d");
+                    cctx.fillStyle = "#ffffff";
+                    cctx.fillRect(0, 0, c.width, c.height);
+                    cctx.drawImage(bitmap, 0, 0);
+
+                    return new Promise((resolve) =>
+                        c.toBlob((blob) => resolve(blob), "image/jpeg", q),
+                    );
+                }
+
+                async function fileToBitmap(file) {
+                    const name = (file.name || "").toLowerCase();
+                    const isHeic =
+                        name.endsWith(".heic") ||
+                        name.endsWith(".heif") ||
+                        file.type === "image/heic" ||
+                        file.type === "image/heif";
+
+                    let blob = file;
+
+                    if (isHeic) {
+                        try {
+                            const heic2any = await getHeic2any();
+                            const conv = await heic2any({
+                                blob: file,
+                                toType: "image/jpeg",
+                                quality: 0.98,
+                            });
+                            blob = Array.isArray(conv) ? conv[0] : conv;
+                        } catch {
+                            throw new Error("heic_failed");
+                        }
+                    }
+
+                    const bmp = await createImageBitmap(blob);
+                    return { bmp, sizeBlob: blob, isHeic };
+                }
+
+                function setPresetActive(value) {
+                    presetBtns.forEach((b) =>
+                        b.classList.toggle(
+                            "is-active",
+                            Number(b.dataset.q) === Number(value),
+                        ),
+                    );
+                }
+
+                // --- state ---
+                let showOriginal = false;
+                let srcBitmap = null;
+                let srcNameBase = "compressed";
+
+                let originalBytes = 0;
+                let minBytes = null;
+                let maxBytes = null;
+
+                let lastOutBlob = null;
+
+                // (performance) bitmap decode is optional; decode only when needed to draw
+                let lastOutBitmap = null;
+                let lastOutBitmapForBytes = 0;
+
+                function updateBar() {
+                    const v = Number(quality.value);
+                    barFill.style.width = `${v}%`;
+                    qText.textContent = String(v);
+
+                    minText.textContent = L.min + bytesToNice(minBytes);
+                    maxText.textContent = L.max + bytesToNice(maxBytes);
+                    selText.textContent = lastOutBlob
+                        ? L.sel + bytesToNice(lastOutBlob.size)
+                        : L.selectedDash;
+                }
+
+                function updateSizeLine() {
+                    if (!originalBytes || !lastOutBlob) {
+                        sizeLine.textContent = "—";
+                        return;
+                    }
+                    const out = lastOutBlob.size;
+                    const pct = Math.max(
+                        0,
+                        Math.round((1 - out / originalBytes) * 100),
+                    );
+                    const q = Math.round(
+                        sliderToQuality(Number(quality.value)) * 100,
+                    );
+
+                    sizeLine.textContent =
+                        lang === "tr"
+                            ? `${L.original}: ${bytesToNice(originalBytes)} → ${L.out}: ${bytesToNice(out)} (−%${pct}) · JPG Quality: ${q}`
+                            : `${L.original}: ${bytesToNice(originalBytes)} → ${L.out}: ${bytesToNice(out)} (−${pct}%) · JPG Quality: ${q}`;
+                }
+
+                async function ensureOutBitmap() {
+                    if (!lastOutBlob) return null;
+                    // if blob changed, bitmap must be re-decoded
+                    if (
+                        !lastOutBitmap ||
+                        lastOutBitmapForBytes !== lastOutBlob.size
+                    ) {
+                        lastOutBitmap = await createImageBitmap(lastOutBlob);
+                        lastOutBitmapForBytes = lastOutBlob.size;
+                    }
+                    return lastOutBitmap;
+                }
+
+                let debounceTimer = null;
+                async function renderCompressedDebounced({
+                    redraw = true,
+                } = {}) {
+                    clearTimeout(debounceTimer);
+
+                    debounceTimer = setTimeout(async () => {
+                        if (!srcBitmap) return;
+
+                        try {
+                            const q = sliderToQuality(Number(quality.value));
+                            const blob = await bitmapToJpegBlob(srcBitmap, q);
+
+                            if (!blob) {
+                                result.textContent = L.errOut;
+                                return;
+                            }
+
+                            lastOutBlob = blob;
+                            // mark bitmap stale
+                            lastOutBitmap = null;
+                            lastOutBitmapForBytes = 0;
+
+                            updateBar();
+                            updateSizeLine();
+
+                            // draw only if user is on compressed view and redraw requested
+                            if (!showOriginal && redraw) {
+                                const bmp = await ensureOutBitmap();
+                                if (bmp) drawBitmapContained(bmp);
+                            }
+
+                            downloadBtn.hidden = false;
+                            resetBtn.hidden = false;
+
+                            showDone();
+                            result.textContent = L.updated;
+                        } catch {
+                            result.textContent = L.errCompress;
+                            showIdle();
+                        }
+                    }, 150);
+                }
+
+                function resetAll() {
+                    fileInput.value = "";
+                    setText("idleHint", L.idleHint);
+
+                    previewWrap.hidden = true;
+                    downloadBtn.hidden = true;
+                    resetBtn.hidden = true;
+
+                    srcBitmap = null;
+                    srcNameBase = "compressed";
+
+                    originalBytes = 0;
+                    minBytes = null;
+                    maxBytes = null;
+
+                    lastOutBlob = null;
+                    lastOutBitmap = null;
+                    lastOutBitmapForBytes = 0;
+
+                    showOriginal = false;
+                    setText("t-toggle", L.toggleOriginal);
+
+                    qText.textContent = quality.value;
+                    barFill.style.width = `${quality.value}%`;
+
+                    minText.textContent = L.min + "—";
+                    selText.textContent = L.selectedDash;
+                    maxText.textContent = L.max + "—";
+                    sizeLine.textContent = "—";
+                    result.textContent = "";
+
+                    setPresetActive(quality.value);
+                    showIdle();
+                }
+
+                async function setSelectedFile(file) {
+                    if (!file) return;
+
+                    // keep input in sync for drag&drop
+                    const dt = new DataTransfer();
+                    dt.items.add(file);
+                    fileInput.files = dt.files;
+
+                    showProcessing();
+                    result.textContent = L.preparing;
+
+                    try {
+                        const { bmp, sizeBlob, isHeic } =
+                            await fileToBitmap(file);
+
+                        srcBitmap = bmp;
+                        srcNameBase = cleanBaseName(file.name || "image");
+                        originalBytes = sizeBlob.size;
+
+                        previewWrap.hidden = false;
+                        downloadBtn.hidden = false;
+                        resetBtn.hidden = false;
+
+                        // quick first draw: original
+                        showOriginal = true;
+                        drawBitmapContained(srcBitmap);
+                        setText("t-toggle", L.toggleCompressed);
+
+                        // immediately switch to compressed mode & render
+                        showOriginal = false;
+                        setText("t-toggle", L.toggleOriginal);
+
+                        result.textContent = isHeic ? L.loadedHeic : L.loaded;
+
+                        // render current slider; redraw preview
+                        await renderCompressedDebounced({ redraw: true });
+
+                        // compute min/max in background (do not block UI)
+                        (async () => {
+                            try {
+                                const [bMin, bMax] = await Promise.all([
+                                    bitmapToJpegBlob(srcBitmap, 0.35),
+                                    bitmapToJpegBlob(srcBitmap, 0.92),
+                                ]);
+                                minBytes = bMin?.size ?? null;
+                                maxBytes = bMax?.size ?? null;
+                                updateBar();
+                            } catch {
+                                // ignore
+                            }
+                        })();
+                    } catch (e) {
+                        const msg = String(e?.message || e || "");
+                        result.textContent = msg.includes("heic_failed")
+                            ? L.errHeic
+                            : L.errRead;
+                        resetAll();
+                    }
+                }
+
+                // --- preset buttons ---
+                presetBtns.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        quality.value = btn.dataset.q;
+                        qText.textContent = quality.value;
+                        barFill.style.width = `${quality.value}%`;
+                        setPresetActive(quality.value);
+                        // while dragging, no need to decode bitmap each time; redraw only if already on compressed view
+                        renderCompressedDebounced({ redraw: !showOriginal });
+                    });
+                });
+
+                // --- events ---
+                fileInput.addEventListener("change", () => {
+                    const file = fileInput.files?.[0];
+                    if (file) setSelectedFile(file);
+                });
+
+                ["dragenter", "dragover"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.add("is-dragover");
+                    });
+                });
+                ["dragleave", "dragend"].forEach((ev) => {
+                    dropZone.addEventListener(ev, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropZone.classList.remove("is-dragover");
+                    });
+                });
+                dropZone.addEventListener("drop", (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove("is-dragover");
+                    const file = e.dataTransfer?.files?.[0];
+                    if (file) setSelectedFile(file);
+                });
+
+                uploadMore.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    resetAll();
+                });
+
+                quality.addEventListener("input", () => {
+                    qText.textContent = quality.value;
+                    barFill.style.width = `${quality.value}%`;
+                    setPresetActive(quality.value);
+                    renderCompressedDebounced({ redraw: !showOriginal });
+                });
+
+                toggleViewBtn.addEventListener("click", async () => {
+                    if (!srcBitmap) return;
+                    showOriginal = !showOriginal;
+
+                    if (showOriginal) {
+                        drawBitmapContained(srcBitmap);
+                        setText("t-toggle", L.toggleCompressed);
+                    } else {
+                        // ensure current compressed bitmap exists, then draw
+                        await renderCompressedDebounced({ redraw: false });
+                        const bmp = await ensureOutBitmap();
+                        if (bmp) drawBitmapContained(bmp);
+                        setText("t-toggle", L.toggleOriginal);
+                    }
+                });
+
+                downloadBtn.addEventListener("click", () => {
+                    if (!lastOutBlob) return;
+
+                    const a = document.createElement("a");
+                    a.href = URL.createObjectURL(lastOutBlob);
+                    a.download = `${srcNameBase}-compressed.jpg`;
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+
+                    result.textContent = L.downloaded;
+                    result.classList.add("success-glow");
+                    setTimeout(
+                        () => result.classList.remove("success-glow"),
+                        950,
+                    );
+                });
+
+                resetBtn.addEventListener("click", resetAll);
+
+                window.addEventListener("resize", async () => {
+                    if (previewWrap.hidden || !srcBitmap) return;
+                    if (showOriginal) drawBitmapContained(srcBitmap);
+                    else {
+                        const bmp = await ensureOutBitmap();
+                        if (bmp) drawBitmapContained(bmp);
+                    }
+                });
+
+                // init
+                qText.textContent = quality.value;
+                barFill.style.width = `${quality.value}%`;
+                setPresetActive(quality.value);
+                showIdle();
+            </script>
+        </div>
+    </section>
+</BaseLayout>

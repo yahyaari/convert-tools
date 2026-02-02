@@ -1,0 +1,374 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
+
+const pagePath = "/mp4-to-mp3";
+const pageUrl = new URL(pagePath, SITE.url).toString();
+const homeUrl = new URL("/", SITE.url).toString();
+
+// ✅ Client script'i Vite üzerinden URL olarak alıyoruz (DOĞRU YOL)
+import mp4ClientUrl from "../scripts/mp4-to-mp3-client.js?url";
+---
+
+<BaseLayout
+    title="Saku MP4 to MP3 – Video’dan MP3 Çevir (Tarayıcı İçi, Ücretsiz)"
+    description="Saku Convert ile MP4 videonu MP3’e çevir. Ücretsiz MP4→MP3 dönüştürücü: işlemler tarayıcıda, upload yok. Gizlilik dostu."
+    canonical={pagePath}
+    lang="tr"
+    ogImage="/og/og-mp4-to-mp3.png"
+    jsonLd={[
+        // WebPage entity
+        {
+            "@type": "WebPage",
+            "@id": `${pageUrl}#webpage`,
+            url: pageUrl,
+            name: "Saku MP4 to MP3 (Video’dan MP3 Çevirici)",
+            alternateName: [
+                "Saku MP4 to MP3",
+                "Saku video dönüştürücü",
+                "MP4 MP3 çevirici",
+                "MP4'ü MP3'e dönüştür",
+                "Online MP4 to MP3",
+                "Tarayıcı içi MP4 to MP3",
+                "Ücretsiz MP4 to MP3",
+            ],
+            inLanguage: ["tr", "en"],
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            about: { "@id": `${SITE.url}/#organization` },
+            description:
+                "Saku Convert ile MP4 videolarınızı tarayıcı içinde MP3’e dönüştürün. Dosyalarınız sunucuya yüklenmez, işlem cihazınızda gerçekleşir.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL("/og/og-mp4-to-mp3.png", SITE.url).toString(),
+                width: 1200,
+                height: 630,
+            },
+            mainEntity: { "@id": `${pageUrl}#app` },
+        },
+
+        // SoftwareApplication entity
+        {
+            "@type": "SoftwareApplication",
+            "@id": `${pageUrl}#app`,
+            name: "MP4 to MP3",
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Web",
+            url: pageUrl,
+            inLanguage: "tr",
+            isAccessibleForFree: true,
+            offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "TRY",
+            },
+            publisher: { "@id": `${SITE.url}/#organization` },
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            description:
+                "MP4 videoyu MP3’e çeviren ücretsiz dönüştürücü. Upload yok, dönüşüm tarayıcı içinde yapılır.",
+        },
+
+        // FAQPage entity
+        {
+            "@type": "FAQPage",
+            "@id": `${pageUrl}#faq`,
+            url: pageUrl,
+            inLanguage: "tr",
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Dosyalarım sunucuya yükleniyor mu?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Hayır. MP4 → MP3 dönüştürme işlemi tamamen tarayıcınızda yapılır. Dosyanız sunucuya yüklenmez.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "MP4 to MP3 aracı ücretsiz mi?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Evet. Ücretsiz olarak sınırsız dönüşüm yapabilirsiniz.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Mobilde çalışır mı?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Evet, modern mobil tarayıcılarda da çalışır. Büyük videolarda cihaz performansına göre süre uzayabilir.",
+                    },
+                },
+            ],
+        },
+
+        // Breadcrumb
+        {
+            "@type": "BreadcrumbList",
+            "@id": `${pageUrl}#breadcrumb`,
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Anasayfa",
+                    item: homeUrl,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "MP4 to MP3",
+                    item: pageUrl,
+                },
+            ],
+        },
+    ]}
+>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <nav class="nav nav-left" aria-label="Primary left">
+                <a href="/" class="back-link" id="t-back">← Geri</a>
+            </nav>
+
+            <a class="brand" href="/" aria-label="Convert Tools">
+                <span class="brand-mark">CT</span>
+            </a>
+
+            <div class="topbar-right">
+                <nav class="nav nav-right" aria-label="Primary right">
+                    <a href="/#tools" id="t-navTools">Araçlar</a>
+                </nav>
+
+                <div class="lang-switch" aria-label="Language switch">
+                    <button class="lang-btn" type="button" data-lang="tr"
+                        >TR</button
+                    >
+                    <button class="lang-btn" type="button" data-lang="en"
+                        >EN</button
+                    >
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page" id="top">
+        <div class="container">
+            <div class="mini-hero" id="miniHero">
+                <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
+                <h1 class="page-title" id="t-title">
+                    Saku MP4 to MP3 – Video’dan MP3 Çevir (Tarayıcı İçi)
+                </h1>
+                <p class="page-subtitle muted" id="t-sub">
+                    MP4 videonu MP3’e çevir. İşlemler tarayıcıda olur, upload
+                    yok.
+                </p>
+
+                <div class="mini-features">
+                    <span id="t-f1">🎬 MP4</span>
+                    <span id="t-f2">🎧 MP3</span>
+                    <span id="t-f3">🔒 Upload yok</span>
+                </div>
+            </div>
+
+            <div style="height:14px;"></div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="breadcrumb">
+                        <a href="/" id="t-bcHome">Anasayfa</a>
+                        <span class="sep">›</span>
+                        <span id="t-bcHere">MP4 to MP3</span>
+                    </div>
+                </div>
+
+                <input id="file" type="file" accept="video/*" hidden />
+
+                <div class="upload-box" id="dropZone">
+                    <div class="upload-state is-idle">
+                        <div class="upload-icon">⬇</div>
+                        <div class="upload-text">
+                            <label for="file" class="choose-link">
+                                <b id="t-choose">Video seç</b>
+                            </label>
+                            <span id="idleHint">veya buraya sürükle.</span>
+                        </div>
+                    </div>
+
+                    <div class="upload-state is-processing" hidden>
+                        <div class="upload-spinner"></div>
+                        <div class="upload-text">
+                            <b id="t-processing">İşleniyor…</b>
+                        </div>
+                    </div>
+
+                    <div class="upload-state is-done" hidden>
+                        <div class="upload-text">
+                            <span id="t-ready">Hazır!</span>
+                            <a href="#" id="uploadMore" class="choose-link">
+                                <b id="t-uploadMore">Başka yükle?</b>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="controls" class="controls" hidden>
+                    <div class="row">
+                        <p class="muted" style="margin:0" id="fileLine">—</p>
+                        <p class="muted" style="margin:0" id="statusLine">—</p>
+                    </div>
+
+                    <div class="btn-row">
+                        <button id="convert" type="button"
+                            >MP3'e dönüştür</button
+                        >
+                        <button
+                            id="download"
+                            type="button"
+                            class="ghost-btn"
+                            disabled
+                        >
+                            İndir
+                        </button>
+                        <button id="reset" type="button" class="ghost-btn"
+                            >Sıfırla</button
+                        >
+                    </div>
+
+                    <div class="progress-wrap" hidden id="progressWrap">
+                        <div
+                            class="muted"
+                            style="display:flex;justify-content:space-between;gap:10px;"
+                        >
+                            <span id="progressText">—</span>
+                            <span id="progressPct">0%</span>
+                        </div>
+
+                        <div class="progress-bar">
+                            <div
+                                class="progress-fill"
+                                id="progressFill"
+                                style="width:0%"
+                            >
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="result" class="muted" style="margin-top:10px;"></p>
+                </div>
+            </div>
+
+            {/* ✅ SEO TEXT PANEL (Image Converter sayfan gibi) */}
+            <div class="panel">
+                <section class="seo-text" style="margin-top:18px">
+                    <h2 id="t-seoH2">
+                        MP4 to MP3 (Saku Convert) Nasıl Çalışır?
+                    </h2>
+
+                    <p class="seo-lead" id="t-seoLead">
+                        Saku Convert ile MP4 videonu MP3’e ücretsiz dönüştür.
+                        İşlemler tarayıcıda yapılır, upload yok.
+                    </p>
+
+                    <details class="seo-details">
+                        <summary id="t-seoSummary">Detayları göster</summary>
+                        <div class="details-content">
+                            <p id="t-seoP1">
+                                Saku MP4 to MP3 aracı ile videolarını hızlıca
+                                MP3’e çevirebilirsin. Bu bir online dönüştürücü
+                                gibi görünür ama dönüşüm tamamen tarayıcı içinde
+                                gerçekleşir; dosyaların sunucuya yüklenmez.
+                            </p>
+                            <p id="t-seoP2">
+                                “MP4 MP3 çevirici”, “MP4’ü MP3’e dönüştür”,
+                                “Saku MP4 to MP3” gibi aramalarda hızlı ve
+                                gizlilik dostu bir çözüm sunar.
+                            </p>
+                        </div>
+                    </details>
+                </section>
+            </div>
+
+            <style>
+                .controls {
+                    margin-top: 14px;
+                }
+                .controls .row {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+                .btn-row {
+                    display: flex;
+                    gap: 12px;
+                    flex-wrap: wrap;
+                    margin-top: 12px;
+                    align-items: center;
+                }
+                .ghost-btn {
+                    background: rgba(255, 255, 255, 0.75);
+                    color: #0f172a;
+                    border: 1px solid rgba(148, 163, 184, 0.45);
+                    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+                }
+                .ghost-btn:hover {
+                    transform: none;
+                    filter: none;
+                }
+                .progress-wrap {
+                    margin-top: 12px;
+                }
+                .progress-bar {
+                    height: 10px;
+                    border-radius: 999px;
+                    background: rgba(148, 163, 184, 0.25);
+                    overflow: hidden;
+                    margin-top: 6px;
+                }
+                .progress-fill {
+                    height: 100%;
+                    border-radius: 999px;
+                    background: rgba(79, 70, 229, 0.8);
+                    width: 0%;
+                }
+            </style>
+
+            {/* ✅ Client JS */}
+            <script type="module" src={mp4ClientUrl}></script>
+
+            {
+                /* ✅ SEO section EN çevirisi (import yok, sadece localStorage + navigator) */
+            }
+            <script>
+                (() => {
+                    try {
+                        const stored = localStorage.getItem("lang");
+                        const nav = (navigator.language || "tr").toLowerCase();
+                        const lang =
+                            stored || (nav.startsWith("tr") ? "tr" : "en");
+
+                        const set = (id, value) => {
+                            const el = document.getElementById(id);
+                            if (el && value != null) el.textContent = value;
+                        };
+
+                        if (lang === "en") {
+                            set("t-seoH2", "How does Saku MP4 to MP3 work?");
+                            set(
+                                "t-seoLead",
+                                "Convert MP4 to MP3 for free with Saku Convert. Everything runs in your browser—no uploads.",
+                            );
+                            set("t-seoSummary", "Show details");
+                            set(
+                                "t-seoP1",
+                                "Saku MP4 to MP3 lets you extract audio from your videos quickly. It looks like an online converter, but the conversion happens locally in your browser—your files are not uploaded to any server.",
+                            );
+                            set(
+                                "t-seoP2",
+                                "It’s a fast and privacy-friendly solution for searches like “MP4 to MP3 converter” and “convert MP4 to MP3”.",
+                            );
+                        }
+                    } catch {}
+                })();
+            </script>
+        </div>
+    </section>
+</BaseLayout>

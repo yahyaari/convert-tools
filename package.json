@@ -14,7 +14,14 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "astro": "^5.16.6"
+    "@ffmpeg/core": "^0.12.10",
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.1",
+    "astro": "^5.16.6",
+    "heic2any": "^0.0.4",
+    "jszip": "^3.10.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^5.4.530"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.6.0"

@@ -1,0 +1,1183 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SITE from "../consts";
+
+const pagePath = "/image-resize";
+const pageUrl = new URL(pagePath, SITE.url).toString();
+const homeUrl = new URL("/", SITE.url).toString();
+---
+
+<BaseLayout
+    title="Image Resize & Crop – Görsel Boyutlandır & Kırp (Tarayıcı İçi)"
+    description="Görsellerini tarayıcı içinde boyutlandır (image resize) veya kırp (image crop). Sadece boyutlandır ya da kırp + boyutlandır modları. Upload yok."
+    canonical={pagePath}
+    lang="tr"
+    ogImage="/og/og-image-resize.png"
+    jsonLd={[
+        {
+            "@type": "WebPage",
+            "@id": `${pageUrl}#webpage`,
+            url: pageUrl,
+            name: "Image Resize & Crop – Görsel Boyutlandır / Kırp",
+            inLanguage: ["tr", "en"],
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            about: { "@id": `${SITE.url}/#organization` },
+            description:
+                "Görsel boyutlandırma (image resize) ve kırpma (image crop) aracı. Sadece boyutlandır veya kırp + boyutlandır modları. Tüm işlem tarayıcı içinde, dosyalar sunucuya yüklenmez.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL("/og/og-image-resize.png", SITE.url).toString(),
+                width: 1200,
+                height: 630,
+            },
+            mainEntity: { "@id": `${pageUrl}#app` },
+        },
+        {
+            "@type": "SoftwareApplication",
+            "@id": `${pageUrl}#app`,
+            name: "Saku Image Resize & Crop",
+            alternateName: [
+                "Saku Image Resize",
+                "Saku Image Crop",
+                "Saku Görsel Boyutlandırma Aracı",
+                "Saku Görsel Kırpma Aracı",
+            ],
+            applicationCategory: "MultimediaApplication",
+            operatingSystem: "Web",
+            url: pageUrl,
+            inLanguage: ["tr", "en"],
+            isAccessibleForFree: true,
+            offers: { "@type": "Offer", price: "0", priceCurrency: "TRY" },
+            publisher: { "@id": `${SITE.url}/#organization` },
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            description:
+                "Tarayıcı içinde çalışan basit görsel boyutlandırma (image resize) ve kırpma (image crop) aracı. Instagram, YouTube küçük resim ve sosyal medya oranları için hazır preset’ler. Upload yok, tüm işlem cihazınızda.",
+        },
+        {
+            "@type": "FAQPage",
+            "@id": `${pageUrl}#faq`,
+            url: pageUrl,
+            inLanguage: ["tr", "en"],
+            mainEntity: [
+                {
+                    "@type": "Question",
+                    name: "Dosyalarım sunucuya yükleniyor mu?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Hayır. Saku Image Resize & Crop tamamen tarayıcı içinde çalışır; görseller sunucuya yüklenmez, cihazınızdan dışarı çıkmaz.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Oran nasıl korunur veya değiştirilir?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Sadece boyutlandır modunda genişlik veya yüksekliğin birini boş bırakırsanız orijinal en-boy oranı korunur. Kırp + boyutlandır modunda ise 1:1, 4:5, 16:9, 9:16 gibi hazır oranları seçerek görseli bu orana göre kırpabilirsiniz.",
+                    },
+                },
+                {
+                    "@type": "Question",
+                    name: "Hangi formatlarda çıktı alabilirim?",
+                    acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Girdi görseliniz JPG ise çıktı JPG, diğer formatlarda (PNG, WebP vb.) ise çıktı PNG olarak alınır. Önizleme alanı indirilecek son görseli birebir gösterir.",
+                    },
+                },
+            ],
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": `${pageUrl}#breadcrumb`,
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Anasayfa",
+                    item: homeUrl,
+                },
+                {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Image Resize & Crop",
+                    item: pageUrl,
+                },
+            ],
+        },
+    ]}
+/>
+
+<header class="topbar">
+    <div class="container topbar-inner">
+        <nav class="nav nav-left" aria-label="Primary left">
+            <a href="/" class="back-link" id="t-back">← Geri</a>
+        </nav>
+
+        <a class="brand" href="/" aria-label="Convert Tools">
+            <span class="brand-mark">CT</span>
+        </a>
+
+        <div class="topbar-right">
+            <nav class="nav nav-right" aria-label="Primary right">
+                <a href="/#tools" id="t-navTools">Araçlar</a>
+            </nav>
+
+            <div class="lang-switch" aria-label="Language switch">
+                <button class="lang-btn" type="button" data-lang="tr">TR</button
+                >
+                <button class="lang-btn" type="button" data-lang="en">EN</button
+                >
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="page" id="top">
+    <div class="container">
+        <div class="mini-hero" id="miniHero">
+            <span class="badge" id="t-badge">Ücretsiz & Sınırsız</span>
+            <h1 class="page-title" id="t-title">Image Resize & Crop</h1>
+            <p class="page-subtitle muted" id="t-sub">
+                Görselini yükle, sadece boyutlandır veya kırp + boyutlandır.
+                Önizle, sonra indir.
+            </p>
+
+            <div class="mini-features">
+                <span id="t-f1">📐 Boyutlandır</span>
+                <span id="t-f2">✂️ Kırp</span>
+                <span id="t-f3">🔒 Upload yok</span>
+            </div>
+        </div>
+
+        <div style="height:14px;"></div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div class="breadcrumb">
+                    <a href="/" id="t-bcHome">Anasayfa</a>
+                    <span class="sep">›</span>
+                    <span id="t-bcHere">Image Resize & Crop</span>
+                </div>
+            </div>
+
+            <input id="file" type="file" accept="image/*" hidden />
+
+            <div class="upload-box" id="dropZone">
+                <div class="upload-state is-idle">
+                    <div class="upload-icon">⬇</div>
+                    <div class="upload-text">
+                        <label for="file" class="choose-link">
+                            <b id="t-choose">Görsel seç</b>
+                        </label>
+                        <span id="idleHint">veya buraya sürükle.</span>
+                    </div>
+                </div>
+
+                <div class="upload-state is-processing" hidden>
+                    <div class="upload-spinner"></div>
+                    <div class="upload-text">
+                        <b id="t-processing">İşleniyor…</b>
+                    </div>
+                </div>
+
+                <div class="upload-state is-done" hidden>
+                    <div class="upload-text">
+                        <span
+                            id="t-ready"
+                            style="color: #10b981; font-weight: bold;"
+                            >Hazır!</span
+                        >
+                        <a href="#" id="uploadMore" class="choose-link">
+                            <b id="t-uploadMore">Başka yükle?</b>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="workWrap" hidden>
+                <div class="mode-grid" style="margin-top:20px;">
+                    <button
+                        class="mode-card is-active"
+                        id="modeFit"
+                        type="button"
+                    >
+                        <div class="mode-icon">🖼️</div>
+                        <div class="mode-content">
+                            <div class="mode-title" id="t-modeFitTitle">
+                                Sadece Boyutlandır
+                            </div>
+                            <div class="mode-desc muted" id="t-modeFitDesc">
+                                Tam görseli koru, sadece ölçüleri değiştir.
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="mode-card" id="modeCrop" type="button">
+                        <div class="mode-icon">✂️</div>
+                        <div class="mode-content">
+                            <div class="mode-title" id="t-modeCropTitle">
+                                Kırp + Boyutlandır
+                            </div>
+                            <div class="mode-desc muted" id="t-modeCropDesc">
+                                Belirli bir orana sığdır (1:1, 16:9 vb).
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="info-bar">
+                    <div class="info-item">
+                        <span class="info-label" id="t-origLabel"
+                            >Orijinal:</span
+                        >
+                        <b id="origText" class="info-value">—</b>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label" id="t-outLabel"
+                            >Yeni Boyut:</span
+                        >
+                        <b id="outText" class="info-value">—</b>
+                    </div>
+                </div>
+
+                <div class="controls-card">
+                    <div id="fitFields" class="fit-fields">
+                        <div class="field">
+                            <label for="outW" id="t-outWLabel"
+                                >Genişlik (px)</label
+                            >
+                            <input
+                                id="outW"
+                                type="number"
+                                min="16"
+                                max="8000"
+                                step="1"
+                                inputmode="numeric"
+                                placeholder="Otomatik"
+                            />
+                        </div>
+                        <div class="field">
+                            <label for="outH" id="t-outHLabel"
+                                >Yükseklik (px)</label
+                            >
+                            <input
+                                id="outH"
+                                type="number"
+                                min="16"
+                                max="8000"
+                                step="1"
+                                inputmode="numeric"
+                                placeholder="Otomatik"
+                            />
+                        </div>
+                        <p class="field-hint" id="t-fitHint">
+                            * Bir kenarı boş bırakırsanız orijinal oran korunur.
+                        </p>
+                    </div>
+
+                    <div id="cropControls" hidden>
+                        <div class="field">
+                            <label for="longSide" id="t-longLabel">
+                                Uzun Kenar Ölçüsü (px)
+                            </label>
+                            <input
+                                id="longSide"
+                                type="number"
+                                min="16"
+                                max="8000"
+                                step="1"
+                                inputmode="numeric"
+                                value="1080"
+                            />
+                        </div>
+
+                        <div class="crop-extra">
+                            <div class="field">
+                                <label id="t-ratioLabel"
+                                    >Hedef Oran (Aspect Ratio)</label
+                                >
+                                <div class="preset-row">
+                                    <button
+                                        class="preset-btn is-active"
+                                        type="button"
+                                        data-ratio="1:1"
+                                        id="r11"
+                                    >
+                                        <span id="t-r11">1:1 Kare</span>
+                                    </button>
+                                    <button
+                                        class="preset-btn"
+                                        type="button"
+                                        data-ratio="4:5"
+                                        id="r45"
+                                    >
+                                        <span id="t-r45">4:5 Portre</span>
+                                    </button>
+                                    <button
+                                        class="preset-btn"
+                                        type="button"
+                                        data-ratio="16:9"
+                                        id="r169"
+                                    >
+                                        <span id="t-r169">16:9 Sinematik</span>
+                                    </button>
+                                    <button
+                                        class="preset-btn"
+                                        type="button"
+                                        data-ratio="9:16"
+                                        id="r916"
+                                    >
+                                        <span id="t-r916">9:16 Story</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label id="t-alignLabel">Odak Noktası</label>
+                                <div class="align-row">
+                                    <button
+                                        type="button"
+                                        class="align-btn"
+                                        data-align="top"
+                                        id="aTop"
+                                    >
+                                        <span id="t-aTop">Üst</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="align-btn is-active"
+                                        data-align="center"
+                                        id="aCenter"
+                                    >
+                                        <span id="t-aCenter">Orta</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="align-btn"
+                                        data-align="bottom"
+                                        id="aBottom"
+                                    >
+                                        <span id="t-aBottom">Alt</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="preview-panel">
+                    <div class="preview-head">
+                        <span class="preview-title" id="t-previewTitle">
+                            Canlı Önizleme
+                        </span>
+                        <div class="outfmt">
+                            <span id="t-formatLabel">Format:</span>
+                            <b id="fmtText">PNG</b>
+                        </div>
+                    </div>
+
+                    <div class="preview-frame-img">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button
+                        id="download"
+                        type="button"
+                        class="primary-btn"
+                        disabled
+                    >
+                        <span id="t-downloadBtn">Görseli İndir</span>
+                    </button>
+                    <button id="reset" type="button" class="ghost-btn">
+                        <span id="t-resetBtn">Sıfırla</span>
+                    </button>
+                </div>
+
+                <p id="result" class="status-message"></p>
+            </div>
+        </div>
+
+        <div class="panel info-panel">
+            <section class="seo-text">
+                <h2 id="t-seoH2">Saku Image Resize & Crop Nedir?</h2>
+                <p class="seo-lead" id="t-seoLead">
+                    Görsellerinizi tarayıcı içinde gizlilikle boyutlandırın.
+                    Hiçbir veri sunucuya gitmez.
+                </p>
+                <details class="seo-details">
+                    <summary id="t-seoSummary">Nasıl Kullanılır?</summary>
+                    <div class="details-content">
+                        <p id="t-seoP1">
+                            <b>Sadece Boyutlandır:</b> Görselin oranını bozmadan veya
+                            bozarak sadece piksel değerlerini değiştirir.
+                        </p>
+                        <p id="t-seoP2">
+                            <b>Kırp + Boyutlandır:</b> Görseli istediğiniz sosyal
+                            medya formatına göre (kare, story, sinematik) otomatik
+                            olarak budar.
+                        </p>
+                        <p id="t-seoP3">
+                            Tüm işlem cihazınızda gerçekleşir; görseller
+                            sunucuya yüklenmez. Böylece gizlilik ve hız bir
+                            arada.
+                        </p>
+                    </div>
+                </details>
+            </section>
+        </div>
+    </div>
+</section>
+
+<style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .mode-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        text-align: left;
+        padding: 16px;
+        border-radius: 14px;
+        border: 2px solid #e2e8f0;
+        background: #fff;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    .mode-card:hover {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+    }
+    .mode-card.is-active {
+        border-color: #4f46e5;
+        background: #f5f3ff;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+    }
+    .mode-icon {
+        font-size: 1.5rem;
+    }
+    .mode-title {
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 2px;
+    }
+    .mode-desc {
+        font-size: 0.85rem;
+        line-height: 1.3;
+    }
+
+    .info-bar {
+        display: flex;
+        justify-content: space-around;
+        background: #f1f5f9;
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 16px;
+        font-size: 0.9rem;
+    }
+    .info-label {
+        color: #64748b;
+        margin-right: 5px;
+    }
+
+    .controls-card {
+        margin-top: 16px;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+    }
+    .fit-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    .fit-fields.is-hidden {
+        display: none;
+    }
+    .field label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #475569;
+        margin-bottom: 6px;
+    }
+    .field input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+    }
+    .field input:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    .field-hint {
+        grid-column: 1 / -1;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-top: 8px;
+    }
+
+    .preset-row,
+    .align-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+    }
+    .preset-btn,
+    .align-btn {
+        padding: 6px 14px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        background: rgba(241, 245, 249, 0.9);
+        color: #334155;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .preset-btn:hover,
+    .align-btn:hover {
+        background: rgba(226, 232, 240, 1);
+        border-color: rgba(100, 116, 139, 0.9);
+    }
+    .preset-btn.is-active,
+    .align-btn.is-active {
+        background: #4f46e5;
+        color: #fff;
+        border-color: #4f46e5;
+        box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35);
+    }
+
+    .preview-panel {
+        margin-top: 24px;
+    }
+    .preview-head {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+    .preview-frame-img {
+        background: #f8fafc;
+        border: 2px dashed #e2e8f0;
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        max-height: 500px;
+        overflow: hidden;
+    }
+    canvas {
+        max-width: 100%;
+        height: auto !important;
+        object-fit: contain;
+    }
+
+    .action-bar {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+    }
+    .primary-btn {
+        flex: 2;
+        padding: 14px;
+        background: #4f46e5;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+    .primary-btn:disabled {
+        background: #94a3b8;
+        cursor: not-allowed;
+    }
+    .ghost-btn {
+        flex: 1;
+        background: transparent;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+        .mode-grid,
+        .fit-fields {
+            grid-template-columns: 1fr;
+        }
+        .action-bar {
+            flex-direction: column;
+        }
+        .info-bar {
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+    }
+</style>
+
+<script type="module">
+    import { i18n } from "/i18n.js";
+    import { detectLang } from "/utils/lang.js";
+
+    const lang = detectLang();
+    const t = i18n[lang] || i18n.en;
+
+    const TEXT = {
+        tr: {
+            back: "← Geri",
+            navTools: "Araçlar",
+            badge: "Ücretsiz & Sınırsız",
+            heroTitle: "Resim Yeniden Boyutlandırma & Kırpma",
+            heroSub:
+                "Görselini yükle, sadece boyutlandır veya kırp + boyutlandır. Önizle, sonra indir.",
+            f1: "📐 Boyutlandır",
+            f2: "✂️ Kırp",
+            f3: "🔒 Upload yok",
+            bcHome: "Anasayfa",
+            bcHere: "Resim Yeniden Boyutlandırma & Kırpma",
+            choose: "Görsel seç",
+            idleHint: "veya buraya sürükle.",
+            processing: "İşleniyor…",
+            ready: "Hazır!",
+            uploadMore: "Başka yükle?",
+            modeFitTitle: "Sadece Boyutlandır",
+            modeFitDesc:
+                "Tam görseli koru, sadece genişlik / yükseklik değerlerini değiştir.",
+            modeCropTitle: "Kırp + Boyutlandır",
+            modeCropDesc:
+                "Kare, story veya sinematik gibi belirli bir orana sığdır.",
+            origLabel: "Orijinal:",
+            outLabel: "Yeni Boyut:",
+            outWLabel: "Genişlik (px)",
+            outHLabel: "Yükseklik (px)",
+            fitHint:
+                "* Bir kenarı boş bırakırsanız orijinal en-boy oranı korunur.",
+            longLabel: "Uzun Kenar Ölçüsü (px)",
+            ratioLabel: "Hedef Oran (Aspect Ratio)",
+            r11: "1:1 Kare",
+            r45: "4:5 Portre",
+            r169: "16:9 Sinematik",
+            r916: "9:16 Story",
+            alignLabel: "Odak Noktası",
+            aTop: "Üst",
+            aCenter: "Orta",
+            aBottom: "Alt",
+            previewTitle: "Canlı Önizleme",
+            formatLabel: "Format:",
+            downloadBtn: "Görseli İndir",
+            resetBtn: "Sıfırla",
+            seoH2: "Saku Resim Yeniden Boyutlandırma & Kırpma Nedir?",
+            seoLead:
+                "Görsellerinizi tarayıcı içinde gizlilikle boyutlandırın. Hiçbir veri sunucuya gitmez.",
+            seoSummary: "Nasıl Kullanılır?",
+            seoP1: "Sadece Boyutlandır modunda görselin oranını bozmadan veya bozarak sadece piksel değerlerini değiştirirsiniz.",
+            seoP2: "Kırp + Boyutlandır modunda kare, portre, story veya sinematik gibi oranları seçerek görseli bu çerçeveye oturtursunuz.",
+            seoP3: "Tüm işlem cihazınızda gerçekleşir; görseller sunucuya yüklenmez. Böylece gizlilik ve hız bir aradadır.",
+            msgNotImage: "Lütfen bir görsel dosyası seçin.",
+            msgLoaded:
+                "Görsel yüklendi ✅ Modu ve çıktıyı ayarla; önizleme indirilecek halidir.",
+            msgLoadError: "Görsel yüklenirken hata oluştu.",
+        },
+        en: {
+            back: "← Back",
+            navTools: "Tools",
+            badge: "Free & Unlimited",
+            heroTitle: "Image Resize & Crop",
+            heroSub:
+                "Upload your image, then resize only or crop + resize. Preview before download.",
+            f1: "📐 Resize",
+            f2: "✂️ Crop",
+            f3: "🔒 No uploads",
+            bcHome: "Home",
+            bcHere: "Image Resize & Crop",
+            choose: "Choose image",
+            idleHint: "or drop it here.",
+            processing: "Processing…",
+            ready: "Ready!",
+            uploadMore: "Upload more?",
+            modeFitTitle: "Resize Only",
+            modeFitDesc:
+                "Keep the whole image, only change width / height values.",
+            modeCropTitle: "Crop + Resize",
+            modeCropDesc:
+                "Fit into a specific aspect ratio like square or 16:9.",
+            origLabel: "Original:",
+            outLabel: "Output size:",
+            outWLabel: "Width (px)",
+            outHLabel: "Height (px)",
+            fitHint:
+                "* Leave one side empty to keep the original aspect ratio.",
+            longLabel: "Long Edge (px)",
+            ratioLabel: "Target Ratio (Aspect Ratio)",
+            r11: "1:1 Square",
+            r45: "4:5 Portrait",
+            r169: "16:9 Cinematic",
+            r916: "9:16 Story",
+            alignLabel: "Focus Area",
+            aTop: "Top",
+            aCenter: "Center",
+            aBottom: "Bottom",
+            previewTitle: "Live Preview",
+            formatLabel: "Format:",
+            downloadBtn: "Download Image",
+            resetBtn: "Reset",
+            seoH2: "What is Saku Image Resize & Crop?",
+            seoLead:
+                "Resize and crop your images privately in your browser. No data is uploaded.",
+            seoSummary: "How to use?",
+            seoP1: "In Resize Only mode you change just the pixel dimensions, with or without keeping the original aspect ratio.",
+            seoP2: "In Crop + Resize mode you choose a target ratio like square, portrait, or story and the image is cropped to fit.",
+            seoP3: "Everything runs locally in your browser; images are never uploaded to a server.",
+            msgNotImage: "Please choose an image file.",
+            msgLoaded:
+                "Image loaded ✅ Adjust the mode and output; preview is the final downloaded file.",
+            msgLoadError: "Error while loading the image.",
+        },
+    };
+
+    const L = TEXT[lang] || TEXT.en;
+
+    const $ = (id) => document.getElementById(id);
+    const set = (id, value) => {
+        const el = $(id);
+        if (el && value != null) el.textContent = value;
+    };
+
+    const miniHero = $("miniHero");
+    requestAnimationFrame(() => miniHero?.classList.add("is-entered"));
+
+    // basic i18n
+    set("t-back", t.back ?? L.back);
+    set("t-navTools", t.toolsHead ?? L.navTools);
+    set("t-badge", t.badge ?? L.badge);
+    set("t-title", L.heroTitle);
+    set("t-sub", L.heroSub);
+    set("t-f1", L.f1);
+    set("t-f2", L.f2);
+    set("t-f3", L.f3);
+    set("t-bcHome", L.bcHome);
+    set("t-bcHere", L.bcHere);
+
+    set("t-choose", L.choose);
+    set("idleHint", L.idleHint);
+    set("t-processing", L.processing);
+    set("t-ready", L.ready);
+    set("t-uploadMore", L.uploadMore);
+
+    set("t-modeFitTitle", L.modeFitTitle);
+    set("t-modeFitDesc", L.modeFitDesc);
+    set("t-modeCropTitle", L.modeCropTitle);
+    set("t-modeCropDesc", L.modeCropDesc);
+
+    set("t-origLabel", L.origLabel);
+    set("t-outLabel", L.outLabel);
+    set("t-outWLabel", L.outWLabel);
+    set("t-outHLabel", L.outHLabel);
+    set("t-fitHint", L.fitHint);
+    set("t-longLabel", L.longLabel);
+    set("t-ratioLabel", L.ratioLabel);
+    set("t-r11", L.r11);
+    set("t-r45", L.r45);
+    set("t-r169", L.r169);
+    set("t-r916", L.r916);
+    set("t-alignLabel", L.alignLabel);
+    set("t-aTop", L.aTop);
+    set("t-aCenter", L.aCenter);
+    set("t-aBottom", L.aBottom);
+
+    set("t-previewTitle", L.previewTitle);
+    set("t-formatLabel", L.formatLabel);
+    set("t-downloadBtn", L.downloadBtn);
+    set("t-resetBtn", L.resetBtn);
+
+    set("t-seoH2", L.seoH2);
+    set("t-seoLead", L.seoLead);
+    set("t-seoSummary", L.seoSummary);
+    set("t-seoP1", L.seoP1);
+    set("t-seoP2", L.seoP2);
+    set("t-seoP3", L.seoP3);
+
+    document.documentElement.lang = lang;
+
+    // lang switch
+    const langBtns = document.querySelectorAll(".lang-btn");
+    const current = localStorage.getItem("lang") || lang;
+    langBtns.forEach((b) =>
+        b.classList.toggle("is-active", b.dataset.lang === current),
+    );
+    langBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            localStorage.setItem("lang", btn.dataset.lang);
+            location.reload();
+        });
+    });
+
+    // refs
+    const fileInput = $("file");
+    const dropZone = $("dropZone");
+    const uploadMore = $("uploadMore");
+
+    const workWrap = $("workWrap");
+    const result = $("result");
+
+    const modeFit = $("modeFit");
+    const modeCrop = $("modeCrop");
+
+    const fitFields = $("fitFields");
+    const cropControls = $("cropControls");
+
+    const origText = $("origText");
+    const outText = $("outText");
+
+    const outWInput = $("outW");
+    const outHInput = $("outH");
+    const longSideInput = $("longSide");
+
+    const presetBtns = document.querySelectorAll(".preset-btn");
+    const alignBtns = document.querySelectorAll(".align-btn");
+
+    const canvas = $("canvas");
+    const ctx = canvas.getContext("2d", { alpha: true });
+
+    const downloadBtn = $("download");
+    const resetBtn = $("reset");
+    const fmtText = $("fmtText");
+
+    const stateIdle = document.querySelector(".upload-state.is-idle");
+    const stateProcessing = document.querySelector(
+        ".upload-state.is-processing",
+    );
+    const stateDone = document.querySelector(".upload-state.is-done");
+
+    function showIdle() {
+        stateIdle.hidden = false;
+        stateProcessing.hidden = true;
+        stateDone.hidden = true;
+    }
+    function showProcessing() {
+        stateIdle.hidden = true;
+        stateProcessing.hidden = false;
+        stateDone.hidden = true;
+    }
+    function showDone() {
+        stateIdle.hidden = true;
+        stateProcessing.hidden = true;
+        stateDone.hidden = false;
+    }
+
+    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+    const clampPx = (v) => clamp(Math.round(v || 0), 16, 8000);
+
+    let srcBitmap = null;
+    let srcW0 = 0;
+    let srcH0 = 0;
+    let srcAspect = 1;
+
+    let mode = "fit"; // "fit" | "crop"
+    let cropRatio = 1; // width/height
+    let cropAlign = "center"; // "top" | "center" | "bottom"
+
+    let outBlob = null;
+    let outUrl = null;
+    let outName = "output.png";
+    let outMime = "image/png";
+
+    function setMode(next) {
+        mode = next;
+
+        modeFit.classList.toggle("is-active", mode === "fit");
+        modeCrop.classList.toggle("is-active", mode === "crop");
+
+        fitFields.classList.toggle("is-hidden", mode !== "fit");
+        cropControls.hidden = mode !== "crop";
+
+        render();
+    }
+
+    function setCropRatioFromBtn(btn) {
+        const val = btn.dataset.ratio || "1:1";
+        const [a, b] = val.split(":").map((x) => Number(x));
+        if (!a || !b) {
+            cropRatio = 1;
+        } else {
+            cropRatio = a / b;
+        }
+        presetBtns.forEach((p) => p.classList.toggle("is-active", p === btn));
+        render();
+    }
+
+    function setAlignFromBtn(btn) {
+        cropAlign = btn.dataset.align || "center";
+        alignBtns.forEach((a) => a.classList.toggle("is-active", a === btn));
+        render();
+    }
+
+    function updateInfo(targetW, targetH) {
+        origText.textContent = srcW0 ? `${srcW0} × ${srcH0}` : "—";
+        outText.textContent =
+            targetW && targetH ? `${targetW} × ${targetH}` : "—";
+    }
+
+    async function makeBlob() {
+        if (!srcBitmap) return;
+        const blob = await new Promise((resolve) =>
+            canvas.toBlob(
+                resolve,
+                outMime,
+                outMime === "image/jpeg" ? 0.92 : undefined,
+            ),
+        );
+        if (!blob) return;
+        if (outUrl) URL.revokeObjectURL(outUrl);
+        outBlob = blob;
+        outUrl = URL.createObjectURL(blob);
+        downloadBtn.disabled = false;
+    }
+
+    function drawFit(targetW, targetH) {
+        canvas.width = targetW;
+        canvas.height = targetH;
+        ctx.clearRect(0, 0, targetW, targetH);
+
+        const scale = Math.min(targetW / srcW0, targetH / srcH0);
+        const dw = srcW0 * scale;
+        const dh = srcH0 * scale;
+        const dx = (targetW - dw) / 2;
+        const dy = (targetH - dh) / 2;
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(srcBitmap, dx, dy, dw, dh);
+    }
+
+    function drawCrop(targetW, targetH) {
+        canvas.width = targetW;
+        canvas.height = targetH;
+        ctx.clearRect(0, 0, targetW, targetH);
+
+        const scale = Math.max(targetW / srcW0, targetH / srcH0);
+        const dw = srcW0 * scale;
+        const dh = srcH0 * scale;
+
+        const baseX = (targetW - dw) / 2;
+        let dy;
+
+        if (cropAlign === "top") {
+            dy = 0;
+        } else if (cropAlign === "bottom") {
+            dy = targetH - dh;
+        } else {
+            dy = (targetH - dh) / 2;
+        }
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(srcBitmap, baseX, dy, dw, dh);
+    }
+
+    function render() {
+        if (!srcBitmap) return;
+
+        let targetW;
+        let targetH;
+
+        if (mode === "fit") {
+            let w = Number(outWInput.value);
+            let h = Number(outHInput.value);
+
+            if (!w && !h) {
+                w = srcW0;
+                h = srcH0;
+            } else if (w && !h) {
+                h = Math.round(w / srcAspect);
+            } else if (!w && h) {
+                w = Math.round(h * srcAspect);
+            }
+
+            targetW = clampPx(w);
+            targetH = clampPx(h);
+            drawFit(targetW, targetH);
+        } else {
+            const fallbackLong = Math.max(srcW0, srcH0) || 512;
+            const longRaw = Number(longSideInput.value) || fallbackLong;
+            const long = clampPx(longRaw);
+
+            if (cropRatio >= 1) {
+                targetW = long;
+                targetH = clampPx(long / cropRatio);
+            } else {
+                targetH = long;
+                targetW = clampPx(long * cropRatio);
+            }
+            drawCrop(targetW, targetH);
+        }
+
+        updateInfo(targetW, targetH);
+        makeBlob();
+    }
+
+    function resetAll() {
+        fileInput.value = "";
+        workWrap.hidden = true;
+        result.textContent = "";
+
+        srcBitmap = null;
+        srcW0 = 0;
+        srcH0 = 0;
+        srcAspect = 1;
+
+        if (outUrl) URL.revokeObjectURL(outUrl);
+        outUrl = null;
+        outBlob = null;
+        downloadBtn.disabled = true;
+
+        outWInput.value = "";
+        outHInput.value = "";
+        longSideInput.value = "";
+
+        cropRatio = 1;
+        cropAlign = "center";
+
+        presetBtns.forEach((p) =>
+            p.classList.toggle("is-active", p.id === "r11"),
+        );
+        alignBtns.forEach((a) =>
+            a.classList.toggle("is-active", a.id === "aCenter"),
+        );
+
+        setMode("fit");
+        showIdle();
+    }
+
+    async function setSelectedFile(file) {
+        if (!file || !file.type.startsWith("image/")) {
+            result.textContent = L.msgNotImage;
+            return;
+        }
+
+        showProcessing();
+        result.textContent = "";
+
+        try {
+            const bmp = await createImageBitmap(file);
+            srcBitmap = bmp;
+            srcW0 = bmp.width;
+            srcH0 = bmp.height;
+            srcAspect = srcW0 / srcH0 || 1;
+
+            // --- YENİ: önce önceki değerleri temizle ---
+            outWInput.value = "";
+            outHInput.value = "";
+            longSideInput.value = ""; // istersen "1080" sabitleyebilirsin
+            // -------------------------------------------
+
+            outName = (file.name || "image").replace(/\.[^.]+$/, "");
+            if (file.type === "image/jpeg" || file.type === "image/jpg") {
+                outMime = "image/jpeg";
+                outName += "-resized.jpg";
+                fmtText.textContent = "JPG";
+            } else {
+                outMime = "image/png";
+                outName += "-resized.png";
+                fmtText.textContent = "PNG";
+            }
+
+            // placeholder’lara yeni orijinal ölçüleri yaz
+            outWInput.placeholder = String(srcW0);
+            outHInput.placeholder = String(srcH0);
+            longSideInput.placeholder = String(
+                Math.min(Math.max(srcW0, srcH0), 1920),
+            );
+
+            workWrap.hidden = false;
+            showDone();
+
+            render();
+
+            result.textContent = L.msgLoaded;
+        } catch (e) {
+            console.error(e);
+            resetAll();
+            result.textContent = L.msgLoadError;
+        }
+    }
+
+    fileInput.addEventListener("change", () => {
+        const f = fileInput.files?.[0];
+        if (f) setSelectedFile(f);
+    });
+
+    ["dragenter", "dragover"].forEach((ev) => {
+        dropZone.addEventListener(ev, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.classList.add("is-dragover");
+        });
+    });
+    ["dragleave", "dragend"].forEach((ev) => {
+        dropZone.addEventListener(ev, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.classList.remove("is-dragover");
+        });
+    });
+    dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove("is-dragover");
+        const f = e.dataTransfer?.files?.[0];
+        if (f) setSelectedFile(f);
+    });
+
+    uploadMore.addEventListener("click", (e) => {
+        e.preventDefault();
+        resetAll();
+    });
+
+    modeFit.addEventListener("click", () => setMode("fit"));
+    modeCrop.addEventListener("click", () => setMode("crop"));
+
+    outWInput.addEventListener("input", () => render());
+    outHInput.addEventListener("input", () => render());
+    longSideInput.addEventListener("input", () => render());
+
+    presetBtns.forEach((btn) => {
+        btn.addEventListener("click", () => setCropRatioFromBtn(btn));
+    });
+    alignBtns.forEach((btn) => {
+        btn.addEventListener("click", () => setAlignFromBtn(btn));
+    });
+
+    downloadBtn.addEventListener("click", () => {
+        if (!outBlob || !outUrl) return;
+        const a = document.createElement("a");
+        a.href = outUrl;
+        a.download = outName;
+        a.click();
+    });
+
+    resetBtn.addEventListener("click", resetAll);
+
+    showIdle();
+    setMode("fit");
+    outWInput.value = "";
+    outHInput.value = "";
+    longSideInput.value = "";
+</script>
