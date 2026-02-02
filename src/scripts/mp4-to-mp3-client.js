@@ -6,6 +6,8 @@ import { toBlobURL } from "@ffmpeg/util";
 
 /**
  * ✅ Marka / suffix ayarı
+ * - "myVideo_saku.mp3" gibi olsun istiyorsan suffix kullan.
+ * - "saku_myVideo.mp3" istiyorsan prefix kullan.
  */
 const BRAND = "saku";
 const BRAND_MODE = "suffix"; // "suffix" | "prefix"
@@ -100,7 +102,9 @@ set("t-uploadMore", L.uploadMore);
 // lang switch UI
 const langBtns = document.querySelectorAll(".lang-btn");
 const current = localStorage.getItem("lang") || lang;
-langBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === current));
+langBtns.forEach((b) =>
+  b.classList.toggle("is-active", b.dataset.lang === current),
+);
 langBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     localStorage.setItem("lang", btn.dataset.lang);
@@ -154,11 +158,12 @@ function bytesToNice(n) {
   return `${(kb / 1024).toFixed(2)} MB`;
 }
 
+// ✅ dosya adını güvenli hale getirelim
 function safeName(name) {
   return (
     String(name)
-      .replace(/\.[^.]+$/, "")
-      .replace(/[^\w\-]+/g, "_")
+      .replace(/\.[^.]+$/, "") // extension sil
+      .replace(/[^\w\-]+/g, "_") // boşluk ve sembolleri _
       .replace(/_+/g, "_")
       .replace(/^_+|_+$/g, "")
       .slice(0, 60) || "output"
@@ -174,6 +179,14 @@ function brandFileName(base) {
   return `${n}_${b}.mp3`;
 }
 
+function isVideoFile(file) {
+  if (!file) return false;
+  const type = (file.type || "").toLowerCase();
+  if (type.startsWith("video/")) return true;
+  const name = (file.name || "").toLowerCase();
+  return /\.(mp4|mov|mkv|webm|avi|m4v)$/i.test(name);
+}
+
 let selectedFile = null;
 let outBlob = null;
 let outUrl = null;
@@ -187,17 +200,24 @@ let ffmpegLoadingPromise = null;
 
 function setBusy(v) {
   isBusy = v;
-  if (convertBtn) convertBtn.disabled = v || !selectedFile;
-  if (resetBtn) resetBtn.disabled = v;
-  if (downloadBtn) downloadBtn.disabled = v || !outBlob;
+  convertBtn.disabled = v || !selectedFile;
+  resetBtn.disabled = v;
+  downloadBtn.disabled = v || !outBlob;
 }
 
 function resetProgress() {
-  if (!progressWrap) return;
   progressWrap.hidden = true;
-  if (progressFill) progressFill.style.width = "0%";
-  if (progressPct) progressPct.textContent = "0%";
-  if (progressText) progressText.textContent = "—";
+  progressFill.style.width = "0%";
+  progressPct.textContent = "0%";
+  progressText.textContent = "—";
+}
+
+function setProgress(pct, text) {
+  const p = Math.max(0, Math.min(100, Math.round(pct)));
+  progressWrap.hidden = false;
+  progressPct.textContent = p + "%";
+  progressFill.style.width = p + "%";
+  if (text) progressText.textContent = text;
 }
 
 async function ensureFFmpeg() {
@@ -207,39 +227,46 @@ async function ensureFFmpeg() {
   ffmpegLoadingPromise = (async () => {
     ffmpeg = new FFmpeg({ log: false });
 
+    // ✅ progress event (progress/ratio)
     ffmpeg.on("progress", (p) => {
       const val =
         typeof p?.progress === "number"
           ? p.progress
           : typeof p?.ratio === "number"
-            ? p.ratio
-            : 0;
+          ? p.ratio
+          : 0;
 
       const pct = Math.max(0, Math.min(100, Math.round(val * 100)));
-      if (progressPct) progressPct.textContent = pct + "%";
-      if (progressFill) progressFill.style.width = pct + "%";
+      progressPct.textContent = pct + "%";
+      progressFill.style.width = pct + "%";
     });
 
-    if (progressWrap) progressWrap.hidden = false;
-    if (progressFill) progressFill.style.width = "0%";
-    if (progressPct) progressPct.textContent = "0%";
-    if (progressText) progressText.textContent = L.loadingFF;
-    if (statusLine) statusLine.textContent = L.loadingFF;
+    setProgress(5, L.loadingFF);
+    statusLine.textContent = L.loadingFF;
 
-    // ✅ Cloudflare Pages 25MiB limitine takılmamak için core/wasm/worker CDN’den
-    // (ffmpeg-core.worker.js dosya adı önemli)
+    // ✅ Cloudflare Pages limit çözümü:
+    // core/wasm/worker local değil, CDN üzerinden gelecek (repo’da .wasm tutma)
+    // Not: Versiyon sabitlemek stabil olur.
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
 
     const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript");
     const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm");
-    const workerURL = await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, "text/javascript");
+    const workerURL = await toBlobURL(
+      `${baseURL}/ffmpeg-core.worker.js`,
+      "text/javascript",
+    );
 
+    // ✅ tek load + timeout
     const loadPromise = ffmpeg.load({ coreURL, wasmURL, workerURL });
     const timeoutPromise = new Promise((_, rej) =>
-      setTimeout(() => rej(new Error("FFmpeg load timeout (CDN/core/wasm/worker erişilemiyor)")), 25000),
+      setTimeout(
+        () => rej(new Error("FFmpeg load timeout (CDN erişilemiyor olabilir)")),
+        25000,
+      ),
     );
 
     await Promise.race([loadPromise, timeoutPromise]);
+
     isFFmpegReady = true;
   })();
 
@@ -259,11 +286,11 @@ function resetAll() {
   outName = "output.mp3";
   cleanupOutputUrl();
 
-  if (fileInput) fileInput.value = "";
-  if (controls) controls.hidden = true;
-  if (result) result.textContent = "";
-  if (fileLine) fileLine.textContent = "—";
-  if (statusLine) statusLine.textContent = "—";
+  fileInput.value = "";
+  controls.hidden = true;
+  result.textContent = "";
+  fileLine.textContent = "—";
+  statusLine.textContent = "—";
   resetProgress();
 
   showIdle();
@@ -273,33 +300,31 @@ function resetAll() {
 async function setSelectedFile(file) {
   if (!file) return;
 
-  // bazı tarayıcılarda type boş gelebilir -> name’e de bak
-  const name = (file.name || "").toLowerCase();
-  const isVideo = (file.type || "").startsWith("video/") || /\.(mp4|mov|m4v|webm|mkv)$/i.test(name);
-
-  if (!isVideo) {
-    if (result) result.textContent = L.notVideo;
+  if (!isVideoFile(file)) {
+    result.textContent = L.notVideo;
     return;
   }
 
   selectedFile = file;
 
+  // output sıfırla
   outBlob = null;
   outName = brandFileName(file.name);
   cleanupOutputUrl();
 
-  if (controls) controls.hidden = false;
+  controls.hidden = false;
   showDone();
 
-  if (fileLine) fileLine.textContent = L.selected(file.name, bytesToNice(file.size));
-  if (statusLine) statusLine.textContent = "—";
-  if (result) result.textContent = "";
-  if (downloadBtn) downloadBtn.disabled = true;
+  fileLine.textContent = L.selected(file.name, bytesToNice(file.size));
+  statusLine.textContent = "—";
+  result.textContent = "";
+  downloadBtn.disabled = true;
   resetProgress();
 
   setBusy(false);
 }
 
+// ✅ stabilize mp3 convert command
 async function execConvert(inputName, outputName) {
   await ffmpeg.exec([
     "-i",
@@ -322,84 +347,96 @@ async function convertToMp3() {
     setBusy(true);
     showProcessing();
 
-    if (progressWrap) progressWrap.hidden = false;
-    if (progressFill) progressFill.style.width = "0%";
-    if (progressPct) progressPct.textContent = "0%";
-    if (progressText) progressText.textContent = L.loadingFF;
-    if (statusLine) statusLine.textContent = L.loadingFF;
+    setProgress(1, L.loadingFF);
+    statusLine.textContent = L.loadingFF;
 
+    // ✅ FFmpeg hazırla
     await ensureFFmpeg();
 
-    if (progressText) progressText.textContent = L.reading;
-    if (statusLine) statusLine.textContent = L.reading;
+    progressText.textContent = L.reading;
+    statusLine.textContent = L.reading;
 
     const inputName = "input.mp4";
     const outputName = "output.mp3";
 
+    // ✅ RAM'e al
     const inputData = new Uint8Array(await selectedFile.arrayBuffer());
 
-    if (progressText) progressText.textContent = L.writing;
-    if (statusLine) statusLine.textContent = L.writing;
+    progressText.textContent = L.writing;
+    statusLine.textContent = L.writing;
 
+    // ✅ yaz
     await ffmpeg.writeFile(inputName, inputData);
 
-    if (progressText) progressText.textContent = L.converting;
-    if (statusLine) statusLine.textContent = L.converting;
+    progressText.textContent = L.converting;
+    statusLine.textContent = L.converting;
 
+    // ✅ convert
     await execConvert(inputName, outputName);
 
-    if (progressText) progressText.textContent = L.exporting;
-    if (statusLine) statusLine.textContent = L.exporting;
+    progressText.textContent = L.exporting;
+    statusLine.textContent = L.exporting;
 
+    // ✅ oku
     const outData = await ffmpeg.readFile(outputName);
     outBlob = new Blob([outData], { type: "audio/mpeg" });
 
-    // cleanup
-    try { await ffmpeg.deleteFile(inputName); } catch {}
-    try { await ffmpeg.deleteFile(outputName); } catch {}
+    // ✅ temizle
+    try {
+      await ffmpeg.deleteFile(inputName);
+    } catch {}
+    try {
+      await ffmpeg.deleteFile(outputName);
+    } catch {}
 
     cleanupOutputUrl();
     outUrl = URL.createObjectURL(outBlob);
 
-    const okText = L.done(bytesToNice(selectedFile.size), bytesToNice(outBlob.size));
-    if (statusLine) statusLine.textContent = okText;
-    if (result) result.textContent = okText;
+    const okText = L.done(
+      bytesToNice(selectedFile.size),
+      bytesToNice(outBlob.size),
+    );
+    statusLine.textContent = okText;
+    result.textContent = okText;
 
-    if (downloadBtn) downloadBtn.disabled = false;
+    downloadBtn.disabled = false;
+    setProgress(100, okText);
+
     showDone();
     setBusy(false);
   } catch (e) {
     console.error(e);
     showDone();
     setBusy(false);
-    if (result) result.textContent = L.err;
-    if (statusLine) statusLine.textContent = L.err;
+    result.textContent = L.err;
+    statusLine.textContent = L.err;
   }
 }
 
-if (convertBtn) convertBtn.textContent = L.convert;
-if (downloadBtn) downloadBtn.textContent = L.download;
-if (resetBtn) resetBtn.textContent = L.reset;
+convertBtn.textContent = L.convert;
+downloadBtn.textContent = L.download;
+resetBtn.textContent = L.reset;
 
-convertBtn?.addEventListener("click", convertToMp3);
+convertBtn.addEventListener("click", convertToMp3);
 
-downloadBtn?.addEventListener("click", () => {
+downloadBtn.addEventListener("click", () => {
   if (!outBlob || !outUrl) return;
+
   const a = document.createElement("a");
   a.href = outUrl;
   a.download = outName;
   a.click();
 });
 
-resetBtn?.addEventListener("click", resetAll);
+resetBtn.addEventListener("click", resetAll);
 
-fileInput?.addEventListener("change", () => {
+fileInput.addEventListener("change", () => {
   const file = fileInput.files?.[0];
   if (file) setSelectedFile(file);
 });
 
 ["dragenter", "dragover"].forEach((ev) => {
-  dropZone?.addEventListener(ev, (e) => {
+  dropZone.addEventListener(ev, (e) => {
     e.preventDefault();
     e.stopPropagation();
     dropZone.classList.add("is-dragover");
@@ -407,22 +444,23 @@ fileInput?.addEventListener("change", () => {
 });
 
 ["dragleave", "dragend"].forEach((ev) => {
-  dropZone?.addEventListener(ev, (e) => {
+  dropZone.addEventListener(ev, (e) => {
     e.preventDefault();
     e.stopPropagation();
     dropZone.classList.remove("is-dragover");
   });
 });
 
-dropZone?.addEventListener("drop", (e) => {
+dropZone.addEventListener("drop", (e) => {
   e.preventDefault();
   e.stopPropagation();
   dropZone.classList.remove("is-dragover");
+
   const file = e.dataTransfer?.files?.[0];
   if (file) setSelectedFile(file);
 });
 
-uploadMore?.addEventListener("click", (e) => {
+uploadMore.addEventListener("click", (e) => {
   e.preventDefault();
   resetAll();
 });

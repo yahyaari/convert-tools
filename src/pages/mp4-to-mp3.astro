@@ -5,9 +5,6 @@ import SITE from "../consts";
 const pagePath = "/mp4-to-mp3";
 const pageUrl = new URL(pagePath, SITE.url).toString();
 const homeUrl = new URL("/", SITE.url).toString();
-
-// ✅ Client script'i Vite üzerinden URL olarak alıyoruz (DOĞRU YOL)
-import mp4ClientUrl from "../scripts/mp4-to-mp3-client.js?url";
 ---
 
 <BaseLayout
@@ -332,7 +329,9 @@ import mp4ClientUrl from "../scripts/mp4-to-mp3-client.js?url";
             </style>
 
             {/* ✅ Client JS */}
-            <script type="module" src={mp4ClientUrl}></script>
+            <script type="module">
+                import "../scripts/mp4-to-mp3-client.js";
+            </script>
 
             {
                 /* ✅ SEO section EN çevirisi (import yok, sadece localStorage + navigator) */
