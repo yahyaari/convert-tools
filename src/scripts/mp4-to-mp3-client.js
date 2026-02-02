@@ -102,7 +102,9 @@ set("t-uploadMore", L.uploadMore);
 // lang switch UI
 const langBtns = document.querySelectorAll(".lang-btn");
 const current = localStorage.getItem("lang") || lang;
-langBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === current));
+langBtns.forEach((b) =>
+  b.classList.toggle("is-active", b.dataset.lang === current),
+);
 langBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     localStorage.setItem("lang", btn.dataset.lang);
@@ -158,12 +160,14 @@ function bytesToNice(n) {
 
 // ✅ dosya adını güvenli hale getirelim
 function safeName(name) {
-  return String(name)
-    .replace(/\.[^.]+$/, "") // extension sil
-    .replace(/[^\w\-]+/g, "_") // boşluk ve sembolleri _
-    .replace(/_+/g, "_")
-    .replace(/^_+|_+$/g, "")
-    .slice(0, 60) || "output";
+  return (
+    String(name)
+      .replace(/\.[^.]+$/, "") // extension sil
+      .replace(/[^\w\-]+/g, "_") // boşluk ve sembolleri _
+      .replace(/_+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .slice(0, 60) || "output"
+  );
 }
 
 function brandFileName(base) {
@@ -173,6 +177,14 @@ function brandFileName(base) {
   const b = safeName(BRAND);
   if (BRAND_MODE === "prefix") return `${b}_${n}.mp3`;
   return `${n}_${b}.mp3`;
+}
+
+function isVideoFile(file) {
+  if (!file) return false;
+  const type = (file.type || "").toLowerCase();
+  if (type.startsWith("video/")) return true;
+  const name = (file.name || "").toLowerCase();
+  return /\.(mp4|mov|mkv|webm|avi|m4v)$/i.test(name);
 }
 
 let selectedFile = null;
@@ -200,44 +212,57 @@ function resetProgress() {
   progressText.textContent = "—";
 }
 
+function setProgress(pct, text) {
+  const p = Math.max(0, Math.min(100, Math.round(pct)));
+  progressWrap.hidden = false;
+  progressPct.textContent = p + "%";
+  progressFill.style.width = p + "%";
+  if (text) progressText.textContent = text;
+}
+
 async function ensureFFmpeg() {
   if (isFFmpegReady) return;
   if (ffmpegLoadingPromise) return ffmpegLoadingPromise;
 
   ffmpegLoadingPromise = (async () => {
-    ffmpeg = new FFmpeg({ log: false }); // İstersen true yapıp log görebilirsin
+    ffmpeg = new FFmpeg({ log: false });
 
-    // ✅ progress event uyumlu (progress/ratio)
+    // ✅ progress event (progress/ratio)
     ffmpeg.on("progress", (p) => {
       const val =
         typeof p?.progress === "number"
           ? p.progress
           : typeof p?.ratio === "number"
-            ? p.ratio
-            : 0;
+          ? p.ratio
+          : 0;
 
       const pct = Math.max(0, Math.min(100, Math.round(val * 100)));
       progressPct.textContent = pct + "%";
       progressFill.style.width = pct + "%";
     });
 
-    progressWrap.hidden = false;
-    progressFill.style.width = "0%";
-    progressPct.textContent = "0%";
-    progressText.textContent = L.loadingFF;
+    setProgress(5, L.loadingFF);
     statusLine.textContent = L.loadingFF;
 
-    // ✅ core/wasm/worker local (public/ffmpeg)
-    const coreURL = await toBlobURL("/ffmpeg/ffmpeg-core.js", "text/javascript");
-    const wasmURL = await toBlobURL("/ffmpeg/ffmpeg-core.wasm", "application/wasm");
+    // ✅ Cloudflare Pages limit çözümü:
+    // core/wasm/worker local değil, CDN üzerinden gelecek (repo’da .wasm tutma)
+    // Not: Versiyon sabitlemek stabil olur.
+    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
 
-    // ✅ En stabil çözüm: worker'ı local public'ten ver
-    const workerURL = await toBlobURL("/ffmpeg/ffmpeg-worker.js", "text/javascript");
+    const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript");
+    const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm");
+    const workerURL = await toBlobURL(
+      `${baseURL}/ffmpeg-core.worker.js`,
+      "text/javascript",
+    );
 
     // ✅ tek load + timeout
     const loadPromise = ffmpeg.load({ coreURL, wasmURL, workerURL });
     const timeoutPromise = new Promise((_, rej) =>
-      setTimeout(() => rej(new Error("FFmpeg load timeout (core/wasm/worker erişilemiyor)")), 20000),
+      setTimeout(
+        () => rej(new Error("FFmpeg load timeout (CDN erişilemiyor olabilir)")),
+        25000,
+      ),
     );
 
     await Promise.race([loadPromise, timeoutPromise]);
@@ -275,7 +300,7 @@ function resetAll() {
 async function setSelectedFile(file) {
   if (!file) return;
 
-  if (!file.type.startsWith("video/")) {
+  if (!isVideoFile(file)) {
     result.textContent = L.notVideo;
     return;
   }
@@ -322,10 +347,7 @@ async function convertToMp3() {
     setBusy(true);
     showProcessing();
 
-    progressWrap.hidden = false;
-    progressFill.style.width = "0%";
-    progressPct.textContent = "0%";
-    progressText.textContent = L.loadingFF;
+    setProgress(1, L.loadingFF);
     statusLine.textContent = L.loadingFF;
 
     // ✅ FFmpeg hazırla
@@ -334,7 +356,6 @@ async function convertToMp3() {
     progressText.textContent = L.reading;
     statusLine.textContent = L.reading;
 
-    // ✅ input name sabit olsun
     const inputName = "input.mp4";
     const outputName = "output.mp3";
 
@@ -360,7 +381,7 @@ async function convertToMp3() {
     const outData = await ffmpeg.readFile(outputName);
     outBlob = new Blob([outData], { type: "audio/mpeg" });
 
-    // ✅ temizle (önemli)
+    // ✅ temizle
     try {
       await ffmpeg.deleteFile(inputName);
     } catch {}
@@ -371,11 +392,16 @@ async function convertToMp3() {
     cleanupOutputUrl();
     outUrl = URL.createObjectURL(outBlob);
 
-    const okText = L.done(bytesToNice(selectedFile.size), bytesToNice(outBlob.size));
+    const okText = L.done(
+      bytesToNice(selectedFile.size),
+      bytesToNice(outBlob.size),
+    );
     statusLine.textContent = okText;
     result.textContent = okText;
 
     downloadBtn.disabled = false;
+    setProgress(100, okText);
+
     showDone();
     setBusy(false);
   } catch (e) {
