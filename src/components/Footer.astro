@@ -1,0 +1,85 @@
+---
+import SITE from "../consts";
+
+const year = new Date().getFullYear();
+const waHref = `https://wa.me/${SITE.contact.whatsapp}`;
+const mailHref = `mailto:${SITE.contact.email}`;
+---
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="footer-brand">
+            <div class="wordmark">
+                <span class="wm-primary">SAKU</span><span class="wm-secondary"
+                    >Studios</span
+                >
+            </div>
+            <p class="muted" id="t-footer_tagline">
+                Dijital ürünler & teknoloji çözümleri.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href={waHref} target="_blank" rel="noopener">WhatsApp</a>
+            <a href={mailHref}>{SITE.contact.email}</a>
+        </div>
+    </div>
+    <div class="container footer-bottom muted">
+        <span>© {year} SAKU Studios.</span>
+        <span id="t-footer_rights">Tüm hakları saklıdır.</span>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        margin-top: 80px;
+        padding: 48px 0 24px;
+        border-top: 1px solid var(--border);
+        background: var(--surface);
+    }
+    .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+    .footer-brand .wordmark {
+        font-size: 1.125rem;
+    }
+    .wm-primary {
+        font-weight: 800;
+        color: var(--text);
+    }
+    .wm-secondary {
+        font-weight: 300;
+        color: var(--text-muted);
+        margin-left: 4px;
+    }
+    .footer-brand p {
+        margin: 6px 0 0;
+        font-size: 0.9rem;
+    }
+    .footer-links {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    .footer-links a {
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        transition: color 0.15s;
+    }
+    .footer-links a:hover {
+        color: var(--accent);
+    }
+    .footer-bottom {
+        margin-top: 32px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 0.85rem;
+        flex-wrap: wrap;
+    }
+</style>

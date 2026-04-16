@@ -1,0 +1,102 @@
+---
+// SAKU Studios header — logo + nav + language switch.
+---
+
+<header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+        <a href="/" class="wordmark" aria-label="SAKU Studios">
+            <span class="wm-primary">SAKU</span><span class="wm-secondary"
+                >Studios</span
+            >
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+            <a href="/#products" id="t-nav_products">Ürünler</a>
+            <a href="/#about" id="t-nav_about">Hakkımda</a>
+            <a href="/#contact" id="t-nav_contact">İletişim</a>
+        </nav>
+
+        <div class="lang-switch" role="group" aria-label="Language">
+            <button class="lang-btn" type="button" data-lang="tr">TR</button>
+            <button class="lang-btn" type="button" data-lang="en">EN</button>
+        </div>
+    </div>
+</header>
+
+<style>
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: saturate(180%) blur(14px);
+        -webkit-backdrop-filter: saturate(180%) blur(14px);
+        border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+    .wordmark {
+        text-decoration: none;
+        font-size: 1.25rem;
+        letter-spacing: -0.01em;
+        line-height: 1;
+    }
+    .wm-primary {
+        font-weight: 800;
+        color: var(--text);
+    }
+    .wm-secondary {
+        font-weight: 300;
+        color: var(--text-muted);
+        margin-left: 4px;
+    }
+    .nav {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    .nav a {
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color 0.15s ease;
+    }
+    .nav a:hover {
+        color: var(--text);
+    }
+    .lang-switch {
+        display: inline-flex;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 3px;
+        gap: 2px;
+    }
+    .lang-btn {
+        border: 0;
+        background: transparent;
+        padding: 4px 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        border-radius: 999px;
+        transition:
+            background 0.15s,
+            color 0.15s;
+    }
+    .lang-btn.is-active {
+        background: var(--accent);
+        color: #fff;
+    }
+    @media (max-width: 640px) {
+        .nav {
+            display: none;
+        }
+    }
+</style>

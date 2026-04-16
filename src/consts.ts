@@ -1,29 +1,30 @@
 // src/consts.ts
 
 const SITE = {
-    // Ürün / site adı (head <title> ve og:site_name için)
-    name: "Convert Tools",
-
-    // Yayıncı / marka adı (JSON-LD publisher/organization için)
-    publisherName: "Saku Studios",
+    name: "SAKU Studios",
+    publisherName: "SAKU Studios",
 
     descriptionTR:
-        "Görsellerinizi saniyeler içinde dönüştürün, arka planları temizleyin. Tamamen tarayıcınızda çalışır.",
+        "SAKU Studios — işletmeler için modern dijital ürünler ve teknoloji çözümleri.",
     descriptionEN:
-        "Convert images in seconds and remove backgrounds. Everything runs in your browser.",
+        "SAKU Studios — modern digital products and technology solutions for businesses.",
 
-    // PROD URL (www'lü, tek standart)
     url: "https://www.sakustudios.com.tr",
 
-    // Twitter handle varsa: "@sakustudios" gibi
     twitter: null as string | null,
 
-    // Varsayılan OG görsel (mutlaka public/ içinde olmalı)
-    defaultOgImage: "/og/og-default.png",
+    defaultOgImage: "/icon-512.png",
 
-    // (Opsiyonel ama faydalı) Temel varlıklar: BaseLayout'ta tek yerden kullanmak için
-    logo512: "/android-chrome-512x512.png",
+    logo512: "/icon-512.png",
     logo180: "/apple-touch-icon.png",
+
+    contact: {
+        whatsapp: "905010699657",
+        whatsappDisplay: "+90 501 069 96 57",
+        email: "sakustudioss@gmail.com",
+        // Web3Forms access key — https://web3forms.com adresinden sakustudioss@gmail.com ile ücretsiz key al, buraya yapıştır.
+        web3formsKey: "2db70d91-9b2c-46c4-ad4a-80820e4cef14",
+    },
 };
 
 export default SITE;
