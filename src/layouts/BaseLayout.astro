@@ -41,7 +41,7 @@ const alternateTr = new URL(absolutePath, SITE.url).toString();
 const alternateEn = new URL(absolutePath, SITE.url).toString();
 
 // ------- JSON-LD helpers -------
-const stripContextDeep = (input) => {
+const stripContextDeep = (input: any): any => {
     if (!input) return input;
 
     if (Array.isArray(input))
@@ -74,12 +74,17 @@ const baseWebSiteLd = {
 const baseOrgLd = {
     "@type": "Organization",
     "@id": `${SITE.url}/#organization`,
-    name: SITE.publisherName ?? "Saku Studios",
+    name: SITE.publisherName ?? "SAKU Studios",
     url: SITE.url,
-    logo: new URL(
-        SITE.logo512 ?? "/android-chrome-512x512.png",
-        SITE.url,
-    ).toString(),
+    logo: new URL(SITE.logo512 ?? "/icon-512.png", SITE.url).toString(),
+    description: lang === "tr" ? SITE.descriptionTR : SITE.descriptionEN,
+    contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: SITE.contact.email,
+        telephone: `+${SITE.contact.whatsapp}`,
+        availableLanguage: ["tr", "en"],
+    },
 };
 
 const graphItems = [
@@ -120,7 +125,10 @@ const jsonLdString = jsonLdGraph ? JSON.stringify(jsonLdGraph) : "";
             noindex ? (
                 <meta name="robots" content="noindex,nofollow" />
             ) : (
-                <meta name="robots" content="index,follow" />
+                <meta
+                    name="robots"
+                    content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
+                />
             )
         }
 

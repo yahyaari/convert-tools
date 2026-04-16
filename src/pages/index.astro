@@ -7,10 +7,12 @@ import SITE from "../consts";
 
 const pagePath = "/";
 const pageUrl = new URL(pagePath, SITE.url).toString();
+const qrMenuUrl = new URL("/qr-menu", SITE.url).toString();
 ---
 
 <BaseLayout
-    title="SAKU Studios – Dijital Ürünler ve Teknoloji Çözümleri"
+    title="SAKU Studios – QR Menü ve Dijital Çözümler"
+    description="SAKU Studios — restoran, kafe ve işletmeler için QR menü, dijital menü ve özel teknoloji çözümleri. Hızlı kurulum, kolay yönetim, markanıza özel tasarım."
     canonical={pagePath}
     lang="tr"
     jsonLd={[
@@ -18,11 +20,46 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
             "@type": "WebPage",
             "@id": `${pageUrl}#webpage`,
             url: pageUrl,
-            name: "SAKU Studios",
+            name: "SAKU Studios – QR Menü ve Dijital Çözümler",
             inLanguage: ["tr", "en"],
             isPartOf: { "@id": `${SITE.url}/#website` },
             about: { "@id": `${SITE.url}/#organization` },
-            description: SITE.descriptionTR,
+            description:
+                "SAKU Studios — restoran, kafe ve işletmeler için QR menü, dijital menü ve özel teknoloji çözümleri.",
+            primaryImageOfPage: {
+                "@type": "ImageObject",
+                url: new URL(SITE.defaultOgImage, SITE.url).toString(),
+            },
+        },
+        {
+            "@type": "Service",
+            "@id": `${qrMenuUrl}#service`,
+            name: "QR Menü Sistemi",
+            serviceType: "QR Menu System",
+            url: qrMenuUrl,
+            provider: { "@id": `${SITE.url}/#organization` },
+            areaServed: { "@type": "Country", name: "Türkiye" },
+            description:
+                "Restoran ve kafeler için modern, yönetimi kolay QR menü sistemi. Anlık güncelleme, çoklu dil, markaya özel tasarım.",
+            offers: {
+                "@type": "Offer",
+                priceCurrency: "TRY",
+                availability: "https://schema.org/InStock",
+                url: qrMenuUrl,
+            },
+        },
+        {
+            "@type": "ItemList",
+            "@id": `${pageUrl}#products`,
+            name: "Ürünler & Çözümler",
+            itemListElement: [
+                {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "QR Menü Sistemi",
+                    url: qrMenuUrl,
+                },
+            ],
         },
     ]}
 >
@@ -32,11 +69,11 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
         <div class="container hero-inner">
             <span class="hero-badge" id="t-hero_badge">Dijital Çözümler</span>
             <h1 class="hero-title" id="t-hero_title">
-                Teknolojiyle işinizi büyütün
+                Dijital çözümlerle işinizi büyütün
             </h1>
             <p class="hero-sub" id="t-hero_sub">
-                SAKU Studios; işletmeler için modern, güvenilir ve
-                ölçeklenebilir dijital ürünler geliştirir.
+                SAKU Studios; restoran, kafe ve işletmeler için QR menü,
+                dijital menü ve özel teknoloji çözümleri geliştirir.
             </p>
             <div class="hero-ctas">
                 <a href="#products" class="btn btn-primary">
@@ -54,12 +91,16 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
             <div class="section-head">
                 <h2 id="t-products_head">Ürünler & Çözümler</h2>
                 <p class="muted" id="t-products_desc">
-                    İşletmenize değer katan dijital çözümler.
+                    İşletmenize değer katan, markanıza özel dijital çözümler.
                 </p>
             </div>
 
             <div class="products-grid">
-                <a href="/qr-menu" class="product-card">
+                <a
+                    href="/qr-menu"
+                    class="product-card"
+                    aria-label="QR Menü Sistemi detay sayfası"
+                >
                     <div class="product-icon" aria-hidden="true">
                         <svg
                             viewBox="0 0 24 24"
@@ -84,19 +125,21 @@ const pageUrl = new URL(pagePath, SITE.url).toString();
                         </svg>
                     </div>
                     <h3 class="product-title" id="t-products_qrmenu_title">
-                        QR Menü
+                        QR Menü Sistemi
                     </h3>
                     <p class="product-desc" id="t-products_qrmenu_desc">
-                        Restoran ve kafeler için modern, yönetimi kolay QR menü
-                        sistemi. Anlık güncelleme, çoklu dil desteği ve şık
-                        tasarım.
+                        Restoran ve kafeler için modern dijital menü. Anlık
+                        güncelleme, çoklu dil, markaya özel tasarım.
                     </p>
                     <span class="product-cta" id="t-products_qrmenu_cta">
                         Detayları Gör →
                     </span>
                 </a>
 
-                <div class="product-card is-soon">
+                <div
+                    class="product-card is-soon"
+                    aria-label="Yeni ürün yakında"
+                >
                     <span class="product-badge" id="t-products_soon_badge">
                         Yakında
                     </span>

@@ -1,0 +1,1 @@
+import{i as e}from"./i18n.Dp6PwMBR.js";import{d as l,a as i}from"./lang.DtN6DxZs.js";const t=l();i(t,e[t]);document.querySelectorAll(".lang-btn").forEach(a=>{a.addEventListener("click",()=>{const n=a.dataset.lang==="en"?"en":"tr";i(n,e[n])})});

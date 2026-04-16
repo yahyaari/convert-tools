@@ -5,9 +5,9 @@ const SITE = {
     publisherName: "SAKU Studios",
 
     descriptionTR:
-        "SAKU Studios — işletmeler için modern dijital ürünler ve teknoloji çözümleri.",
+        "SAKU Studios — restoran, kafe ve işletmeler için QR menü, dijital menü ve özel teknoloji çözümleri.",
     descriptionEN:
-        "SAKU Studios — modern digital products and technology solutions for businesses.",
+        "SAKU Studios — QR menu, digital menu and custom technology solutions for restaurants, cafés and businesses.",
 
     url: "https://www.sakustudios.com.tr",
 
